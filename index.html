@@ -1,181 +1,41 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>Geneeskunde project</title>
-		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-	</head>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<script type="text/javascript" src="src/main.js"></script>
-	<script type="text/javascript" src="src/rungame.js"></script>
+<head>
+	<script src="bin/phaser.js"></script> 
+	<script src="bin/phaser_addon.js"></script> 
+	<script src="js/dataobject.js"></script> 
+	<script src="js/preloader.js"></script> 
+	<script src="js/mainmenu.js"></script> 
+	<script src="js/bumper.js"></script> 
+	<script src="js/gameend.js"></script> 
+	<script src="js/pkugame1.js"></script> 
+	<script src="js/pkututor1.js"></script> 
+	<script src="js/pkugame2.js"></script> 
+	<script src="js/pkututor2.js"></script> 
+	<script src="js/pkugame3.js"></script> 
+	<script src="js/pkututor3.js"></script> 
+	<script src="js/pkugame4.js"></script> 
+	<script src="js/pkututor4.js"></script> 
+</head>
 <body>
 
-	<!-- general always visible -->
-	<div id="debugtext" class="debugtext">debugtext</div>
-	<div id="indkey1" class="keyindicate key_left dgrey">Z/X</div>
-	<div id="indkey2" class="keyindicate key_right dgrey">N/M</div>
+    <script>
 
-<!-- start-up login page  -->
-<div id="mainintro" class="container" style="display: none;">
-	<div class="banner">banner header</div>
-	<div class="infobox">
-Donec sollicitudin nec odio sit amet vulputate. Quisque nec erat vel urna iaculis lacinia. Donec varius posuere metus, et vestibulum leo lacinia sit amet. Morbi auctor nibh nisl, a ullamcorper lorem tincidunt ac. Donec varius lobortis tortor non rhoncus. Donec nec erat placerat, ultricies magna quis, porttitor sapien. Nam turpis libero, egestas eget nibh eu, luctus ultricies arcu. Vestibulum pellentesque, mi eu dictum condimentum, mi sem tincidunt lacus, ac efficitur nibh felis sed nulla. Quisque porta sollicitudin purus, vel efficitur metus condimentum eu. Suspendisse fringilla ultricies orci ac suscipit. Nulla quis finibus velit, eu euismod diam. Quisque tellus lectus, eleifend sed aliquam quis, dignissim id lectus. Nulla ultrices magna in efficitur commodo.
-	</div>
-	<div class="buttons">
-		<div id="btnstart" class="btn">start</div>
-	</div>
-</div>
+	var config = {
+		type: Phaser.AUTO,
+		width: GAME_WIDTH,
+		height: GAME_HEIGHT,
+		backgroundColor: '#4a86e8',
+		parent: 'phaser-example',
+		scale: {
+			mode: Phaser.Scale.FIT,
+			autoCenter: Phaser.Scale.CENTER_BOTH
+		},
+		scene: [ Preloader, MainMenu, Bumper, Tutorial1, PKUgame1, Tutorial2, PKUgame2, Tutorial3, PKUgame3, Tutorial4, PKUgame4, GameEnd ]
+	};
 
-<!-- main menu -->
-<div id="mainmenu" class="container" style="display: none;">
-	<div class="banner">banner header</div>
-	<div class="infobox">
-Kies één van de 4 games hieronder.<br />
-Probeer alle spellen achter elkaar te spelen.<br />
-Alle spellen voltooien duurt ong 20 minuten.<br />
-	</div>
-	<div class="buttons">
-		<div id="btngame1" class="btn">Game 1</div>
-		<div id="btngame2" class="btn">Game 2</div>
-		<div id="btngame3" class="btn">Game 3</div>
-		<div id="btngame4" class="btn">Game 4</div>
-		<div id="btnscore" class="btn">Scores</div>
-	</div>
-</div>
+	var game = new Phaser.Game(config);
+    </script>
 
-<!-- tutorial -->
-<div id="tutorial" class="container" style="display: none;">
-	<div class="banner">Spel uitleg</div>
-	<div id="tutorialtext" class="infobox">
-Hier komt de speluitleg
-	</div>
-	<div class="buttons">
-		<div id="btntutor" class="btn">Start</div>
-	</div>
-</div>
-
-<!-- game 1 -->
-<div id="game1" class="container" style="display: none;">
-	<div class="banner">game 1</div>
-	<div class="gamearea">
-		<div id="block_1" class="game1block cross">&nbsp;</div>
-	</div>
-	<div class="buttons">
-		<div id="btnback1" class="btn">ok</div>
-	</div>
-</div>
-
-<!-- game 2 -->
-<div id="game2" class="container" style="display: none;">
-	<div class="banner">game 2</div>
-	<div class="gamearea">
-		<div id="block_2_1" class="game2block grey">2-1</div>
-		<div id="block_2_2" class="game2block grey">2-2</div>
-		<div id="block_2_3" class="game2block grey">2-3</div>
-		<div id="block_2_4" class="game2block grey">2-4</div>
-		<div id="block_2_5" class="game2block grey">2-5</div>
-		<div id="block_2_6" class="game2block grey">2-6</div>
-		<div id="block_2_7" class="game2block grey">2-7</div>
-		<div id="block_2_8" class="game2block grey">2-8</div>
-		<div id="block_2_9" class="game2block grey">2-9</div>
-		<div id="block_2_10" class="game2block grey">2-10</div>
-	</div>
-	<div class="buttons">
-		<div id="btnback2" class="btn">ok</div>
-	</div>
-</div>
-
-<!-- game 3 -->
-<div id="game3" class="container" style="display: none;">
-	<div class="banner">game 3</div>
-	<div class="gamearea">
-		<div id="block_3_1" class="game2block">3-1</div>
-		<div id="block_3_1" class="game2block">3-2</div>
-		<div id="block_3_1" class="game2block">3-3</div>
-		<div id="block_3_1" class="game2block">3-4</div>
-		<div id="block_3_1" class="game2block">3-5</div>
-		<div id="block_3_1" class="game2block">3-6</div>
-		<div id="block_3_1" class="game2block">3-7</div>
-		<div id="block_3_1" class="game2block">3-8</div>
-		<div id="block_3_1" class="game2block">3-9</div>
-		<div id="block_3_1" class="game2block">3-10</div>
-	</div>
-	<div class="buttons">
-		<div id="btnback3" class="btn">ok</div>
-	</div>
-</div>
-
-<!-- game 4 -->
-<div id="game4" class="container" style="display: none;">
-	<div class="banner">game 4</div>
-	<div class="gamearea">
-		<div id="block_4_1" class="game2block">4-1</div>
-		<div id="block_4_1" class="game2block">4-2</div>
-		<div id="block_4_1" class="game2block">4-3</div>
-		<div id="block_4_1" class="game2block">4-4</div>
-		<div id="block_4_1" class="game2block">4-5</div>
-		<div id="block_4_1" class="game2block">4-6</div>
-		<div id="block_4_1" class="game2block">4-7</div>
-		<div id="block_4_1" class="game2block">4-8</div>
-		<div id="block_4_1" class="game2block">4-9</div>
-		<div id="block_4_1" class="game2block">4-10</div>
-	</div>
-	<div class="buttons">
-		<div id="btnback4" class="btn">ok</div>
-	</div>
-</div>
-
-<!-- scores results -->
-<div id="scores" class="container" style="display: none;">
-	<div class="banner">Resultaten</div>
-	<div id="scorecontent" class="gamearea">
-		<table class="scoretable">
-			<tr>
-				<td>Game</td>
-				<td>Resultaat</td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>a, 1, 2, 3, 4</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>a, 1, 2, 3, 4</td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td>a, 1, 2, 3, 4</td>
-			</tr>
-			<tr>
-				<td>4</td>
-				<td>a, 1, 2, 3, 4</td>
-			</tr>
-		<table>
-	</div>
-	<div class="buttons">
-		<div id="btnback5" class="btn">ok</div>
-	</div>
-</div>
-
-	<script>
-		(function() {
-			// initialize the framework
-			var game = new ANTtest.Game();
-
-			// add game states
-			game.state.add('intro', rungame.Intro);
-			game.state.add('menu',  rungame.Menu);
-			game.state.add('tutorial', rungame.Tutorial);
-			game.state.add('game1', rungame.Game1);
-			game.state.add('game2', rungame.Game2);
-			game.state.add('game3', rungame.Game3);
-			game.state.add('game4', rungame.Game4);
-			game.state.add('scores', rungame.Scores);
-
-			// start the start state
-			game.state.start('intro');
-			game.initGame();			
-	
-		})();
-	</script>
 </body>
 </html>
