@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Sheetrock.js upload test</title>
+		<style type="text/css">
+			body {font-family: calibri, optima, arial, "lucida grande", helvetica, sans-serif;}
+		</style>
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="sheetrock.min.js"></script>
+
+
+		<SCRIPT LANGUAGE=javascript>
+		// ---------------------------------------------------------------------------
+		// -- Scriptname   : Sheetrock.js Google Docs upload download test          --
+		// -- Author       : Bas de Reuver                                          --
+		// -- Date         : 24-mar-2020                                            --
+		// ---------------------------------------------------------------------------
+		//var DOC_URL = "https://docs.google.com/spreadsheets/d/12DjajhRWpEUsXRxCez4AumgGhd7Jl1p0EgGEmUB1Jnw/edit?usp=sharing";
+		var DOC_URL = "https://docs.google.com/spreadsheets/d/12DjajhRWpEUsXRxCez4AumgGhd7Jl1p0EgGEmUB1Jnw/edit#gid=0"
+		//r DOC_URL = "https://docs.google.com/spreadsheets/d/1XSVP75fJkq34gLHhwIsEWOC3My-6xnbVURk4U_wotD0/edit#gid=0";
+
+		function randomInteger(min, max) {
+			max = max - min + 1;
+			var r = Math.floor(Math.random() * max) + min;
+			return r;
+		}
+		
+		function myFormatDate(dt) {
+			var str = "";
+			
+			var d = dt.getDate();
+			var m = (dt.getMonth() + 1);
+			var y = dt.getFullYear();
+			var h = dt.getHours();
+			var n = dt.getMinutes();
+			var s = dt.getSeconds();
+
+			str = y + "-" + ("00"+m).slice(-2) + "-" + ("00"+d).slice(-2) + " " + ("00"+h).slice(-2) + ":" + ("00"+n).slice(-2) + ":" + ("00"+s).slice(-2);
+
+			return str;
+		}
+
+		function randomScores()
+		{
+			 // get current date time
+			var datenow = new Date(); // - (r * 60 * 60);
+			document.getElementById("datenow").value = myFormatDate(datenow);
+
+			// random scores
+			var studynr = String.fromCharCode(randomInteger(65, 90), randomInteger(65, 90))
+						+ "-"
+						+ randomInteger(1000, 9999);
+			document.getElementById("studynr").value = studynr;
+
+			// random scores
+			document.getElementById("txtscore1").value = randomInteger(1, 10);
+			document.getElementById("txtscore2").value = randomInteger(1, 10);
+			document.getElementById("txtscore3").value = randomInteger(1, 10);
+			document.getElementById("txtscore4").value = randomInteger(1, 10);
+			document.getElementById("txtscore5").value = randomInteger(1, 10);
+		}
+		
+		function testLoadScores()
+		{
+			document.getElementById("txtscore1").value = "";
+			document.getElementById("txtscore2").value = "";
+			document.getElementById("txtscore3").value = "";
+			document.getElementById("txtscore4").value = "";
+			document.getElementById("txtscore5").value = "";
+			
+			document.getElementById("txtlog").value = "";
+
+			var std = document.getElementById("loadstudynr").value;
+			//var qry = "select score1, score2, score3, score4, score5 where studynr = '"+ std +"'";
+			var qry = "select C, D, E, F, G where A = '" + std + "'";
+			debugger;
+			$("#value").sheetrock({
+			  url: DOC_URL,
+			  query: qry,
+			  callback: onReceiveData
+			});
+		}
+		
+		function testSaveScores()
+		{
+			// save values
+			document.getElementById("txtlog").value = "";
+			debugger;		
+			// Configure the data to send
+			var dataToSend = {
+				"score1": "101",
+				"score2": "202",
+				"score3": "303"
+			};
+
+			// Call the built-in $.ajax function as part of jQuery
+			// 	url: The URL of the web app
+			// 	method: Use the GET method
+			// 	dataType: Set the data type as JSON
+			// 	.done: call is complete and without error
+			//	.fail: call experienced an error
+			// url: "https://script.google.com/macros/s/AKfycbxDlMvr7ZL5zdb06zA2ta7XcNsT08nIszBEmKUAfjvWCi0KvA/exec",
+			debugger;
+			$.ajax({
+				url: "https://script.google.com/macros/s/AKfycbxKI5bpHN5jQV-sdt4d6KtD2qeuuc29uAVpo8K/exec",
+				method: "GET",
+				dataType: "json", 
+				data: dataToSend
+			}).done(function(e) {
+				// Do something on success
+				debugger;
+				console.log('WOW SAVE SUCCESS!!');
+				document.getElementById("txtlog").value = "WOW SAVE SUCCESS!!";
+			}).fail(function(e) {
+				// Optionally do something on error
+				debugger;
+				console.log('Save to sheet failed!');
+				document.getElementById("txtlog").value = "Save to sheet failed!";
+			});
+		}
+		
+		function onReceiveData(error, options, response) {
+			debugger;
+			if (error) {
+				console.log('LOL FAIL!!');
+				document.getElementById("txtlog").value = "load failed! " + error;
+			} else {
+				console.log('nice. ' + response.html);
+
+				if (response.rows.length <= 1) {
+					document.getElementById("txtlog").value = "load ok! no data found.";
+				} else {
+					// get values
+					document.getElementById("txtscore1").value = response.rows[1].cellsArray[0];
+					document.getElementById("txtscore2").value = response.rows[1].cellsArray[1];
+					document.getElementById("txtscore3").value = response.rows[1].cellsArray[2];
+					document.getElementById("txtscore4").value = response.rows[1].cellsArray[3];
+					document.getElementById("txtscore5").value = response.rows[1].cellsArray[4];
+					document.getElementById("txtlog").value = "load ok!";
+				}
+			}
+		}
+
+    </SCRIPT>
+	</head>
+	<body onload="randomScores();">
+		<p><b>Google Docs :: JavaScript upload download test</b><br />
+		</p>
+		
+		<b>Deelnemer</b><br/>
+		Studynr <input id="studynr" value="12345" ><br />
+		Datetime <input id="datenow" ><br />
+		<br />
+		<b>Scores</b> <br/>
+		Score 1 <input id="txtscore1"><br />
+		Score 2 <input id="txtscore2"><br />
+		Score 3 <input id="txtscore3"><br />
+		Score 4 <input id="txtscore4"><br />
+		Score 5 <input id="txtscore5"><br />
+		<br />
+		test load <button onclick="testLoadScores(); return false;" >test load</button><input id="loadstudynr" size="4" value="ABC"><br />
+		<br />
+		test save <button onclick="testSaveScores(); return false;" >test save</button><br />
+		<a href="https://docs.google.com/spreadsheets/d/12DjajhRWpEUsXRxCez4AumgGhd7Jl1p0EgGEmUB1Jnw/edit#gid=0">spread sheet data<a/>
+		<br/>		<b>info</b><br />
+		<textarea id="txtlog" rows="15" cols="120"></textarea><br />
+	</body>
+	
+</html>

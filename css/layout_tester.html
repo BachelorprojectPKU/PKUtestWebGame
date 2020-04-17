@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>css test2</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script>
+var IMG_URL = "../games/highway/img/highway_back.jpg";
+var cvs, ctx;
+
+function displayInfobox() {
+	hideScorebox();
+	document.getElementById("infobox").style.display = "inherit";
+	//event.stopPropagation(); // stop propagation on button click event
+}
+
+function hideInfobox() {
+	//var target = event.target || event.srcElement;
+	// filter event handling when the event bubbles
+	//if (event.currentTarget == target) {
+		document.getElementById("infobox").style.display = "none";
+	//}
+}
+
+function displayScorebox() {
+	hideInfobox();
+	document.getElementById("scorebox").style.display = "inherit";
+	//event.stopPropagation(); // stop propagation on button click event
+}
+
+function hideScorebox() {
+	//var target = event.target || event.srcElement;
+	// filter event handling when the event bubbles
+	//if (event.currentTarget == target) {
+		document.getElementById("scorebox").style.display = "none";
+	//}
+}
+
+function loadbackground() {
+	cvs = document.getElementById("mycanvas");
+	ctx = cvs.getContext("2d");
+
+	imageBackground = new Image();
+	imageBackground.addEventListener("load", this.onImageLoaded.bind(this));
+	imageBackground.src = IMG_URL;
+}
+
+function onImageLoaded() {
+
+	cvs.width = imageBackground.width;
+	cvs.height = imageBackground.height;
+	ctx.drawImage(imageBackground, 0, 0);
+	
+	resizeCanvas();
+	resizeInfobox(document.getElementById("infobox"));
+	resizeInfobox(document.getElementById("scorebox"));
+
+}
+
+function resizeCanvas() {
+
+	// determine which is limiting factor for current window/frame size; width or height
+	var scrratio = window.innerWidth / window.innerHeight;
+	var imgratio = cvs.width / cvs.height;
+	
+	// determine screen/frame size
+	var w = cvs.width;
+	var h = cvs.height;
+
+	if (imgratio > scrratio) {
+		// width of image should take entire width of screen
+		w = window.innerWidth;
+		this.scaleFactor = w / cvs.width;
+		h = cvs.height * this.scaleFactor;
+
+		// set margins for full height
+		var ymargin = (window.innerHeight - h) / 2;
+		cvs.style["margin-top"] = ymargin+"px";
+		cvs.style["margin-bottom"] = -ymargin+"px";
+		cvs.style["margin-left"] = "0px";
+	} else {
+		// height of image should take entire height of screen
+		h = window.innerHeight;
+		this.scaleFactor = h / cvs.height;
+		w = cvs.width * this.scaleFactor;
+
+		// set margins for full height
+		var xmargin = (window.innerWidth - w) / 2;
+		cvs.style["margin-left"] = xmargin+"px";
+		cvs.style["margin-right"] = -xmargin+"px";
+		cvs.style["margin-top"] = "0px";
+	}
+	
+	// set canvas size
+	cvs.style.width = w+"px";
+	cvs.style.height = h+"px";
+
+	// set canvas properties
+	cvs.style.display = "block";
+	cvs.style["touch-action"] = "none"; // no text select on touch
+	cvs.style["user-select"] = "none"; // no text select on touch
+	cvs.style["-webkit-tap-highlight-color"] = "rgba(0, 0, 0, 0)"; // not sure what this does 
+};
+	
+function resizeInfobox(box) {
+
+	// determine screen/frame size
+	var w = box.offsetWidth;
+	var h = box.offsetHeight;
+	var rect = box.getBoundingClientRect();
+	if (rect) {
+		w = rect.width;
+		h = rect.height;
+	};
+
+	var xmargin = (window.innerWidth - w) / 2;
+	var ymargin = (window.innerHeight - h) / 2;
+
+	// set margins for full height
+	box.style["margin-left"] = xmargin+"px";
+	box.style["margin-right"] = -xmargin+"px";
+	box.style["margin-top"] = ymargin+"px";
+	box.style["margin-bottom"] = -ymargin+"px";
+};
+
+	</script>
+
+	<body onload="loadbackground()">
+
+	<div id="debugtext">debugtext</div>
+	<div id="indkey1" class="keyindicate key_left color_left">Z,X</div>
+	<div id="indkey2" class="keyindicate key_right color_right">N,M</div>
+	
+<div id="mainintro" class="container" style="display: none;">
+	<div class="banner">banner header</div>
+	<div class="infobox">
+Donec sollicitudin nec odio sit amet vulputate. Quisque nec erat vel urna iaculis lacinia. Donec varius posuere metus, et vestibulum leo lacinia sit amet. Morbi auctor nibh nisl, a ullamcorper lorem tincidunt ac. Donec varius lobortis tortor non rhoncus. Donec nec erat placerat, ultricies magna quis, porttitor sapien. Nam turpis libero, egestas eget nibh eu, luctus ultricies arcu. Vestibulum pellentesque, mi eu dictum condimentum, mi sem tincidunt lacus, ac efficitur nibh felis sed nulla. Quisque porta sollicitudin purus, vel efficitur metus condimentum eu. Suspendisse fringilla ultricies orci ac suscipit. Nulla quis finibus velit, eu euismod diam. Quisque tellus lectus, eleifend sed aliquam quis, dignissim id lectus. Nulla ultrices magna in efficitur commodo.
+	</div>
+	<div class="buttons">
+		<div class="btn">start</div>
+	</div>
+</div>
+
+<div id="mainmenu" class="container" style="display: none;">
+	<div class="banner">banner header</div>
+	<div class="infobox">
+		Kies één van de 4 games hieronder.
+	</div>
+	<div class="buttons">
+		<div class="btn">game 1</div>
+		<div class="btn">game 2</div>
+		<div class="btn">game 3</div>
+		<div class="btn">game 4</div>
+	</div>
+</div>
+
+<div id="game1" class="container" style="display: none;">
+	<div class="banner">banner header</div>
+	<div class="gamearea">
+		<div id="block_1" class="game1block cross">&nbsp;</div>
+	</div>
+	<div class="buttons">
+		<div class="btn">ok</div>
+	</div>
+</div>
+
+<!-- game 2 -->
+<div id="game2" class="container" style="display: none;">
+	<div class="banner">game 2</div>
+	<div class="gamearea">
+		<div id="block_2_1" class="game2block grey">2-1</div>
+		<div id="block_2_2" class="game2block grey">2-2</div>
+		<div id="block_2_3" class="game2block grey">2-3</div>
+		<div id="block_2_4" class="game2block grey">2-4</div>
+		<div id="block_2_5" class="game2block grey">2-5</div>
+		<div id="block_2_6" class="game2block grey">2-6</div>
+		<div id="block_2_7" class="game2block grey">2-7</div>
+		<div id="block_2_8" class="game2block grey">2-8</div>
+		<div id="block_2_9" class="game2block grey">2-9</div>
+		<div id="block_2_10" class="game2block grey">2-10</div>
+	</div>
+	<div class="buttons">
+		<div id="btnback2" class="btn">ok</div>
+	</div>
+</div>
+
+<!-- game 3 -->
+<div id="game3" class="container">
+	<div class="banner">game 3</div>
+	<div class="gamearea">
+		<div class="block3_area">
+			<div class="block3_grid grid_tl">
+				<!-- top left grid, top row -->
+				<div id="block_3_1_1" class="game3block bl3top green">TL-1</div>
+				<div id="block_3_1_1" class="game3block bl3top green">TL-2</div>
+				<div id="block_3_1_1" class="game3block bl3top green">TL-3</div>
+
+				<!-- top left grid, middle row -->
+				<div id="block_3_1_1" class="game3block bl3mid green">TL-4</div>
+				<div id="block_3_1_1" class="game3block bl3mid green">TL-5</div>
+				<div id="block_3_1_1" class="game3block bl3mid green">TL-6</div>
+
+				<!-- top left grid, bottom row -->
+				<div id="block_3_1_1" class="game3block bl3bot green">TL-7</div>
+				<div id="block_3_1_1" class="game3block bl3bot green">TL-8</div>
+				<div id="block_3_1_1" class="game3block bl3bot green">TL-9</div>
+			</div>
+			
+			<div class="block3_grid grid_tr">
+				<!-- top right grid, top row -->
+				<div id="block_3_2_1" class="game3block white">TR-1</div>
+				<div id="block_3_2_1" class="game3block white">TR-2</div>
+				<div id="block_3_2_1" class="game3block white">TR-3</div>
+
+				<!-- top right grid, middle row -->
+				<div id="block_3_2_1" class="game3block white">TR-4</div>
+				<div id="block_3_2_1" class="game3block white">TR-5</div>
+				<div id="block_3_2_1" class="game3block white">TR-6</div>
+
+				<!-- top right grid, bottom row -->
+				<div id="block_3_2_1" class="game3block white">TR-7</div>
+				<div id="block_3_2_1" class="game3block white">TR-8</div>
+				<div id="block_3_2_1" class="game3block white">TR-9</div>
+			</div>
+			
+			<div class="block3_grid grid_bl">
+				<!-- bottom left grid, top row -->
+				<div id="block_3_3_1" class="game3block white">BL-1</div>
+				<div id="block_3_3_1" class="game3block white">BL-2</div>
+				<div id="block_3_3_1" class="game3block white">BL-3</div>
+
+				<!-- bottom left grid, middle row -->
+				<div id="block_3_3_1" class="game3block white">BL-4</div>
+				<div id="block_3_3_1" class="game3block red">BL-5</div>
+				<div id="block_3_3_1" class="game3block white">BL-6</div>
+
+				<!-- bottom left grid, bottom row -->
+				<div id="block_3_3_1" class="game3block white">BL-7</div>
+				<div id="block_3_3_1" class="game3block white">BL-8</div>
+				<div id="block_3_3_1" class="game3block white">BL-9</div>
+			</div>
+			
+			<div class="block3_grid grid_br">
+				<!-- bottom left grid, top row -->
+				<div id="block_3_4_1" class="game3block white">BR-1</div>
+				<div id="block_3_4_1" class="game3block white">BR-2</div>
+				<div id="block_3_4_1" class="game3block white">BR-3</div>
+
+				<!-- bottom left grid, middle row -->
+				<div id="block_3_4_1" class="game3block white">BR-4</div>
+				<div id="block_3_4_1" class="game3block white">BR-5</div>
+				<div id="block_3_4_1" class="game3block white">BR-6</div>
+
+				<!-- bottom left grid, bottom row -->
+				<div id="block_3_4_1" class="game3block white">BR-7</div>
+				<div id="block_3_4_1" class="game3block red">BR-8</div>
+				<div id="block_3_4_1" class="game3block white">BR-9</div>
+			</div>
+		</div>
+	</div>
+	<div class="buttons">
+		<div id="btnback2" class="btn">ok</div>
+	</div>
+</div>
+
+<!-- scores -->
+<div id="scores" class="container" style="display: none;">
+	<div class="banner">Resultaten</div>
+	<div class="gamearea">
+		<table class="scoretable">
+			<tr>
+				<td>Game</td>
+				<td>Resultaat</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>a, 1, 2, 3, 4</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>a, 1, 2, 3, 4</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>a, 1, 2, 3, 4</td>
+			</tr>
+			<tr>
+				<td>4</td>
+				<td>a, 1, 2, 3, 4</td>
+			</tr>
+		</table>
+	</div>
+	<div class="buttons">
+		<div id="btnback1" class="btn">ok</div>
+		<div id="btnback2" class="btn">ok</div>
+	</div>
+</div>
+
+<!--
+<div id="gamedeel1" class="container">
+	<div class="banner">game 1</div>
+	<div class="infobox">info box uitleg text bla bla</div>
+</div>
+-->
+	</body>
+</html>

@@ -1,0 +1,54 @@
+.container {
+}
+
+body {
+	font-family: Arial;
+	background: #080;
+	overflow: "hidden";
+}
+
+/* color for blocks */
+.red    {background: #f00;}
+.orange {background: #f80;}
+.yellow {background: #ff0;}
+.green  {background: #0f0;}
+.cyan   {background: #0ff;}
+.blue   {background: #00f;}
+.purple {background: #f0f;}
+
+/* containing area for the four 3x3 grids */
+.block3_area {
+	width: 50%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	background: #0cf;
+}
+
+/* one 3x3 grid */
+.block3_grid {
+	display: grid;
+	grid-gap: 1px;
+	grid-template-columns: repeat(3, 1fr);
+	
+	width: 30%;
+	height: 30%;
+}
+
+.grid_tl {float: top left;}
+.grid_tr {float: top right;}
+.grid_bl {float: bottom-left;}
+.grid_br {float: bottom-right;}
+
+/* the inner blocks of the grid */
+.game3block {
+	width: 50px;
+	height: 50px;
+}
+
+.game3block > .game3block {
+  padding: 10px;
+  background-color: #ccc;
+}
