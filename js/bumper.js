@@ -1,7 +1,7 @@
 // Phaser3 PKU test webgame
-// bumper question, filler scene
+// break-bumper, question between practise and real test
 
-// bumper scene, question
+// break-bumper scene
 var Bumper = new Phaser.Class({
 
     Extends: Phaser.Scene,

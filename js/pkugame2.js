@@ -1,8 +1,6 @@
 // Phaser3 PKU test webgame
 // game 2
 
-var GAME2_REPEAT = 10;
-
 // main game logic object
 var PKUgame2 = new Phaser.Class({
 
@@ -25,10 +23,10 @@ var PKUgame2 = new Phaser.Class({
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
 
-		// !! TESTING !!
 		globalvar.game = 2;
-		globalvar.game_part = 3;
-		globalvar.practise = false;
+		// !! TESTING !!
+		//globalvar.game_part = 1;
+		//globalvar.practise = false;
     },
 
     create: function ()
@@ -46,6 +44,7 @@ var PKUgame2 = new Phaser.Class({
 		this.square_pos = 5;
 		this.square_col = 0; // 0=green, 1=red
 		this.square_dir = 0;
+		this.expect_btn = 0;
 
 		this.gamestate = -1; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 
@@ -68,13 +67,14 @@ var PKUgame2 = new Phaser.Class({
 
 		// reset repeat counter
 		this.game_repeat = 0;
+		this.repeat_max = (globalvar.practise ? GAME2_REPEAT_PRACTISE : GAME2_REPEAT);
 		this.waitevent = null;
 
+		// !! TESTING !!
+		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "debug:", 24);
+ 
 		// start game
 		this.doStartSquare();
-
-		// !! TESTING !!
-		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "test123", 24);
     },
 	
     update: function (time, delta)
@@ -109,11 +109,20 @@ var PKUgame2 = new Phaser.Class({
 
 		// first or last square, can only move one direction
 		if ( (this.square_pos == 0) || (this.square_pos == 9) ) {
-			this.square_dir = (this.square_pos == 0 ? 1 : 0);
+			this.square_dir = (this.square_pos == 0 ? CONST_RIGHT : CONST_LEFT);
 		} else {
 			this.square_dir = Phaser.Math.RND.between(0, 1); // 0=left, 1=right
 		};
-		this.square_pos = this.square_pos + (this.square_dir == 0 ? -1 : +1);
+		this.square_pos = this.square_pos + (this.square_dir == CONST_LEFT ? -1 : +1);
+
+		// which button should player push
+		if (this.square_col == 0) {
+			// green
+			this.expect_btn = (this.square_dir == CONST_LEFT ? CONST_LEFT : CONST_RIGHT);
+		} else {
+			// red
+			this.expect_btn = (this.square_dir == CONST_RIGHT ? CONST_LEFT : CONST_RIGHT);
+		};
 
 		// stay within bounds 0..9
 		//this.square_pos = Math.min(Math.max(this.square_pos, 0), 9);
@@ -124,6 +133,8 @@ var PKUgame2 = new Phaser.Class({
 		// now wait for user input
 		this.gamestate = 0; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 		this.starttime = new Date();
+		
+		this.debugTextGame2();
 	},
 	
     doGame2Input: function (key, correct) {
@@ -133,20 +144,23 @@ var PKUgame2 = new Phaser.Class({
 			// too early
 			var msec = Math.floor(this.waitevent.elapsed - this.waitevent.delay);
 			console.log("doGame2Input -- TOO EARLY!! msec=" + msec);
+			this.debugTextGame2(msec);
+
 			// log result
 			this.doGameResult(this.game_repeat, msec, false);
 		} else if (this.gamestate == 0) {
 			// measure time
 			var endtime = new Date();
 			var msec = endtime - this.starttime;
-			console.log('dogame2Input -- OK end time msec=' + msec);
+			console.log("dogame2Input -- OK end time msec=" + msec);
+			this.debugTextGame2(msec, correct);
 
 			// log result
 			this.doGameResult(this.game_repeat, msec, correct);
 
 			// repeat 10 times for each hand or end game
 			this.game_repeat++;
-			if (this.game_repeat < GAME2_REPEAT) {
+			if (this.game_repeat < this.repeat_max) {
 				this.doStartSquare();
 			} else {
 				this.doGameEnd();
@@ -164,7 +178,7 @@ var PKUgame2 = new Phaser.Class({
 		if (evt.keyCode == 90) {
 			spr = this.key_left;
 			x = 60;
-			ok = (this.square_dir == this.square_col); // als move left and green (dir=0 & col=0 OR dir=1 & col=1)
+			ok = (this.expect_btn == CONST_LEFT);
 			this.doGame2Input(CONST_LEFT, ok);
 		};
 
@@ -172,7 +186,7 @@ var PKUgame2 = new Phaser.Class({
 		if (evt.keyCode == 77) {
 			spr = this.key_right;
 			x = GAME_WIDTH-60;
-			ok = (this.square_dir + this.square_col == 1); // als move right and green (dir=1 & col=0 OR dir=0 & col=1)
+			ok = (this.expect_btn == CONST_RIGHT);
 			this.doGame2Input(CONST_RIGHT, ok);
 		};
 
@@ -194,6 +208,27 @@ var PKUgame2 = new Phaser.Class({
 		};
 	},
 	
+    debugTextGame2: function (ms, cr)
+    {
+		var txt = "debug: part " + globalvar.game_part + " moved ";
+
+		if (this.gamestate == -1) {
+			txt = txt + "?? TOO EARLY!!"
+		} else {
+			txt = txt + (this.square_dir == CONST_LEFT ? "left" : "right") + " press " + (this.expect_btn == CONST_LEFT ? "left" : "right");
+		};
+		
+		if (typeof cr !== "undefined") {
+			txt = txt + " " + (cr ? "OK" : "INCORRECT");
+		};
+
+		if (typeof ms !== "undefined") {
+			txt = txt + " msec=" + ms;
+		};
+
+		this.debugtxt.text = txt;
+	},
+
     doGameResult: function (idx, msec)
     {
         console.log("doGameResult -- idx=" + idx + " msec=" + msec);

@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<style>
+	* {
+		background-color: #000;
+		margin: 0;
+		padding: 0;
+	}
+	</style>
+
 	<script src="bin/phaser.js"></script> 
 	<script src="bin/phaser_addon.js"></script> 
 	<script src="js/dataobject.js"></script> 
@@ -16,6 +24,7 @@
 	<script src="js/pkututor3.js"></script> 
 	<script src="js/pkugame4.js"></script> 
 	<script src="js/pkututor4.js"></script> 
+	<script src="js/cannotplay.js"></script> 
 </head>
 <body>
 
@@ -31,7 +40,7 @@
 			mode: Phaser.Scale.FIT,
 			autoCenter: Phaser.Scale.CENTER_BOTH
 		},
-		scene: [ Preloader, MainMenu, Bumper, Tutorial1, PKUgame1, Tutorial2, PKUgame2, Tutorial3, PKUgame3, Tutorial4, PKUgame4, GameEnd ]
+		scene: [ Preloader, MainMenu, Bumper, Tutorial1, PKUgame1, Tutorial2, PKUgame2, Tutorial3, PKUgame3, Tutorial4, PKUgame4, GameEnd, CannotPlay ]
 	};
 
 	var game = new Phaser.Game(config);

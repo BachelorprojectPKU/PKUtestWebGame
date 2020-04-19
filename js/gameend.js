@@ -22,13 +22,11 @@ var GameEnd = new Phaser.Class({
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
+		globalvar.game_part = 1;
     },
 
     create: function ()
     {
-		// reset global variable
-		globalvar.game_part = 1;
-
 		// end of game message
 		var str;
 		var btn;
@@ -60,9 +58,9 @@ var GameEnd = new Phaser.Class({
 	doNextGame: function ()
     {
         console.log("GameEnd KNOP VOLGENDE volgende game globalvar.game=" + globalvar.game);
-		if (globalvar.game < 4) {
+		if (globalvar.game <= 3) {
 			// game 1, 2, 3, go to next game
-			this.scene.start("pkututor" + (globalvar.game+1));
+			this.scene.start("tutorial" + (globalvar.game+1));
 		} else {
 			// game 4, close tab doesn't work due to security issues
 			window.close();

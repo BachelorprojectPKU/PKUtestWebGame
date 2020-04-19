@@ -107,6 +107,12 @@ var Preloader = new Phaser.Class({
 		// sprites, note: see free sprite atlas creation tool here https://www.leshylabs.com/apps/sstool/
 		this.load.atlas('sprites', 'res/img/sprites.png', 'res/img/sprites.json');
 
+		// sprite sheet, rectangle frames
+		this.load.spritesheet('faces1', 'res/img/photos_happy.png',  { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces2', 'res/img/photos_sad.png',    { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces3', 'res/img/photos_angry.png',  { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces4', 'res/img/photos_scared.png', { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+
 		// font
 		this.load.bitmapFont('fontwhite', 'res/img/fontwhite.png', 'res/img/fontwhite.xml');
 		
@@ -126,18 +132,23 @@ var Preloader = new Phaser.Class({
 		this.loadingbar_fill.destroy();
 		this.preloadSprite = null;
 
-		// start actual game
-		this.scene.start('mainmenu');
-		//this.scene.start('tutorial1');
-		//this.scene.start('pkugame1');
-		//this.scene.start('tutorial2');
-		//this.scene.start('pkugame2');
-		//this.scene.start('tutorial3');
-		//this.scene.start('pkugame3');
-		//this.scene.start('tutorial4');
-		//this.scene.start('pkugame4');
-		//this.scene.start('bumper');
-		//this.scene.start('gameend');
 
+		if (this.sys.game.device.os.desktop){
+			// start actual game
+			this.scene.start('mainmenu');
+			//this.scene.start('tutorial1');
+			//this.scene.start('pkugame1');
+			//this.scene.start('tutorial2');
+			//this.scene.start('pkugame2');
+			//this.scene.start('tutorial3');
+			//this.scene.start('pkugame3');
+			//this.scene.start('tutorial4');
+			//this.scene.start('pkugame4');
+			//this.scene.start('bumper');
+			//this.scene.start('gameend');
+		} else {
+			// cannot play without keyboard
+			this.scene.start('cannotplay');
+		};
 	}
 });

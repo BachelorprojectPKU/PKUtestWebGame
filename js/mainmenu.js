@@ -31,9 +31,9 @@ var MainMenu = new Phaser.Class({
 
 		// --- start message ---
 		this._cntWelcome  = this.add.container();
-		var txttut1 = this.add.bitmapText(60, 120, "fontwhite", "Welkom,\nWe vragen jou 4 korte computer testen in te vullen, zodat de dokter kan zien hoe het met je gaat\nals je straks naar de poli komt.\n\nHet is belangrijk dat je op dit moment in een rustige kamer zit waar je niet gestoord kunt worden. Je kunt namelijk alleen tussen de testjes door even stoppen.\n\nHet maken van de testjes duurt ongeveer 30 minuten.\n\nProbeer de testjes zo snel maar vooral ook zo goed mogelijk te doen.\n\nAls je er klaar voor bent om te beginnen, mag je op de rode startknop drukken. ", 24);
+		var txttut1 = this.add.bitmapText(60, 120, "fontwhite", "Welkom,\nWe vragen jou 4 korte computer testen in te vullen, zodat de dokter kan zien\nhoe het met je gaat als je straks naar de poli komt.\n\nHet is belangrijk dat je op dit moment in een rustige kamer zit\nwaar je niet gestoord kunt worden.\nJe kunt namelijk alleen tussen de testjes door even stoppen.\n\nHet maken van de testjes duurt ongeveer 30 minuten.\n\nProbeer de testjes zo snel maar vooral ook zo goed mogelijk te doen.\n\nAls je er klaar voor bent om te beginnen, mag je op de rode startknop drukken. ", 24);
 		
-		this.btnstart = this.addButtonText(GAME_WIDTH_CENTER,     GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1",  "test123");
+		this.btnstart = this.addButtonText(GAME_WIDTH_CENTER,     GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1",  "START");
 
 		// add all to container
 		this._cntWelcome.add(txttut1);

@@ -25,6 +25,9 @@ Phaser.Scene.prototype.addButtonText = function(x, y, key, callback, callbackCon
 
 		// add text
         var txt = this.add.text(0, 0, text, { font: "32px Arial Black", fill: "#ffffff" });
+		// center text around 0,0
+        txt.x  = -1 * (txt.width / 2);
+        txt.y  = -1 * (txt.height / 2);
 
 		// add it all to a container
 		var btn = this.add.container(0, 50).setSize(w, h).add([spr, txt]);

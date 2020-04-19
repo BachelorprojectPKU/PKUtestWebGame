@@ -25,27 +25,37 @@ var Tutorial4 = new Phaser.Class({
 		
 		// set global variables
 		globalvar.practise = true;
-		globalvar.game = 1;
+		globalvar.game = 4;
 		//globalvar.game_part = 1; // game_part is updated in GameEnd scene
     },
 
     create: function ()
     {
+		// which dominant hand
+		var hander = (globalvar.dominant == CONST_RIGHT ? "LINKER" : "RECHTER");
+		var btn    = (globalvar.dominant == CONST_RIGHT ? "Z"      : "M");
+
+		// 4 times for different emotions
+		this._emotions    = ["happy", "sad", "angry", "scared"];
+		this._emotions_nl = ["blij", "verdrietig", "boos", "bang"];
+
+		// variable textparts per emotion
+		var idx     = globalvar.game_part-1; // zero based
+		var face    = this._emotions[idx];
+		var face_nl = this._emotions_nl[idx];
+		var pers_nl = this._emotions_nl[idx] + "e personen";
+
 		if (globalvar.game_part == 1) {
-			// DEEL 1: niet dominante hand
-			var hand   = (globalvar.dominant == CONST_RIGHT ? "LINKS"  : "RECHTS");
-			var hander = (globalvar.dominant == CONST_RIGHT ? "LINKER" : "RECHTER");
-			var btn    = (globalvar.dominant == CONST_RIGHT ? "Z"      : "M");
 
 			// --- static message ---
-			var txttitle1 = this.add.bitmapText(60, 60, "fontwhite", "TEST 1: REACTIESNELHEID", 24);
-			var txt1 = this.add.bitmapText(60, 120,     "fontwhite", "Nu gaan we beginnen met test 1. Hier gaan we kijken hoe snel jij kunt reageren.", 24);
-			var txt2 = this.add.bitmapText(60, 120+60,  "fontwhite", "We beginnen met " + hand + ".", 24);
-			var txt3 = this.add.bitmapText(60, 120+120, "fontwhite", "Het is de bedoeling dat je met je " + hand + " wijsvinger op de " + btn + " klikt\nals je een kruisje in een blokje ziet veranderen.", 24);
+			var txttitle1 = this.add.bitmapText(60, 60, "fontwhite", "TEST 4: HERKENNEN VAN EMOTIES", 24);
+			var txt1 = this.add.bitmapText(60, 120,     "fontwhite", "Bij deze test gaat het om het herkennen van emoties van mensen.", 24);
+			var txt2 = this.add.bitmapText(60, 120+60,  "fontwhite", "De test bestaat uit 4 delen, waar je elke keer een andere emotie moet herkennen.", 24);
+			var txt3 = this.add.bitmapText(60, 120+120, "fontwhite", "We beginnen met deel 1: " + pers_nl, 24);
 
 			// --- tutorial message 1 ---
 			this._cntTutor1 = this.add.container();
-			var spr1 = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT-240, "sprites", "game4_plus");
+			var spr1 = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT-240, "sprites", "game4_" + face);
 			this.btnnext = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doNext1,  this, "button2",     "button1",     "button2",     "button1", "Klik op Z");
 
 			// add all to container
@@ -96,8 +106,7 @@ var Tutorial4 = new Phaser.Class({
 			var txt3 = this.add.bitmapText(60, 120+120, "fontwhite", "Klik alleen als het kruisje ook echt verandert en niet als je denkt dat hij gaat veranderen. ", 24);
 			var txt4 = this.add.bitmapText(60, 120+180, "fontwhite", "Dit gaan we eerst even oefenen.", 24);
 			
-			this.btncont4 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1", "cont4");
-
+			this.btncont4 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1", "Oefenen");
 		};
 
 		console.log("Tutorial4 create is ready");

@@ -1,7 +1,8 @@
 // Phaser3 PKU test webgame
 // game 1
 
-var GAME1_REPEAT = 10;
+var GAME1_MIN_WAIT =  500; // 0.5 sec
+var GAME1_MAX_WAIT = 2500; // 2.5 sec
 
 // main game logic object
 var PKUgame1 = new Phaser.Class({
@@ -24,6 +25,11 @@ var PKUgame1 = new Phaser.Class({
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
+		
+		globalvar.game = 1;
+		// !! TESTING !!
+		//globalvar.game_part = 1;
+		//globalvar.practise = false;
     },
 
     create: function ()
@@ -37,9 +43,14 @@ var PKUgame1 = new Phaser.Class({
 
 		this.key_left  = this.add.sprite(           60, GAME_HEIGHT-60, "sprites", "key_z");
 		this.key_right = this.add.sprite(GAME_WIDTH-60, GAME_HEIGHT-60, "sprites", "key_m");
-
 		this.key_left.setAlpha(0.5);
 		this.key_right.setAlpha(0.5);
+		
+		var b_left = (2-globalvar.dominant == globalvar.game_part); // als rechtshandig en niet-dominante test (deel 1)
+		var left_icon  = this.add.sprite(           60, GAME_HEIGHT-130, "sprites", (b_left ? "icon_yes" : "icon_no") );
+		var right_icon = this.add.sprite(GAME_WIDTH-60, GAME_HEIGHT-130, "sprites", (b_left ? "icon_no" : "icon_yes") );
+		left_icon.setAlpha(0.5);
+		right_icon.setAlpha(0.5);
 
 		// !! TESTING !!
 		//this.input.keyboard.on('keydown-' + 'Z', this.test123, this);
@@ -52,13 +63,15 @@ var PKUgame1 = new Phaser.Class({
 
 		// reset repeat counter
 		this.game_repeat = 0;
+		this.repeat_max = (globalvar.practise ? GAME1_REPEAT_PRACTISE : GAME1_REPEAT);
+
 		this.waitevent = null;
 
+		// !! TESTING !!
+		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "", 24);
+		
 		// start game
 		this.doStartSquare();
-
-		// !! TESTING !!
-		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "test123", 24);
     },
 	
     update: function (time, delta)
@@ -76,7 +89,7 @@ var PKUgame1 = new Phaser.Class({
 		this.gamestate = -1; // -1=wait
 		
 		// set random timer
-		var msec = Phaser.Math.RND.between(500, 2500); // 0,5 and 2,5 seconds
+		var msec = Phaser.Math.RND.between(GAME1_MIN_WAIT, GAME1_MAX_WAIT);
 		this.waitevent = this.time.addEvent({ delay: msec, callback: this.onDisplayPlus, callbackScope: this});
 	},
 	
@@ -85,6 +98,8 @@ var PKUgame1 = new Phaser.Class({
 		this.square.setFrame("game1_plus") ;
 		this.gamestate = 0; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 		this.starttime = new Date();
+		
+		this.debugTextGame1("");
 	},
 	
     doGame1Input: function (key, correct) {
@@ -95,6 +110,7 @@ var PKUgame1 = new Phaser.Class({
 				// too early
 				var msec = Math.floor(this.waitevent.elapsed - this.waitevent.delay);
 				console.log("doGame1Input -- TOO EARLY!! msec=" + msec);
+				this.debugTextGame1("te vroeg " + msec + "ms");
 				// log result
 				this.doGameResult(this.game_repeat, msec);
 			} else if (this.gamestate == 0) {
@@ -102,6 +118,7 @@ var PKUgame1 = new Phaser.Class({
 				var endtime = new Date();
 				var msec = endtime - this.starttime;
 				console.log('doGame1Input -- OK end time msec=' + msec);
+				this.debugTextGame1("OK " + msec + "ms");
 
 				// log result
 				this.doGameResult(this.game_repeat, msec);
@@ -129,7 +146,7 @@ var PKUgame1 = new Phaser.Class({
 		if (evt.keyCode == 90) {
 			spr = this.key_left;
 			x = 60;
-			ok = (globalvar.dominant == CONST_RIGHT && globalvar.game_part == 1); // als rechtshandig en niet-dominante test (deel 1)
+			ok = (2-globalvar.dominant == globalvar.game_part); // als rechtshandig en niet-dominante test (deel 1)
 			this.doGame1Input(CONST_LEFT, ok);
 		};
 
@@ -137,7 +154,7 @@ var PKUgame1 = new Phaser.Class({
 		if (evt.keyCode == 77) {
 			spr = this.key_right;
 			x = GAME_WIDTH-60;
-			ok = (globalvar.dominant == CONST_RIGHT && globalvar.game_part == 2); // als rechtshandig en dominante test (deel 2)
+			ok = (globalvar.dominant+1 == globalvar.game_part); // als rechtshandig en dominante test (deel 2)
 			this.doGame1Input(CONST_RIGHT, ok);
 		};
 
@@ -152,9 +169,9 @@ var PKUgame1 = new Phaser.Class({
 				var timeline = this.tweens.createTimeline();
 				timeline.add({targets: spr, x: x+8, ease: 'Power1', duration: 40});
 				timeline.add({targets: spr, x: x-8, ease: 'Power1', duration: 40});
-				timeline.add({targets: spr, x: x+4,  ease: 'Power1', duration: 40});
-				timeline.add({targets: spr, x: x-4,  ease: 'Power1', duration: 40});
-				timeline.add({targets: spr, x: x,    ease: 'Power1', duration: 40});
+				timeline.add({targets: spr, x: x+4, ease: 'Power1', duration: 40});
+				timeline.add({targets: spr, x: x-4, ease: 'Power1', duration: 40});
+				timeline.add({targets: spr, x: x,   ease: 'Power1', duration: 40});
 				timeline.play();
 			};
 		};
@@ -169,6 +186,12 @@ var PKUgame1 = new Phaser.Class({
 		if (evt.keyCode == 77) {
 			this.key_right.setAlpha(0.5);
 		};
+	},
+	
+    debugTextGame1: function (str)
+    {
+		var txt = "debug: part " + globalvar.game_part + " keer " + (this.game_repeat+1) + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
+		this.debugtxt.text = txt;
 	},
 	
     doGameResult: function (idx, msec)

@@ -1,8 +1,6 @@
 // Phaser3 PKU test webgame
 // game 3
 
-var GAME3_REPEAT = 10;
-
 // main game logic object
 var PKUgame3 = new Phaser.Class({
 
@@ -25,10 +23,10 @@ var PKUgame3 = new Phaser.Class({
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
 
-		// !! TESTING !!
 		globalvar.game = 3;
-		globalvar.game_part = 3;
-		globalvar.practise = false;
+		// !! TESTING !!
+		//globalvar.game_part = 3;
+		//globalvar.practise = false;
     },
 
     create: function ()
@@ -80,9 +78,14 @@ var PKUgame3 = new Phaser.Class({
 		// key sprites
 		this.key_left  = this.add.sprite(           60, GAME_HEIGHT-60, "sprites", "key_z");
 		this.key_right = this.add.sprite(GAME_WIDTH-60, GAME_HEIGHT-60, "sprites", "key_m");
-
 		this.key_left.setAlpha(0.5);
 		this.key_right.setAlpha(0.5);
+		
+		var b_left = (globalvar.dominant == CONST_LEFT);
+		var left_icon  = this.add.sprite(           60, GAME_HEIGHT-130, "sprites", (b_left ? "icon_yes" : "icon_no") );
+		var right_icon = this.add.sprite(GAME_WIDTH-60, GAME_HEIGHT-130, "sprites", (b_left ? "icon_no" : "icon_yes") );
+		left_icon.setAlpha(0.5);
+		right_icon.setAlpha(0.5);
 
 		// !! TESTING !!
 		//this.input.keyboard.on('keydown-' + 'Z', this.test123, this);
@@ -96,6 +99,7 @@ var PKUgame3 = new Phaser.Class({
 
 		// reset repeat counter
 		this.game_repeat = 0;
+		this.repeat_max = (globalvar.practise ? GAME3_REPEAT_PRACTISE : GAME3_REPEAT);
 		this.waitevent = null;
 
 		// !! TESTING !!
@@ -138,8 +142,8 @@ var PKUgame3 = new Phaser.Class({
 		var dogoal = (this.game_goal == 1 ? Phaser.Math.RND.between(0, 3) : -1);
 		
 		// !! TESTING !!
-		var str = (dogoal < 3 ? (dogoal < 2 ? (dogoal < 1 ? (dogoal < 0 ? "no" : "left-top") : "right-top") : "left-bottom") : "right-bottom");
-		this.debugtxt.text = "debug: goal=" + str;
+		this.game_goal_txt = (dogoal < 3 ? (dogoal < 2 ? (dogoal < 1 ? (dogoal < 0 ? "no" : "left-top") : "right-top") : "left-bottom") : "right-bottom");
+		this.debugTextGame3("");
 		// !! TESTING !!
 
 		for (var i=0; i < 4; i++) {
@@ -187,6 +191,7 @@ var PKUgame3 = new Phaser.Class({
 			var msec = Math.floor(this.waitevent.elapsed - this.waitevent.delay);
 			console.log("doGame3Input -- TOO EARLY!! msec=" + msec);
 			// log result
+			this.debugTextGame3("TOO EARLY!!", msec);
 			//this.doGameResult(this.game_repeat, msec, false);
 		} else if (this.gamestate == 0) {
 			// measure time
@@ -198,12 +203,12 @@ var PKUgame3 = new Phaser.Class({
 			this.doGameResult(this.game_repeat, msec, correct);
 			
 			// !! TESTING !!
-			this.debugtxt.text += (correct ? " GOED" : " FOUT");
+			this.debugTextGame3((correct ? "GOED" : "FOUT"), msec);
 			// !! TESTING !!
 
 			// repeat 10 times for each hand or end game
 			this.game_repeat++;
-			if (this.game_repeat < GAME3_REPEAT) {
+			if (this.game_repeat < this.repeat_max) {
 				this.doStartNext();
 			} else {
 				this.doGameEnd();
@@ -219,14 +224,15 @@ var PKUgame3 = new Phaser.Class({
 		// key Z (=left)
 		if (evt.keyCode == 90) {
 			spr = this.key_left;
-			ok = (this.game_goal + 1 == globalvar.dominant); // goal=ja en linker-hand OF goal=nee en rechter-hand
+			
+			ok = ( (this.game_goal == 1) && (globalvar.dominant == CONST_LEFT) ) || ( (this.game_goal != 1) && (globalvar.dominant == CONST_RIGHT) );
 			this.doGame3Input(CONST_LEFT, ok);
 		};
 
 		// key M (=right)
 		if (evt.keyCode == 77) {
 			spr = this.key_right;
-			ok = (this.game_goal + 1 != globalvar.dominant); // goal=ja en rechter-hand OF goal=nee en linker-hand
+			ok = ( (this.game_goal == 1) && (globalvar.dominant == CONST_RIGHT) ) || ( (this.game_goal != 1) && (globalvar.dominant == CONST_LEFT) );
 			this.doGame3Input(CONST_RIGHT, ok);
 		};
 
@@ -247,7 +253,16 @@ var PKUgame3 = new Phaser.Class({
 			this.key_right.setAlpha(0.5);
 		};
 	},
-	
+
+    debugTextGame3: function (str, ms)
+    {
+		if (typeof ms !== "undefined") {
+			str = str + " msec=" + ms;
+		};
+
+		this.debugtxt.text = "debug: goal " + this.game_goal_txt + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
+	},
+
     doGameResult: function (idx, msec)
     {
         console.log("doGameResult -- idx=" + idx + " msec=" + msec);
@@ -260,12 +275,12 @@ var PKUgame3 = new Phaser.Class({
 			// keuze oefenen of echte test
 			this.scene.start("bumper");
 		} else {
-			// next part: groen, rood, groen+rood
+			// next part: geen next part voor deze game3
 			globalvar.game_part++;
-			if (globalvar.game_part <= 3) {
+			if (globalvar.game_part <= 1) {
 				this.scene.start("tutorial3");
 			} else {
-				// dominant hand afgerond, eind scherm test 3
+				// test afgerond, eind scherm test 3
 				this.scene.start("gameend");
 			};
 		};
