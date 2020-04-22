@@ -108,10 +108,12 @@ var Preloader = new Phaser.Class({
 		this.load.atlas('sprites', 'res/img/sprites.png', 'res/img/sprites.json');
 
 		// sprite sheet, rectangle frames
-		this.load.spritesheet('faces1', 'res/img/photos_happy.png',  { frameWidth: 212, frameHeight: 212, endFrame: 8 });
-		this.load.spritesheet('faces2', 'res/img/photos_sad.png',    { frameWidth: 212, frameHeight: 212, endFrame: 8 });
-		this.load.spritesheet('faces3', 'res/img/photos_angry.png',  { frameWidth: 212, frameHeight: 212, endFrame: 8 });
-		this.load.spritesheet('faces4', 'res/img/photos_scared.png', { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces1', 'res/img/photos_happy.png',     { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces2', 'res/img/photos_sad.png',       { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces3', 'res/img/photos_angry.png',     { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces4', 'res/img/photos_scared.png',    { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces5', 'res/img/photos_disgust.png',   { frameWidth: 212, frameHeight: 212, endFrame: 8 });
+		this.load.spritesheet('faces6', 'res/img/photos_surprised.png', { frameWidth: 212, frameHeight: 212, endFrame: 8 });
 
 		// font
 		this.load.bitmapFont('fontwhite', 'res/img/fontwhite.png', 'res/img/fontwhite.xml');
@@ -135,7 +137,8 @@ var Preloader = new Phaser.Class({
 
 		if (this.sys.game.device.os.desktop){
 			// start actual game
-			this.scene.start('mainmenu');
+			this.scene.start('loginscreen');
+			//this.scene.start('mainmenu');
 			//this.scene.start('tutorial1');
 			//this.scene.start('pkugame1');
 			//this.scene.start('tutorial2');

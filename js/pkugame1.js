@@ -71,7 +71,7 @@ var PKUgame1 = new Phaser.Class({
 		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "", 24);
 		
 		// start game
-		this.doStartSquare();
+		this.doStartPlus();
     },
 	
     update: function (time, delta)
@@ -83,19 +83,19 @@ var PKUgame1 = new Phaser.Class({
     {
     },
 	
-    doStartSquare: function () {
-		// reset square
-		this.square.setFrame("game1_square") ;
+    doStartPlus: function () {
+		// reset to plus
+		this.square.setFrame("game1_plus") ;
 		this.gamestate = -1; // -1=wait
 		
 		// set random timer
 		var msec = Phaser.Math.RND.between(GAME1_MIN_WAIT, GAME1_MAX_WAIT);
-		this.waitevent = this.time.addEvent({ delay: msec, callback: this.onDisplayPlus, callbackScope: this});
+		this.waitevent = this.time.addEvent({ delay: msec, callback: this.onDisplaySquare, callbackScope: this});
 	},
 	
-    onDisplayPlus: function () {
-		// reset square
-		this.square.setFrame("game1_plus") ;
+    onDisplaySquare: function () {
+		// show square
+		this.square.setFrame("game1_square") ;
 		this.gamestate = 0; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 		this.starttime = new Date();
 		
@@ -126,7 +126,7 @@ var PKUgame1 = new Phaser.Class({
 				// repeat 10 times for each hand or end game
 				this.game_repeat++;
 				if (this.game_repeat < GAME1_REPEAT) {
-					this.doStartSquare();
+					this.doStartPlus();
 				} else {
 					this.doGameEnd();
 				};

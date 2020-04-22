@@ -37,7 +37,7 @@ var PKUgame4 = new Phaser.Class({
 		
 		// face smiley
 		this._face = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "faces1", 1);
-		this._emotions = ["happy", "sad", "angry", "scared"]; // first in array is goal face
+		this._emotions = ["happy", "sad", "angry", "scared", "disgust", "surprised"]; // first in array is goal face
 		
 		// switch it so that [0] is always the goal emotion
 		var idx = globalvar.game_part - 1;
@@ -119,7 +119,7 @@ var PKUgame4 = new Phaser.Class({
     onShowFace: function () {
 
 		// choose random emotion
-		this._face_idx = Phaser.Math.RND.between(1, 4); // random emotion
+		this._face_idx = Phaser.Math.RND.between(1, 6); // random emotion
 		this._face_goal = (this._chances[this.game_repeat] == 1);
 
 		// if should now show goal emotion
@@ -129,7 +129,7 @@ var PKUgame4 = new Phaser.Class({
 			// should not show goal emotion
 			if (this._face_idx == globalvar.game_part) {
 				// choose one of the 3 different emotions			
-				this._face_idx = 1 + (((this._face_idx-1) + Phaser.Math.RND.between(1, 3) ) % 4); // +1 and -1 because modulo 4 results in 0..3 not 1..4
+				this._face_idx = 1 + (((this._face_idx-1) + Phaser.Math.RND.between(1, 5) ) % 6); // +1 and -1 because modulo 6 results in 0..5 not 1..6
 			};
 		};
 
