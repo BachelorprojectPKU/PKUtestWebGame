@@ -8,7 +8,7 @@ var PKUgame3 = new Phaser.Class({
 
     initialize:
 
-    function PKUgame3 ()
+    function PKUgame3()
     {
         Phaser.Scene.call(this, { key: "pkugame3" });
     },
@@ -72,7 +72,7 @@ var PKUgame3 = new Phaser.Class({
 			};
 		};
 
-		this.squares_goal = 0; // 0=no goal, 1=contains goal
+		this.game_similar = 0; // 0=dissimilar, 1=similar(contains goal pattern)
 		this.gamestate = -1; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 
 		// key sprites
@@ -101,6 +101,10 @@ var PKUgame3 = new Phaser.Class({
 		this.game_repeat = 0;
 		this.repeat_max = (globalvar.practise ? GAME3_REPEAT_PRACTISE : GAME3_REPEAT);
 		this.waitevent = null;
+		
+		// game results and times
+		this._results = [];
+		this._times  = [];
 
 		// !! TESTING !!
 		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "test123", 24);
@@ -136,13 +140,13 @@ var PKUgame3 = new Phaser.Class({
     onShowSquares: function () {
 
 		// choose 3 random grid nrs
-		this.game_goal = this._chances[this.game_repeat];
+		this.game_similar = this._chances[this.game_repeat];
 		
 		// when showing goal pattern, which of 4 grids, choose random
-		var dogoal = (this.game_goal == 1 ? Phaser.Math.RND.between(0, 3) : -1);
+		var dogoal = (this.game_similar == 1 ? Phaser.Math.RND.between(0, 3) : -1);
 		
 		// !! TESTING !!
-		this.game_goal_txt = (dogoal < 3 ? (dogoal < 2 ? (dogoal < 1 ? (dogoal < 0 ? "no" : "left-top") : "right-top") : "left-bottom") : "right-bottom");
+		this.game_similar_txt = (dogoal < 3 ? (dogoal < 2 ? (dogoal < 1 ? (dogoal < 0 ? "no" : "left-top") : "right-top") : "left-bottom") : "right-bottom");
 		this.debugTextGame3("");
 		// !! TESTING !!
 
@@ -192,7 +196,7 @@ var PKUgame3 = new Phaser.Class({
 			console.log("doGame3Input -- TOO EARLY!! msec=" + msec);
 			// log result
 			this.debugTextGame3("TOO EARLY!!", msec);
-			//this.doGameResult(this.game_repeat, msec, false);
+			//this.doGameResult(msec, false);
 		} else if (this.gamestate == 0) {
 			// measure time
 			var endtime = new Date();
@@ -200,7 +204,7 @@ var PKUgame3 = new Phaser.Class({
 			console.log('dogame3Input -- OK end time msec=' + msec);
 
 			// log result
-			this.doGameResult(this.game_repeat, msec, correct);
+			this.doGameResult(msec, correct);
 			
 			// !! TESTING !!
 			this.debugTextGame3((correct ? "GOED" : "FOUT"), msec);
@@ -225,14 +229,14 @@ var PKUgame3 = new Phaser.Class({
 		if (evt.keyCode == 90) {
 			spr = this.key_left;
 			
-			ok = ( (this.game_goal == 1) && (globalvar.dominant == CONST_LEFT) ) || ( (this.game_goal != 1) && (globalvar.dominant == CONST_RIGHT) );
+			ok = ( (this.game_similar == 1) && (globalvar.dominant == CONST_LEFT) ) || ( (this.game_similar != 1) && (globalvar.dominant == CONST_RIGHT) );
 			this.doGame3Input(CONST_LEFT, ok);
 		};
 
 		// key M (=right)
 		if (evt.keyCode == 77) {
 			spr = this.key_right;
-			ok = ( (this.game_goal == 1) && (globalvar.dominant == CONST_RIGHT) ) || ( (this.game_goal != 1) && (globalvar.dominant == CONST_LEFT) );
+			ok = ( (this.game_similar == 1) && (globalvar.dominant == CONST_RIGHT) ) || ( (this.game_similar != 1) && (globalvar.dominant == CONST_LEFT) );
 			this.doGame3Input(CONST_RIGHT, ok);
 		};
 
@@ -260,12 +264,20 @@ var PKUgame3 = new Phaser.Class({
 			str = str + " msec=" + ms;
 		};
 
-		this.debugtxt.text = "debug: goal " + this.game_goal_txt + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
+		this.debugtxt.text = "debug: goal " + this.game_similar_txt + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
 	},
 
-    doGameResult: function (idx, msec)
+    doGameResult: function (msec, cor)
     {
-        console.log("doGameResult -- idx=" + idx + " msec=" + msec);
+        console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
+		
+		// coded result, example SIMok, DISok, SIMer, DISni etc.
+		var cod = (this.game_similar == 1 ? "SIM" : "DIS")
+				+ (cor ? "ok" : "er");
+
+		// game results and times
+		this._results[this.game_repeat] = cod;
+		this._times[this.game_repeat]  = msec;
 	},
 
     doGameEnd: function ()
@@ -275,6 +287,9 @@ var PKUgame3 = new Phaser.Class({
 			// keuze oefenen of echte test
 			this.scene.start("bumper");
 		} else {
+			// save results
+			PkuData.saveResults(globalvar.game, globalvar.game_part, this._times, this._results);
+
 			// next part: geen next part voor deze game3
 			globalvar.game_part++;
 			if (globalvar.game_part <= 1) {

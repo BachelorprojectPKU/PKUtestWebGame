@@ -11,7 +11,7 @@ var PKUgame1 = new Phaser.Class({
 
     initialize:
 
-    function PKUgame1 ()
+    function PKUgame1()
     {
         Phaser.Scene.call(this, { key: "pkugame1" });
     },
@@ -27,6 +27,7 @@ var PKUgame1 = new Phaser.Class({
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
 		
 		globalvar.game = 1;
+
 		// !! TESTING !!
 		//globalvar.game_part = 1;
 		//globalvar.practise = false;
@@ -64,6 +65,10 @@ var PKUgame1 = new Phaser.Class({
 		// reset repeat counter
 		this.game_repeat = 0;
 		this.repeat_max = (globalvar.practise ? GAME1_REPEAT_PRACTISE : GAME1_REPEAT);
+		
+		// game results and times
+		this._results = [];
+		this._times  = [];
 
 		this.waitevent = null;
 
@@ -112,7 +117,7 @@ var PKUgame1 = new Phaser.Class({
 				console.log("doGame1Input -- TOO EARLY!! msec=" + msec);
 				this.debugTextGame1("te vroeg " + msec + "ms");
 				// log result
-				this.doGameResult(this.game_repeat, msec);
+				this.doGameResult(msec);
 			} else if (this.gamestate == 0) {
 				// measure time
 				var endtime = new Date();
@@ -121,7 +126,7 @@ var PKUgame1 = new Phaser.Class({
 				this.debugTextGame1("OK " + msec + "ms");
 
 				// log result
-				this.doGameResult(this.game_repeat, msec);
+				this.doGameResult(msec);
 
 				// repeat 10 times for each hand or end game
 				this.game_repeat++;
@@ -194,9 +199,13 @@ var PKUgame1 = new Phaser.Class({
 		this.debugtxt.text = txt;
 	},
 	
-    doGameResult: function (idx, msec)
+    doGameResult: function (msec)
     {
-        console.log("doGameResult -- idx=" + idx + " msec=" + msec);
+        console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
+		
+		// game results and times
+		//this._results[this.game_repeat] = ??;
+		this._times[this.game_repeat]  = msec;
 	},
 
     doGameEnd: function ()
@@ -206,14 +215,19 @@ var PKUgame1 = new Phaser.Class({
 			// keuze oefenen of echte test
 			this.scene.start("bumper");
 		} else {
+			// save results
+			//PkuData.saveResults(globalvar.game, globalvar.game_part, this._times, this._results);
+			var data  = {"times": this._times, "results": this._results};
+			this.scene.start("gamesave", data);
+
 			// next part, non-dominant hand to dominant hand
-			globalvar.game_part++;
-			if (globalvar.game_part <= 2) {
-				this.scene.start("tutorial1");
-			} else {
-				// dominant hand afgerond, eind scherm test 1
-				this.scene.start("gameend");
-			};
+			//globalvar.game_part++;
+			//if (globalvar.game_part <= 2) {
+			//	this.scene.start("tutorial1");
+			//} else {
+			//	// dominant hand afgerond, eind scherm test 1
+			//	this.scene.start("gameend");
+			//};
 		};
     }
 

@@ -8,7 +8,7 @@ var PKUgame2 = new Phaser.Class({
 
     initialize:
 
-    function PKUgame2 ()
+    function PKUgame2()
     {
         Phaser.Scene.call(this, { key: "pkugame2" });
     },
@@ -69,6 +69,10 @@ var PKUgame2 = new Phaser.Class({
 		this.game_repeat = 0;
 		this.repeat_max = (globalvar.practise ? GAME2_REPEAT_PRACTISE : GAME2_REPEAT);
 		this.waitevent = null;
+		
+		// game results and times
+		this._results = [];
+		this._times  = [];
 
 		// !! TESTING !!
 		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "debug:", 24);
@@ -94,7 +98,7 @@ var PKUgame2 = new Phaser.Class({
 			this.square_col = Phaser.Math.RND.between(0, 1); // part3=random
 		};
 
-		// reset square
+		// show current square
 		this.squares[this.square_pos].setFrame("block2_" + (this.square_col+1) );
 		this.gamestate = -1; // -1=wait
 		
@@ -104,7 +108,7 @@ var PKUgame2 = new Phaser.Class({
 	},
 	
     onMoveSquare: function () {
-		// make current white
+		// make current square white
 		this.squares[this.square_pos].setFrame("block2_0");
 
 		// first or last square, can only move one direction
@@ -147,7 +151,7 @@ var PKUgame2 = new Phaser.Class({
 			this.debugTextGame2(msec);
 
 			// log result
-			this.doGameResult(this.game_repeat, msec, false);
+			this.doGameResult(msec, false);
 		} else if (this.gamestate == 0) {
 			// measure time
 			var endtime = new Date();
@@ -156,7 +160,7 @@ var PKUgame2 = new Phaser.Class({
 			this.debugTextGame2(msec, correct);
 
 			// log result
-			this.doGameResult(this.game_repeat, msec, correct);
+			this.doGameResult(msec, correct);
 
 			// repeat 10 times for each hand or end game
 			this.game_repeat++;
@@ -229,9 +233,18 @@ var PKUgame2 = new Phaser.Class({
 		this.debugtxt.text = txt;
 	},
 
-    doGameResult: function (idx, msec)
+    doGameResult: function (msec, cor)
     {
-        console.log("doGameResult -- idx=" + idx + " msec=" + msec);
+        console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
+
+		// coded result, example LE1ok, LE2ok, RI1er, RI2ni etc.
+		var cod = (this.expect_btn == CONST_LEFT ? "LE" : "RI")
+				+ (this.square_col+1)
+				+ (cor ? "ok" : "er");
+
+		// game results and times
+		this._results[this.game_repeat] = cod;
+		this._times[this.game_repeat]  = msec;
 	},
 
     doGameEnd: function ()
@@ -241,6 +254,9 @@ var PKUgame2 = new Phaser.Class({
 			// keuze oefenen of echte test
 			this.scene.start("bumper");
 		} else {
+			// save results
+			PkuData.saveResults(globalvar.game, globalvar.game_part, this._times, this._results);
+
 			// next part: groen, rood, groen+rood
 			globalvar.game_part++;
 			if (globalvar.game_part <= 3) {

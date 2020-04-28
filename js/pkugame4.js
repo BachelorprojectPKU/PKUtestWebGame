@@ -38,12 +38,8 @@ var PKUgame4 = new Phaser.Class({
 		// face smiley
 		this._face = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "faces1", 1);
 		this._emotions = ["happy", "sad", "angry", "scared", "disgust", "surprised"]; // first in array is goal face
-		
-		// switch it so that [0] is always the goal emotion
-		var idx = globalvar.game_part - 1;
-		var tmp = this._emotions[idx];
-		this._emotions[idx] = this._emotions[0];
-		this._emotions[0] = tmp;
+		this._face_idx = 0;
+		this._face_goal = false;
 
 		// randomise the chances of displaying goal pattern
 		this._chances = [];
@@ -90,6 +86,10 @@ var PKUgame4 = new Phaser.Class({
 		this.game_repeat = 0;
 		this.repeat_max = (globalvar.practise ? GAME4_REPEAT_PRACTISE : GAME4_REPEAT);
 		this.waitevent = null;
+		
+		// game results and times
+		this._results = [];
+		this._times  = [];
 
 		// !! TESTING !!
 		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "test123", 24);
@@ -119,17 +119,17 @@ var PKUgame4 = new Phaser.Class({
     onShowFace: function () {
 
 		// choose random emotion
-		this._face_idx = Phaser.Math.RND.between(1, 6); // random emotion
+		this._face_idx = Phaser.Math.RND.between(0, 5); // random emotion
 		this._face_goal = (this._chances[this.game_repeat] == 1);
 
 		// if should now show goal emotion
 		if (this._face_goal) {
-			this._face_idx = globalvar.game_part;
+			this._face_idx = globalvar.game_part - 1;
 		} else {
 			// should not show goal emotion
-			if (this._face_idx == globalvar.game_part) {
-				// choose one of the 3 different emotions			
-				this._face_idx = 1 + (((this._face_idx-1) + Phaser.Math.RND.between(1, 5) ) % 6); // +1 and -1 because modulo 6 results in 0..5 not 1..6
+			if (this._face_idx == globalvar.game_part - 1) {
+				// choose one of the 5 different emotions			
+				this._face_idx = (this._face_idx + Phaser.Math.RND.between(1, 5) ) % 6; // modulo 6 -> values 0..5
 			};
 		};
 
@@ -140,7 +140,7 @@ var PKUgame4 = new Phaser.Class({
 		this.debugTextGame4("");
 
 		// make new face visible
-		this._face.setTexture("faces" + this._face_idx);
+		this._face.setTexture("faces" + (this._face_idx+1));
 		var frm = Phaser.Math.RND.between(0, 1);
 		this._face.setFrame(frm);
 
@@ -159,7 +159,7 @@ var PKUgame4 = new Phaser.Class({
 			var msec = Math.floor(this.waitevent.elapsed - this.waitevent.delay);
 			// log result
 			this.debugTextGame4("TOO EARLY!!", msec);
-			//this.doGameResult(this.game_repeat, msec, false);
+			//this.doGameResult(msec, false);
 		} else if (this.gamestate == 0) {
 			// measure time
 			var endtime = new Date();
@@ -167,7 +167,7 @@ var PKUgame4 = new Phaser.Class({
 			console.log('dogame4Input -- OK end time msec=' + msec);
 
 			// log result
-			this.doGameResult(this.game_repeat, msec, correct);
+			this.doGameResult(msec, correct);
 			
 			// !! TESTING !!
 			this.debugTextGame4((correct ? " OK" : " INCORRECT"), msec);
@@ -236,9 +236,17 @@ var PKUgame4 = new Phaser.Class({
 		this.debugtxt.text = txt;
 	},
 
-    doGameResult: function (idx, msec)
+    doGameResult: function (msec, cor)
     {
-        console.log("doGameResult -- idx=" + idx + " msec=" + msec);
+        console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
+
+		// coded result, example HAPok, ANGok, SADer etc.
+		var cod = (this._emotions[this._face_idx]).toUpperCase().substring(0, 3)
+				+ (cor ? "ok" : "er");
+
+		// game results and times
+		this._results[this.game_repeat] = cod;
+		this._times[this.game_repeat]  = msec;
 	},
 
     doGameEnd: function ()
@@ -248,6 +256,9 @@ var PKUgame4 = new Phaser.Class({
 			// keuze oefenen of echte test
 			this.scene.start("bumper");
 		} else {
+			// save results
+			PkuData.saveResults(globalvar.game, globalvar.game_part, this._times, this._results);
+
 			// next emotion
 			globalvar.game_part++;
 			if (globalvar.game_part <= 4) {
