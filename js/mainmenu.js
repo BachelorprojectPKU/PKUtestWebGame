@@ -42,21 +42,70 @@ var MainMenu = new Phaser.Class({
 		// --- dominante hand ---
 		this._cntDominant = this.add.container();
 		// see online encoding tool -> https://encoder.internetwache.org/
-		var txtdom1 = this.add.bitmapText(GAME_WIDTH_CENTER, 160, "fontwhite", "Ben je links of rechtshandig?", 24);
-		var txtdom2 = this.add.bitmapText(GAME_WIDTH_CENTER, GAME_HEIGHT-160, "fontwhite", "De hand waarmee jij schrijf is je DOMINANTE hand", 24);
+		var txtdom1 = this.add.bitmapText(GAME_WIDTH_CENTER, 120, "fontwhite", "Ben je links of rechtshandig?", 24);
+		var txtdom2 = this.add.bitmapText(GAME_WIDTH_CENTER, 120+40, "fontwhite", "De hand waarmee jij schrijf is je DOMINANTE hand", 24);
 
 		txtdom1.setOrigin(0.5).setCenterAlign();
 		txtdom2.setOrigin(0.5).setCenterAlign();
 
-		this.btnhand1 = this.addButtonText(GAME_WIDTH_CENTER-240, GAME_HEIGHT_CENTER, "sprites", this.doHand1,  this, "button2",     "button1",     "button2",     "button1", "Links");
-		this.btnhand2 = this.addButtonText(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER, "sprites", this.doHand2,  this, "button2",     "button1",     "button2",     "button1", "Rechts");
+		//this.btnhand1 = this.addButtonText(GAME_WIDTH_CENTER-240, GAME_HEIGHT_CENTER, "sprites", this.doHand1,  this, "button2",     "button1",     "button2",     "button1", "Links");
+		//this.btnhand2 = this.addButtonText(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER, "sprites", this.doHand2,  this, "button2",     "button1",     "button2",     "button1", "Rechts");
 		//this.btnhand1.setOrigin(0.5); // .setCenterAlign();
 		//this.btnhand2.setOrigin(0.5); // .setCenterAlign();
+		
+		this.btnhand1  =  this.addButtonText(GAME_WIDTH_CENTER-240, GAME_HEIGHT_CENTER, "sprites", this.doHand1,  this, "button_sq2",     "button_sq1",     "button_sq2",     "button_sq1", "");
+		this.btnhand2  =  this.addButtonText(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER, "sprites", this.doHand2,  this, "button_sq2",     "button_sq1",     "button_sq2",     "button_sq1", "");
+		this.sprhand1  =     this.add.sprite(GAME_WIDTH_CENTER-240, GAME_HEIGHT_CENTER, "sprites", "hand_choose");
+		this.sprhand2  =     this.add.sprite(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER, "sprites", "hand_choose");
+		this.sprhandsel=     this.add.sprite(                    0, GAME_HEIGHT_CENTER+192, "sprites", "icon_yes" );
+		this.txthand1  = this.add.bitmapText(GAME_WIDTH_CENTER-240, GAME_HEIGHT_CENTER+140, "fontwhite", "Links", 24);
+		this.txthand2  = this.add.bitmapText(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER+140, "fontwhite", "Rechts", 24);
+
+		this.sprhand2.setScale(-1.0, 1.0); // flip left hand
+
+		this.sprhand1.setAlpha(0.5);
+		this.sprhand2.setAlpha(0.5);
+		this.sprhandsel.setVisible(false);
+
+		this.txthand1.setOrigin(0.5).setCenterAlign();
+		this.txthand2.setOrigin(0.5).setCenterAlign();
+
+		this.btnhandok = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER+240, "sprites", this.doHandOk,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "Ok");
 
 		this._cntDominant.add(txtdom1);
 		this._cntDominant.add(txtdom2);
 		this._cntDominant.add(this.btnhand1);
 		this._cntDominant.add(this.btnhand2);
+		this._cntDominant.add(this.sprhand1);
+		this._cntDominant.add(this.sprhand2);
+		this._cntDominant.add(this.sprhandsel);
+		this._cntDominant.add(this.txthand1);
+		this._cntDominant.add(this.txthand2);
+		this._cntDominant.add(this.btnhandok);
+
+		this._handtween = null;
+
+		// --- keyboard uitleg ---
+		this._cntKeyboard = this.add.container();
+		// see online encoding tool -> https://encoder.internetwache.org/
+		var txtkey1 = this.add.bitmapText(GAME_WIDTH_CENTER, 140, "fontwhite", "Voor de verschillende tests zul je je linker- en rechterhand gebruiken.\nGebruik voor je linkerhand altijd de Z toets, links op het keyboard,\nen voor je rechterhand altijd de M toets, rechts op het keyboard.", 24);
+		
+		var sprkey   = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "sprites", "keyboard");
+		var keyhand1 = this.add.sprite(GAME_WIDTH_CENTER+112, GAME_HEIGHT_CENTER+96, "sprites", "hand_point");
+		var keyhand2 = this.add.sprite(GAME_WIDTH_CENTER-112, GAME_HEIGHT_CENTER+96, "sprites", "hand_point");
+		
+		var btnkeynext = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doGames,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
+		
+		keyhand2.setScale(-1.0, 1.0); // flip left hand
+		txtkey1.setOrigin(0.5).setCenterAlign();
+		//keyhand2.setVisible(false);
+
+		this._cntKeyboard.add(txtkey1);
+		this._cntKeyboard.add(sprkey);
+		this._cntKeyboard.add(keyhand1);
+		this._cntKeyboard.add(keyhand2);
+		this._cntKeyboard.add(btnkeynext);
+		
 
 		// --- select a game ---
 		this._cntGames = this.add.container();
@@ -77,6 +126,7 @@ var MainMenu = new Phaser.Class({
 		// only main menu visible
 		//this._cntWelcome.visible = false;
 		this._cntDominant.visible = false;
+		this._cntKeyboard.visible = false;
 		this._cntGames.visible    = false;
 
 		console.log("create is ready");
@@ -94,21 +144,71 @@ var MainMenu = new Phaser.Class({
 	doHand1: function ()
     {
         console.log("doHand1 LINK geselecteerd!");
-		globalvar.dominant = CONST_LEFT;
-		this.doGames();
+		this.doSelectHand(CONST_LEFT);
     },
 
 	doHand2: function ()
     {
         console.log("doHand2 RECHTS geselecteerd!");
-		globalvar.dominant = CONST_RIGHT;
-		this.doGames();
+		this.doSelectHand(CONST_RIGHT);
+    },
+	
+	doSelectHand: function (idx)
+    {
+        console.log("doHand2 RECHTS geselecteerd!");
+		globalvar.dominant = idx;
+		var spr = this.sprhand1;
+		var ang = -30;
+		if (idx == CONST_LEFT) {
+			// left
+			this.sprhand1.setAlpha(1.0);
+			this.sprhand2.setAlpha(0.5);
+
+			this.sprhandsel.x = GAME_WIDTH_CENTER-240;
+			this.sprhandsel.setVisible(true);
+		} else {
+			// right
+			this.sprhand1.setAlpha(0.5);
+			this.sprhand2.setAlpha(1.0);
+
+			this.sprhandsel.x = GAME_WIDTH_CENTER+240;
+			this.sprhandsel.setVisible(true);
+
+			spr = this.sprhand2;
+			ang = 30;
+		};
+		
+		this._handtween = this.tweens.add({
+								targets: spr,
+								angle: ang,
+								duration: 200,
+								ease: 'Sine.easeInOut',
+								yoyo: true,
+								repeat: 1
+							});
     },
 
+	doHandOk: function ()
+    {
+        console.log("doHand2 RECHTS geselecteerd!");
+		if (this.sprhandsel.visible == true) {
+			this.updateDeelnemer();
+			this.doKeyboard();
+		};
+    },
+
+    doKeyboard: function ()
+    {
+		
+		// move screens
+		this.moveScene(this._cntDominant, MENU_EXIT_LEFT);
+		this.moveScene(this._cntKeyboard, MENU_ENTER_RIGHT);
+	},
+	
     doGames: function ()
     {
 		// move screens
-		this.moveScene(this._cntDominant, MENU_EXIT_LEFT);
+		this.moveScene(this._cntKeyboard, MENU_EXIT_LEFT);
 		this.moveScene(this._cntGames,    MENU_ENTER_RIGHT);
 	},
 	
@@ -167,73 +267,6 @@ var MainMenu = new Phaser.Class({
 		// start scene
 		this.scene.start('tutorial4');
 	},
-
-    doReset: function ()
-    {
-        console.log("doReset was called!");
-
-		// play gui sound effect
-		this._sfxforward.play();
-		
-		// move screens
-		this.moveScene(this._cntGames,   MENU_ENTER_RIGHT);
-		this.moveScene(this._cntWelcome, MENU_EXIT_LEFT);
-    },
-	
-    doTrophy: function ()
-    {
-        console.log("doTrophy was called!");
-
-		// play gui sound effect
-		this._sfxforward.play();
-		
-		this.scene.start("trophies");
-    },
-	
-	doResetYes: function ()
-    {
-		
-		this._countreset++;
-
-		// play gui sound effect
-		this._sfxforward.play();
-		
-		var str = "Gone";
-		if (this._countreset < 3) {
-			var str = (this._countreset == 1 ? "Going" : "Going, going");
-		};
-		
-		this._txtreset.text = str
-		
-		if (this._countreset == 3) {
-			// clear local storage
-			window.localStorage.removeItem("sendintheclones_highscore");
-			window.localStorage.removeItem("sendintheclones_trophies");
-			
-			// reset trophy array
-			for (var i=0; i < AllTrophies.length; i++) {
-				AllTrophies[i].status = 0;
-			};
-		
-			console.log("local storage was cleared");
-		};
-    },
-
-	
-    doCredits: function ()
-    {
-        console.log("doCredits was called!");
-		
-		// play gui sound effect
-		this._sfxforward.play();
-
-		// play sound effect
-		//impsnake2.soundeffect_play(this.soundButton);
-
-		// move screens
-		this.moveScene(this._cntDominant, MENU_ENTER_LEFT);
-		this.moveScene(this._cntWelcome,    MENU_EXIT_RIGHT);
-    },
 	
 	moveScene: function(cntScene, iMoveCode, xOffset) {
 		// xOffset is optional
@@ -273,8 +306,67 @@ var MainMenu = new Phaser.Class({
 		var cnt = ary[0];
 		cnt.visible = (cnt.x == 0);
 	},
+	
+	
+	updateDeelnemer: function () {
 
-	doBack: function(btn, ptr, b) {
+		// build url
+		var url = PKU_URL + "set_dn.php";
+		
+		// parameters
+		var paramsdata = 
+			"studynr=" + globalvar.studynr +
+			"&dominant_hand=" + globalvar.dominant;
+			//"&dob=" + dob;
+
+		var request = new XMLHttpRequest();
+		request.open('POST', url, true);
+		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		//request.setRequestHeader("Content-length", paramsdata.length);
+		//request.setRequestHeader("Connection", "close");
+
+		// handle success or error
+		request.onreadystatechange = function(receiveddata) {
+			if (request.status >= 200 && request.status < 400) {
+				if (request.readyState == 4 && request.status == 200) {
+					// Success!
+					// here you could go to the leaderboard or restart your game
+					console.log('SUCCESS!!\nrequest.status='+ request.status + '\nrequest.response=' + request.response);
+					var getjson = JSON.parse(request.response);
+					if (getjson.result == 'OK') {
+						console.log('deelnemer updated succesfully');
+						// success message
+						this.successSaving();
+					} else {
+						console.log('deelnemer update failed');
+						this.errorSaving(-1, getjson.message);
+					};
+				};
+			} else {
+				// We reached our target server, but it returned an error
+				console.log('deelnemer update failed with error ' + request.status + ': ' + request.statusText);
+				this.errorSaving(request.status, request.statusText);
+			}
+		}.bind(this); // <- only change
+
+		//paramsdata = getUserAgentParams();
+		request.send(paramsdata);
+	},
+	
+	successSaving: function ()
+	{
+		this._msg.text = "ok, saved";
+		// happy flow, just continue
+		this.doContinue();
+	},
+	
+	errorSaving: function (sta, txt)
+	{
+		this._msg.text = "Resultaat " + this._gametxt + " opslaan mislukt:\n" + sta + ": " + txt + "\n\nneem contact op met de onderzoekers";
+	},
+	
+
+	doBack: function (btn, ptr, b) {
 
 		// play sound effect, except when called by doResetYes
 		if (typeof btn !== "undefined") {
