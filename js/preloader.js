@@ -2,6 +2,7 @@
 // preloader and loading bar
 
 var ScoreProgress;
+var PkuData;
 
 var PKUTEST_VERSION = "v0.1";
 
@@ -58,7 +59,6 @@ var Preloader = new Phaser.Class({
 
 		if (this.preloadSprite)
 		{
-			//debugger;
 			// calculate width based on value=0.0 .. 1.0
 			var w = Math.floor(this.preloadSprite.width * value);
 			
@@ -124,6 +124,9 @@ var Preloader = new Phaser.Class({
 
 		// load progess
 		this.LoadScoreProgress();
+
+		// global var data object
+		PkuData = new PkuDataClass();
 	},
 
 	create: function ()
@@ -138,6 +141,7 @@ var Preloader = new Phaser.Class({
 		if (this.sys.game.device.os.desktop){
 			// start actual game
 			this.scene.start('loginscreen');
+			//this.scene.start('gamesave');
 			//this.scene.start('mainmenu');
 			//this.scene.start('tutorial1');
 			//this.scene.start('pkugame1');
