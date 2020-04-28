@@ -34,12 +34,20 @@ Phaser.Scene.prototype.addButtonText = function(x, y, key, callback, callbackCon
 		btn.x = x;
 		btn.y = y;
 		btn.setInteractive();
+		
+		// save variables for callback
+		btn.textdata = text;
+		btn.ctx = callbackContext;
+		btn.ondowncallback = callback;
 
 		// set functions
 		btn.on('pointerover', function (ptr, x, y) { this.first.setFrame(overFrame) } );
 		btn.on('pointerout',  function (ptr)       { this.first.setFrame(outFrame); this.setScale(1.0, 1.0) } );
-		btn.on('pointerdown', function (ptr)       { this.setScale(0.9, 0.9) } );
-		btn.on('pointerup', callback.bind(callbackContext));
+		btn.on('pointerdown', function (ptr)       { this.setScale(0.96, 0.96) } );
+		//btn.on('pointerup', callback.bind(callbackContext));
+		btn.on('pointerup',   function (ptr, x, y) {
+			this.ondowncallback.call(this.ctx, this);
+			} );
 		
 		return btn;
 };
