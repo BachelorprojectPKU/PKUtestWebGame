@@ -82,10 +82,9 @@ var Tutorial1 = new Phaser.Class({
 
 			// --- tutorial message 2 ---
 			this._cntTutor2 = this.add.container();
-			// see online encoding tool -> https://encoder.internetwache.org/
-			
+
 			var txt2 = this.add.bitmapText(60, 120, "fontwhite", str2, 24);
-			
+
 			this._square = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_square");
 			var _plus    = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_plus");
 			var spr1     = this.add.sprite(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER+40,  "sprites", "key_"+btnlow);
@@ -111,7 +110,6 @@ var Tutorial1 = new Phaser.Class({
 			
 			// --- tutorial message 3 ---
 			this._cntTutor3 = this.add.container();
-			// see online encoding tool -> https://encoder.internetwache.org/
 
 			var str = "Klik alleen als het kruisje ook echt verandert\nen niet als je denkt dat hij gaat veranderen.\n\nDit gaan we eerst even oefenen."
 			var txt3 = this.add.bitmapText(GAME_WIDTH_CENTER, 240, "fontwhite", str, 24);
@@ -141,14 +139,6 @@ var Tutorial1 = new Phaser.Class({
     //{
 	//	// test debug text
     //},
-	
-    doKeyDown: function(evt) {
-		console.log('doKeyDown -- evt.keyCode=' + evt.keyCode);
-		if ( (evt.keyCode == 38) || (evt.keyCode == 87) ) this._inputstack.push(DIR_UP);	// 38 = cursor up,    87 = W
-		if ( (evt.keyCode == 40) || (evt.keyCode == 83) ) this._inputstack.push(DIR_DOWN);	// 40 = cursor down,  83 = S
-		if ( (evt.keyCode == 37) || (evt.keyCode == 65) ) this._inputstack.push(DIR_LEFT);	// 37 = cursor left,  65 = A
-		if ( (evt.keyCode == 39) || (evt.keyCode == 68) ) this._inputstack.push(DIR_RIGHT);	// 39 = cursor right, 68 = D
-	},
 	
 	doNext1: function()
     {

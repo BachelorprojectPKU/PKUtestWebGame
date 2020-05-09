@@ -31,85 +31,106 @@ var Tutorial4 = new Phaser.Class({
 
     create: function()
     {
-		// which dominant hand
-		var hander = (globalvar.dominant == CONST_RIGHT ? "LINKER" : "RECHTER");
-		var btn    = (globalvar.dominant == CONST_RIGHT ? "Z"      : "M");
+		// !! TESTING !!
+		globalvar.dominant = CONST_RIGHT;
+		globalvar.game_part = 4;
+		// !! TESTING !!
+		
+		// banner at top of screen
+		var recttile = createRectangle(this, 0, 30, 960, 60, 0x0000ff, 1.0);
+		var txttitle1 = this.add.bitmapText(60, 40, "fontwhite", "TEST 4: HERKENNEN VAN EMOTIES", 24);
+
+		// dominante hand is JA knop
+		var btn_yes = (globalvar.dominant == CONST_RIGHT ? "M" : "Z");
+		var btn_no  = (globalvar.dominant == CONST_RIGHT ? "Z" : "M");
 
 		// 4 times for different emotions
-		this._emotions    = ["happy", "sad", "angry", "scared"];
-		this._emotions_nl = ["blij", "verdrietig", "boos", "bang"];
+		this._emotions    = ["happy", "sad", "angry", "scared", "disgust", "surprised"];
+		this._emotions_nl = ["vrolijk", "verdrietig", "boos", "bang", "afschuw", "verrast"];
+		this._emotions_nlbv = ["vrolijke", "verdrietige", "boze", "bange", "verafschuwde", "verraste"]; // bijvoegelijk
 
 		// variable textparts per emotion
 		var idx     = globalvar.game_part-1; // zero based
 		var face    = this._emotions[idx];
 		var face_nl = this._emotions_nl[idx];
-		var pers_nl = this._emotions_nl[idx] + "e personen";
+		var pers_nl = this._emotions_nlbv[idx];
 
-		if (globalvar.game_part == 1) {
+		// --- tutorial message 1 ---
+		this._cntTutor1 = this.add.container();
+		var str = "Bij deze test gaat het om het herkennen van emoties van mensen.\nDe test bestaat uit 4 delen, waar je elke keer\neen andere emotie moet herkennen.\n\nWe beginnen met deel " + globalvar.game_part + ": " + pers_nl + " personen"
+		var txt1 = this.add.bitmapText(60, 120,     "fontwhite", str, 24);
 
-			// --- static message ---
-			var txttitle1 = this.add.bitmapText(60, 60, "fontwhite", "TEST 4: HERKENNEN VAN EMOTIES", 24);
-			var txt1 = this.add.bitmapText(60, 120,     "fontwhite", "Bij deze test gaat het om het herkennen van emoties van mensen.", 24);
-			var txt2 = this.add.bitmapText(60, 120+60,  "fontwhite", "De test bestaat uit 4 delen, waar je elke keer een andere emotie moet herkennen.", 24);
-			var txt3 = this.add.bitmapText(60, 120+120, "fontwhite", "We beginnen met deel 1: " + pers_nl, 24);
+		this.btnnext1 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext1,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
 
-			// --- tutorial message 1 ---
-			this._cntTutor1 = this.add.container();
-			var spr1 = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT-240, "sprites", "game4_" + face);
-			this.btnnext = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doNext1,  this, "button2",     "button1",     "button2",     "button1", "Klik op Z");
+		// add all to container
+		this._cntTutor1.add(txt1);
+		this._cntTutor1.add(this.btnnext1);
+		
+		// --- tutorial message 2 ---
+		this._cntTutor2 = this.add.container();
+		var str = "Zometeen krijg je steeds 1 gezicht te zien.\nHet is de bedoeling dat je " + pers_nl + " personen herkent, zoals deze:"
+		var txt2 = this.add.bitmapText(60, 120,     "fontwhite", str, 24);
 
-			// add all to container
-			this._cntTutor1.add(spr1);
-			this._cntTutor1.add(this.btnnext);
+		var spr2 = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "faces" + globalvar.game_part, 1);
+		this.btnnext2 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext2,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
 
-			// --- tutorial message 2 ---
-			this._cntTutor2 = this.add.container();
-			// see online encoding tool -> https://encoder.internetwache.org/
-			var spr2 = this.add.sprite(GAME_WIDTH_CENTER-80, GAME_HEIGHT-240, "sprites", "game4_square");
-			var txt4 = this.add.bitmapText(60, 120+180, "fontwhite", "Daarna verandert het blokje weer terug in een kruisje. ", 24);
-			var spr3 = this.add.sprite(GAME_WIDTH_CENTER+80, GAME_HEIGHT-240, "sprites", "game4_plus");
+		// add all to container
+		this._cntTutor2.add(txt2);
+		this._cntTutor2.add(spr2);
+		this._cntTutor2.add(this.btnnext2);
 
-			this.btncont1 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doNext2,  this, "button2",     "button1",     "button2",     "button1", "Volgende");
+		// --- tutorial message 3 animatie ---
+		this._cntTutor3 = this.add.container();
 
-			this._cntTutor2.add(spr2);
-			this._cntTutor2.add(txt4);
-			this._cntTutor2.add(spr3);
-			this._cntTutor2.add(this.btncont1);
-			
-			// --- tutorial message 3 ---
-			this._cntTutor3 = this.add.container();
-			// see online encoding tool -> https://encoder.internetwache.org/
-			var txt5 = this.add.bitmapText(60, 120+180, "fontwhite", "Klik alleen als het kruisje ook echt verandert en niet als je denkt dat hij gaat veranderen.", 24);
-			var txt6 = this.add.bitmapText(60, 120+240, "fontwhite", "Dit gaan we eerst even oefenen.", 24);
+		str = "Als je een " + face_nl + " persoon ziet, druk je op de JA-knop (" + btn_yes + ").\nAls het geen " + face_nl + " persoon is, druk je op de NEE-knop (" + btn_no + "). "
+		var txt3 = this.add.bitmapText(60, 120,     "fontwhite", str, 24);
 
-			this.btncont3 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1", "Oefenen");
+		this._face_demo = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "faces" + globalvar.game_part, 1);
+		
+		this._key_1 = this.add.sprite(GAME_WIDTH_CENTER-260, GAME_HEIGHT_CENTER+120, "sprites", "key_z");
+		this._key_2 = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+120, "sprites", "key_m");
+		this._hand1 = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // dominant
+		this._hand2 = this.add.sprite(GAME_WIDTH_CENTER-260, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // niet-dominant
 
-			this._cntTutor3.add(txt5);
-			this._cntTutor3.add(txt6);
-			this._cntTutor3.add(this.btncont3);
-
-			// only main menu visible
-			//this._cntTutor1.visible = false;
-			this._cntTutor2.visible = false;
-			this._cntTutor3.visible = false;
+		// linker hand is dominant
+		if (globalvar.dominant == CONST_LEFT) {
+			this._hand1.x = GAME_WIDTH_CENTER-260;
+			this._hand2.x = GAME_WIDTH_CENTER+260;
+			this._hand1.setScale(-1.0, 1.0); // left hand
 		} else {
-			// DEEL 2: dominante hand
-			var hand   = (globalvar.dominant == CONST_RIGHT ? "RECHTS"  : "LINKS");
-			var hander = (globalvar.dominant == CONST_RIGHT ? "RECHTER" : "LINKER");
-			var btn    = (globalvar.dominant == CONST_RIGHT ? "M"       : "Z");
-
-			// --- static message continue part 2 ---
-			var txttitle1 = this.add.bitmapText(60, 60, "fontwhite", "TEST 4: REACTIESNELHEID", 24);
-
-			var txt1 = this.add.bitmapText(60, 120,     "fontwhite", "We gaan verder met " + hand + ". ", 24);
-			var txt2 = this.add.bitmapText(60, 120+60,  "fontwhite", "Het is nu de bedoeling dat je met je " + hander + " wijsvinger op de " + btn + " drukt\nals je het kruisje in een blokje ziet veranderen. ", 24);
-			var txt3 = this.add.bitmapText(60, 120+120, "fontwhite", "Klik alleen als het kruisje ook echt verandert en niet als je denkt dat hij gaat veranderen. ", 24);
-			var txt4 = this.add.bitmapText(60, 120+180, "fontwhite", "Dit gaan we eerst even oefenen.", 24);
-			
-			this.btncont4 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1", "Oefenen");
+			this._hand2.setScale(-1.0, 1.0); // left hand
 		};
 
+		this.btnnext3 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext3,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
+
+		this._cntTutor3.add(txt3);
+		this._cntTutor3.add(this._face_demo);
+		this._cntTutor3.add(this._key_1);
+		this._cntTutor3.add(this._key_2);
+		this._cntTutor3.add(this._hand1);
+		this._cntTutor3.add(this._hand2);
+		this._cntTutor3.add(this.btnnext3);
+		
+		// --- tutorial message 4 ---
+		this._cntTutor4 = this.add.container();
+
+		str = "Het is dus de bedoeling je " + pers_nl + " personen herkent.\n\nAls je een " + face_nl + " persoon ziet, druk je op de JA-knop (" + btn_yes + ").\nAls het geen " + face_nl + " persoon is, druk je op de NEE-knop (" + btn_no + ").\n\nDit gaan we eerst even oefenen."
+		var txt4 = this.add.bitmapText(60, 120, "fontwhite", str, 24);
+
+		this.btnnext4 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1", "Oefenen");
+
+		this._cntTutor4.add(txt4);
+		this._cntTutor4.add(this.btnnext4);
+
+		// only main menu visible
+		//this._cntTutor1.visible = false;
+		this._cntTutor2.visible = false;
+		this._cntTutor3.visible = false;
+		this._cntTutor4.visible = false;
+
 		console.log("Tutorial4 create is ready");
+
+		this._repeatdemo = 0;
     },
 
     //update: function(time, delta)
@@ -121,18 +142,68 @@ var Tutorial4 = new Phaser.Class({
     //{
 	//	// test debug text
     //},
-	
-    doKeyDown: function(evt) {
-		console.log('doKeyDown -- evt.keyCode=' + evt.keyCode);
-		if ( (evt.keyCode == 38) || (evt.keyCode == 87) ) this._inputstack.push(DIR_UP);	// 38 = cursor up,    87 = W
-		if ( (evt.keyCode == 40) || (evt.keyCode == 83) ) this._inputstack.push(DIR_DOWN);	// 40 = cursor down,  83 = S
-		if ( (evt.keyCode == 37) || (evt.keyCode == 65) ) this._inputstack.push(DIR_LEFT);	// 37 = cursor left,  65 = A
-		if ( (evt.keyCode == 39) || (evt.keyCode == 68) ) this._inputstack.push(DIR_RIGHT);	// 39 = cursor right, 68 = D
+
+    doStartNext: function() {
+		// face invisible
+		this._face_demo.visible = false;
+
+		// wait 500ms for next test
+		this.waitevent = this.time.addEvent({ delay: 500, callback: this.onShowFace, callbackScope: this});
+    },
+
+    onShowFace: function() {
+
+		// repeat demo counter
+		this._repeatdemo = (this._repeatdemo + 1) % 8; // 0..7
+
+		// show goal on 0,2,4,5 for clarity, don't show goal pattern randomly because chance of long time no goal pattern
+		var test = [0,2,4,5].indexOf(this._repeatdemo);
+		var dogoal = ([0,2,4,5].indexOf(this._repeatdemo) >= 0);
+
+		// choose random emotion
+		this._face_idx = Phaser.Math.RND.between(0, 5); // random emotion
+
+		// if should now show goal emotion
+		if (dogoal) {
+			this._face_idx = globalvar.game_part - 1;
+		} else {
+			// should not show goal emotion
+			if (this._face_idx == globalvar.game_part - 1) {
+				// choose one of the 5 different emotions			
+				this._face_idx = (this._face_idx + Phaser.Math.RND.between(1, 5) ) % 6; // modulo 6 -> values 0..5
+			};
+		};
+
+		// get emotion text
+		this._face_str = this._emotions[this._face_idx];
+		
+		// make new face visible
+		this._face_demo.setTexture("faces" + (this._face_idx+1));
+		var frm = Phaser.Math.RND.between(0, 2); // 0..2, max 3 photos at the moment
+		this._face_demo.setFrame(frm);
+
+		this._face_demo.visible = true;
+
+		// animate hand to correct key
+		var spr = (dogoal ? this._hand1 : this._hand2);
+		
+		// animate hand pressing button
+		var timeline1 = this.tweens.timeline(
+			{
+				targets: spr,
+				tweens: [
+					{ y: GAME_HEIGHT_CENTER+170, ease: 'Sine.easeInOut', duration: 100,  delay: 900 },
+					{ y: GAME_HEIGHT_CENTER+200, ease: 'Sine.easeInOut', duration: 200,  delay: 300 }
+				],
+				onComplete: this.doStartNext,
+				callbackScope: this
+			}
+		);
 	},
-	
+
 	doNext1: function()
     {
-        console.log("tutorial 4 doext1 was called!");
+        console.log("tutorial 4 doNext1 was called!");
 		// move screens
 		this.moveScene(this._cntTutor1, MENU_EXIT_LEFT);
 		this.moveScene(this._cntTutor2, MENU_ENTER_RIGHT);
@@ -140,10 +211,21 @@ var Tutorial4 = new Phaser.Class({
 
 	doNext2: function()
     {
-        console.log("tutorial 4 doext1 was called!");
+        console.log("tutorial 4 doNext2 was called!");
 		// move screens
 		this.moveScene(this._cntTutor2, MENU_EXIT_LEFT);
 		this.moveScene(this._cntTutor3, MENU_ENTER_RIGHT);
+		
+		// start animation
+		this.doStartNext();
+    },
+
+	doNext3: function()
+    {
+        console.log("tutorial 4 doNext3 was called!");
+		// move screens
+		this.moveScene(this._cntTutor3, MENU_EXIT_LEFT);
+		this.moveScene(this._cntTutor4, MENU_ENTER_RIGHT);
     },
 
 
