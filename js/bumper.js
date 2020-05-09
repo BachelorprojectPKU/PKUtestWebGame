@@ -8,23 +8,23 @@ var Bumper = new Phaser.Class({
 
     initialize:
 
-    function PKUgame1 ()
+    function PKUgame1()
     {
         Phaser.Scene.call(this, { key: "bumper" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
     },
 
-    create: function ()
+    create: function()
     {
 		// --- static message ---
 		var txt = this.add.bitmapText(60, 60, "fontwhite", "klaar voor de echte test?", 24);
@@ -35,17 +35,17 @@ var Bumper = new Phaser.Class({
 		console.log("create is ready");
     },
 
-    //update: function (time, delta)
+    //update: function(time, delta)
     //{
 	//	// keyboard input
     //},
 	
-    //render: function ()
+    //render: function()
     //{
 	//	// test debug text
     //},
 
-	doPractise: function ()
+	doPractise: function()
     {
         console.log("Bumper, oefenen -> start pkugame" + globalvar.game);
 		// game 1, 2, 3 game, practise
@@ -53,7 +53,7 @@ var Bumper = new Phaser.Class({
 		this.scene.start("pkugame" + globalvar.game);
     },
 
-	doRealGame: function ()
+	doRealGame: function()
     {
         console.log("Bumper, real game -> start pkugame" + globalvar.game);
 		// game 1, 2, 3 game, for real

@@ -13,18 +13,18 @@ var LoginScreen = new Phaser.Class({
         Phaser.Scene.call(this, { key: "loginscreen" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
     },
 
-    create: function ()
+    create: function()
     {
 		// --- static message ---
 		var txttitle1 = this.add.bitmapText(60, 60, "fontwhite", "Login screen", 24);
@@ -64,17 +64,17 @@ var LoginScreen = new Phaser.Class({
 		console.log("LoginScreen create is ready");
     },
 
-    //update: function (time, delta)
+    //update: function(time, delta)
     //{
 	//	// keyboard input
     //},
 	
-    //render: function ()
+    //render: function()
     //{
 	//	// test debug text
     //},
 	
-    doDigit: function (cnt)
+    doDigit: function(cnt)
     {
 		// get button label text
 		var lbl = cnt.textdata;
@@ -82,7 +82,7 @@ var LoginScreen = new Phaser.Class({
 		this.doLoginInput(cod);
     },
 	
-    doLoginKeyDown: function (evt) {
+    doLoginKeyDown: function(evt) {
 		console.log('doKeyDown -- evt.keyCode=' + evt.keyCode);
 		
 		var i = -99;
@@ -115,7 +115,7 @@ var LoginScreen = new Phaser.Class({
 		};
 	},
 	
-    doLoginInput: function (dig) {
+    doLoginInput: function(dig) {
 		console.log("doLoginInput dig=" + dig);
 
 		// update input string
@@ -137,7 +137,7 @@ var LoginScreen = new Phaser.Class({
 		this._txtstudynr.text = this._strstudynr;
 	},
 	
-	getDeelnemer: function () {
+	getDeelnemer: function() {
 
 		// build url
 		var url = PKU_URL + "get_dn.php?studynr=" + this._strstudynr;
@@ -162,7 +162,7 @@ var LoginScreen = new Phaser.Class({
 		xmlHttp.send(null);
 	},
 	
-    errorDeelnemer: function (sta, txt)
+    errorDeelnemer: function(sta, txt)
     {
 		// clear code
 		this._strstudynr = "";
@@ -182,7 +182,7 @@ var LoginScreen = new Phaser.Class({
 		timeline.play();
 	},
 
-    startDeelnemer: function (data)
+    startDeelnemer: function(data)
     {
 		try {
 			gameparts = JSON.parse(data);

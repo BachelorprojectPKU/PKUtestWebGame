@@ -8,24 +8,24 @@ var GameEnd = new Phaser.Class({
 
     initialize:
 
-    function GameEnd ()
+    function GameEnd()
     {
         Phaser.Scene.call(this, { key: "gameend" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
 		globalvar.game_part = 1;
     },
 
-    create: function ()
+    create: function()
     {
 		// end of game message
 		var str;
@@ -46,16 +46,16 @@ var GameEnd = new Phaser.Class({
 		};
     },
 
-    update: function (time, delta)
+    update: function(time, delta)
     {
 		// keyboard input
     },
 	
-    render: function ()
+    render: function()
     {
     },
 
-	doNextGame: function ()
+	doNextGame: function()
     {
         console.log("GameEnd KNOP VOLGENDE volgende game globalvar.game=" + globalvar.game);
 		if (globalvar.game <= 3) {

@@ -12,16 +12,16 @@ var MainMenu = new Phaser.Class({
 
     initialize:
 
-    function MainMenu ()
+    function MainMenu()
     {
         Phaser.Scene.call(this, { key: "mainmenu" });
     },
 
-    preload: function ()
+    preload: function()
     {
     },
 
-    create: function ()
+    create: function()
     {
 
 		// add logo
@@ -132,7 +132,7 @@ var MainMenu = new Phaser.Class({
 		console.log("create is ready");
     },
 	
-	doStart: function ()
+	doStart: function()
     {
         console.log("menuscene doStart was called!");
 	
@@ -141,19 +141,19 @@ var MainMenu = new Phaser.Class({
 		this.moveScene(this._cntDominant, MENU_ENTER_RIGHT);
     },
 	
-	doHand1: function ()
+	doHand1: function()
     {
         console.log("doHand1 LINK geselecteerd!");
 		this.doSelectHand(CONST_LEFT);
     },
 
-	doHand2: function ()
+	doHand2: function()
     {
         console.log("doHand2 RECHTS geselecteerd!");
 		this.doSelectHand(CONST_RIGHT);
     },
 	
-	doSelectHand: function (idx)
+	doSelectHand: function(idx)
     {
         console.log("doHand2 RECHTS geselecteerd!");
 		globalvar.dominant = idx;
@@ -188,7 +188,7 @@ var MainMenu = new Phaser.Class({
 							});
     },
 
-	doHandOk: function ()
+	doHandOk: function()
     {
         console.log("doHand2 RECHTS geselecteerd!");
 		if (this.sprhandsel.visible == true) {
@@ -197,7 +197,7 @@ var MainMenu = new Phaser.Class({
 		};
     },
 
-    doKeyboard: function ()
+    doKeyboard: function()
     {
 		
 		// move screens
@@ -205,14 +205,14 @@ var MainMenu = new Phaser.Class({
 		this.moveScene(this._cntKeyboard, MENU_ENTER_RIGHT);
 	},
 	
-    doGames: function ()
+    doGames: function()
     {
 		// move screens
 		this.moveScene(this._cntKeyboard, MENU_EXIT_LEFT);
 		this.moveScene(this._cntGames,    MENU_ENTER_RIGHT);
 	},
 	
-    doGame1: function ()
+    doGame1: function()
     {
 		// move screens
         console.log(" -- TODO start game 1");
@@ -226,7 +226,7 @@ var MainMenu = new Phaser.Class({
 		this.scene.start('tutorial1');
 	},
 	
-    doGame2: function ()
+    doGame2: function()
     {
 		// move screens
         console.log(" -- TODO start game 2");
@@ -240,7 +240,7 @@ var MainMenu = new Phaser.Class({
 		this.scene.start('tutorial2');
 	},
 	
-    doGame3: function ()
+    doGame3: function()
     {
 		// move screens
         console.log(" -- TODO start game 3");
@@ -254,7 +254,7 @@ var MainMenu = new Phaser.Class({
 		this.scene.start('tutorial3');
 	},
 	
-    doGame4: function ()
+    doGame4: function()
     {
 		// move screens
         console.log(" -- TODO start game 4");
@@ -308,7 +308,7 @@ var MainMenu = new Phaser.Class({
 	},
 	
 	
-	updateDeelnemer: function () {
+	updateDeelnemer: function() {
 
 		// build url
 		var url = PKU_URL + "set_dn.php";
@@ -353,20 +353,20 @@ var MainMenu = new Phaser.Class({
 		request.send(paramsdata);
 	},
 	
-	successSaving: function ()
+	successSaving: function()
 	{
 		this._msg.text = "ok, saved";
 		// happy flow, just continue
 		this.doContinue();
 	},
 	
-	errorSaving: function (sta, txt)
+	errorSaving: function(sta, txt)
 	{
 		this._msg.text = "Resultaat " + this._gametxt + " opslaan mislukt:\n" + sta + ": " + txt + "\n\nneem contact op met de onderzoekers";
 	},
 	
 
-	doBack: function (btn, ptr, b) {
+	doBack: function(btn, ptr, b) {
 
 		// play sound effect, except when called by doResetYes
 		if (typeof btn !== "undefined") {

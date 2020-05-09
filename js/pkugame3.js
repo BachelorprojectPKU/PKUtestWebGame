@@ -13,12 +13,12 @@ var PKUgame3 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "pkugame3" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
@@ -29,7 +29,7 @@ var PKUgame3 = new Phaser.Class({
 		//globalvar.practise = false;
     },
 
-    create: function ()
+    create: function()
     {
 		// background color
 		var clr  = (globalvar.practise ? BACKGROUND_BLUE : BACKGROUND_BLACK);
@@ -113,16 +113,16 @@ var PKUgame3 = new Phaser.Class({
 		this.doStartNext();
     },
 	
-    update: function (time, delta)
+    update: function(time, delta)
     {
 		// test
     },
 	
-    render: function ()
+    render: function()
     {
     },
 	
-    doStartNext: function () {
+    doStartNext: function() {
 		// make all squares invisible
 		for (var i=0; i < 4; i++) {
 			for (var y=0; y < 3; y++) {
@@ -137,7 +137,7 @@ var PKUgame3 = new Phaser.Class({
 		this.gamestate = -1; // -1=wait
     },
 
-    onShowSquares: function () {
+    onShowSquares: function() {
 
 		// choose 3 random grid nrs
 		this.game_similar = this._chances[this.game_repeat];
@@ -187,7 +187,7 @@ var PKUgame3 = new Phaser.Class({
 		this.starttime = new Date();
 	},
 	
-    doGame3Input: function (key, correct) {
+    doGame3Input: function(key, correct) {
 		
 		// check state -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 		if (this.gamestate == -1) {
@@ -220,7 +220,7 @@ var PKUgame3 = new Phaser.Class({
 		};
 	},
 
-    doGame3KeyDown: function (evt) {
+    doGame3KeyDown: function(evt) {
 		// variables
 		var spr;
 		var ok = false;
@@ -247,7 +247,7 @@ var PKUgame3 = new Phaser.Class({
 		};
 	},
 	
-    doGame3KeyUp: function (evt, a, b, c) {
+    doGame3KeyUp: function(evt, a, b, c) {
 		// key Z
 		if (evt.keyCode == 90) {
 			this.key_left.setAlpha(0.5);
@@ -258,7 +258,7 @@ var PKUgame3 = new Phaser.Class({
 		};
 	},
 
-    debugTextGame3: function (str, ms)
+    debugTextGame3: function(str, ms)
     {
 		if (typeof ms !== "undefined") {
 			str = str + " msec=" + ms;
@@ -267,7 +267,7 @@ var PKUgame3 = new Phaser.Class({
 		this.debugtxt.text = "debug: goal " + this.game_similar_txt + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
 	},
 
-    doGameResult: function (msec, cor)
+    doGameResult: function(msec, cor)
     {
         console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
 		
@@ -280,7 +280,7 @@ var PKUgame3 = new Phaser.Class({
 		this._times[this.game_repeat]  = msec;
 	},
 
-    doGameEnd: function ()
+    doGameEnd: function()
     {
         console.log("gamescene doBack was called!");
 		if (globalvar.practise) {

@@ -13,12 +13,12 @@ var GameSave = new Phaser.Class({
 		Phaser.Scene.call(this, { key: "gamesave" });
 	},
 
-	preload: function ()
+	preload: function()
 	{
 
 	},
 	
-	init: function (data)
+	init: function(data)
 	{
 		// save results from game
 		this._results = (typeof data.results !== "undefined" ? data.results : []);
@@ -29,7 +29,7 @@ var GameSave = new Phaser.Class({
 		//this._times   = [645, 872, 508, 912, 784];
 	},
 
-	create: function (data)
+	create: function(data)
 	{
 		// save results from game
 		this._results = (typeof data.results !== "undefined" ? data.results : []);
@@ -49,14 +49,14 @@ var GameSave = new Phaser.Class({
 		};
 	},
 
-	saveResults: function () {
+	saveResults: function() {
 
 		//this.saveResultLocal(gam, prt, tim, res);
 		this.saveResultOnline(globalvar.game, globalvar.game_part, this._times, this._results);
 
 	},
 	
-	saveResultOnline: function (gam, prt, tim, res) {
+	saveResultOnline: function(gam, prt, tim, res) {
 
 		// variable prefixes
 		var prefix = "bs";
@@ -123,28 +123,28 @@ var GameSave = new Phaser.Class({
 		request.send(paramsdata);
 	},
 
-	update: function (time, delta)
+	update: function(time, delta)
 	{
 		// keyboard input
 	},
 	
-	render: function ()
+	render: function()
 	{
 	},
 	
-	successSaving: function ()
+	successSaving: function()
 	{
 		this._msg.text = "ok, saved";
 		// happy flow, just continue
 		this.doContinue();
 	},
 	
-	errorSaving: function (sta, txt)
+	errorSaving: function(sta, txt)
 	{
 		this._msg.text = "Resultaat " + this._gametxt + " opslaan mislukt:\n" + sta + ": " + txt + "\n\nneem contact op met de onderzoekers";
 	},
 
-	doContinue: function ()
+	doContinue: function()
 	{
 		var max_part = 2;
 		switch (globalvar.game) {

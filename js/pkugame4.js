@@ -8,17 +8,17 @@ var PKUgame4 = new Phaser.Class({
 
     initialize:
 
-    function PKUgame4 ()
+    function PKUgame4()
     {
         Phaser.Scene.call(this, { key: "pkugame4" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
@@ -29,7 +29,7 @@ var PKUgame4 = new Phaser.Class({
 		//globalvar.practise = false;
     },
 
-    create: function ()
+    create: function()
     {
 		// background color
 		var clr  = (globalvar.practise ? BACKGROUND_BLUE : BACKGROUND_BLACK);
@@ -98,16 +98,16 @@ var PKUgame4 = new Phaser.Class({
 		this.doStartNext();
     },
 	
-    update: function (time, delta)
+    update: function(time, delta)
     {
 		// test
     },
 	
-    render: function ()
+    render: function()
     {
     },
 	
-    doStartNext: function () {
+    doStartNext: function() {
 		// face invisible
 		this._face.visible = false;
 
@@ -116,7 +116,7 @@ var PKUgame4 = new Phaser.Class({
 		this.gamestate = -1; // -1=wait
     },
 
-    onShowFace: function () {
+    onShowFace: function() {
 
 		// choose random emotion
 		this._face_idx = Phaser.Math.RND.between(0, 5); // random emotion
@@ -151,7 +151,7 @@ var PKUgame4 = new Phaser.Class({
 		this.starttime = new Date();
 	},
 	
-    doGame4Input: function (key, correct) {
+    doGame4Input: function(key, correct) {
 		
 		// check state -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 		if (this.gamestate == -1) {
@@ -183,7 +183,7 @@ var PKUgame4 = new Phaser.Class({
 		};
 	},
 
-    doGame4KeyDown: function (evt) {
+    doGame4KeyDown: function(evt) {
 		// variables
 		var spr;
 		var ok = false;
@@ -210,7 +210,7 @@ var PKUgame4 = new Phaser.Class({
 		};
 	},
 	
-    doGame4KeyUp: function (evt) {
+    doGame4KeyUp: function(evt) {
 		// key Z
 		if (evt.keyCode == 90) {
 			this.key_left.setAlpha(0.5);
@@ -221,7 +221,7 @@ var PKUgame4 = new Phaser.Class({
 		};
 	},
 
-    debugTextGame4: function (str, ms)
+    debugTextGame4: function(str, ms)
     {
 		var txt = "debug: part " + globalvar.game_part + " " + this._emotions[0].toUpperCase() + " keer " + (this.game_repeat+1) + " " + (this._face_goal ? " DOEL" : " niet-doel");
 
@@ -236,7 +236,7 @@ var PKUgame4 = new Phaser.Class({
 		this.debugtxt.text = txt;
 	},
 
-    doGameResult: function (msec, cor)
+    doGameResult: function(msec, cor)
     {
         console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
 
@@ -249,7 +249,7 @@ var PKUgame4 = new Phaser.Class({
 		this._times[this.game_repeat]  = msec;
 	},
 
-    doGameEnd: function ()
+    doGameEnd: function()
     {
         console.log("gamescene doBack was called!");
 		if (globalvar.practise) {

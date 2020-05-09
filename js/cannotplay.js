@@ -8,17 +8,17 @@ var CannotPlay = new Phaser.Class({
 
     initialize:
 
-    function CannotPlay ()
+    function CannotPlay()
     {
         Phaser.Scene.call(this, { key: "cannotplay" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 
-    create: function ()
+    create: function()
     {
 		// --- static message ---
 		var txttitle1 = this.add.bitmapText(60, 60, "fontwhite", "KEYBOARD NODIG VOOR DEZE TEST!", 24);

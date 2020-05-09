@@ -29,7 +29,7 @@ var Preloader = new Phaser.Class({
 
 	initialize:
 
-	function Preloader ()
+	function Preloader()
 	{
 		// note: the pack:{files[]} acts like a pre-preloader
 		// this eliminates the need for an extra "boot" scene just to preload the loadingbar images
@@ -44,7 +44,7 @@ var Preloader = new Phaser.Class({
 		});
 	},
 	
-	setPreloadSprite: function (sprite)
+	setPreloadSprite: function(sprite)
 	{
 		this.preloadSprite = { sprite: sprite, width: sprite.width, height: sprite.height };
 
@@ -55,7 +55,7 @@ var Preloader = new Phaser.Class({
 		this.load.on('progress', this.onProgress, this );
 	},
 	
-	onProgress: function (value) {
+	onProgress: function(value) {
 
 		if (this.preloadSprite)
 		{
@@ -74,7 +74,7 @@ var Preloader = new Phaser.Class({
 		}
 	},
 
-	LoadScoreProgress: function () {
+	LoadScoreProgress: function() {
 
 		// load from localstorage
 		var tr = window.localStorage.getItem("pkutest_scores");
@@ -95,7 +95,7 @@ var Preloader = new Phaser.Class({
 		ScoreProgress = {"score1": 0};
 	},
 
-	preload: function ()
+	preload: function()
 	{
 		// setup the loading bar
 		// note: images are available during preload because of the pack-property in the constructor
@@ -129,7 +129,7 @@ var Preloader = new Phaser.Class({
 		PkuData = new PkuDataClass();
 	},
 
-	create: function ()
+	create: function()
 	{
 
 		// dispose loader bar images

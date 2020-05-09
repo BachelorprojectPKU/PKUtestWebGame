@@ -50,11 +50,11 @@ PkuDataClass = function() {
 
 PkuDataClass.prototype = {
 	
-	saveScore: function (gam, sco) {
+	saveScore: function(gam, sco) {
 		// adf
 	},
 
-	loadLocal: function (typ) {
+	loadLocal: function(typ) {
 
 		// clear variables
 		this._scores_local = [];
@@ -76,14 +76,14 @@ PkuDataClass.prototype = {
 		};
 	},
 
-    saveResults: function (gam, prt, tim, res) {
+    saveResults: function(gam, prt, tim, res) {
 
 		//this.saveResultLocal(gam, prt, tim, res);
 		this.saveResultOnline(gam, prt, tim, res);
 
 	},
 
-    saveResultLocal: function (gam, prt, tim, res) {
+    saveResultLocal: function(gam, prt, tim, res) {
 		// always store local game scores
 		var rec = {"player": plr, "score":sc, "level":lvl};
 
@@ -105,7 +105,7 @@ PkuDataClass.prototype = {
 		window.localStorage.setItem("pkutest_scores_name", plr);
     },
 
-    saveResultOnline: function (gam, prt, tim, res) {
+    saveResultOnline: function(gam, prt, tim, res) {
 
 		// variable prefixes
 		var prefix = "bs";
@@ -176,7 +176,7 @@ PkuDataClass.prototype = {
     },
 
 	
-	loadGlobal: function () {
+	loadGlobal: function() {
 		var url = PKU_URL + "geths.php" +
 			"?gamename=" + this.gametitle +  // game score data
 			"&gametype=" + this._scoretype +
@@ -192,7 +192,7 @@ PkuDataClass.prototype = {
 		xmlHttp.send(null);
 	},
 	
-	afterLoadGlobal: function (data) {
+	afterLoadGlobal: function(data) {
 		// error checking, localstorage might not exist yet at first time start up
 		try {
 			this._scores_global = JSON.parse(data);

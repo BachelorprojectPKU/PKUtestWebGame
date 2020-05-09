@@ -8,17 +8,17 @@ var Tutorial3 = new Phaser.Class({
 
     initialize:
 
-    function Tutorial3 ()
+    function Tutorial3()
     {
         Phaser.Scene.call(this, { key: "tutorial3" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
@@ -29,7 +29,7 @@ var Tutorial3 = new Phaser.Class({
 		//globalvar.game_part = 1; // game_part is updated in GameEnd scene
     },
 
-    create: function ()
+    create: function()
     {
 		// dominante hand is JA knop
 		var btn_yes = (globalvar.dominant == CONST_RIGHT ? "M" : "Z");
@@ -73,17 +73,17 @@ var Tutorial3 = new Phaser.Class({
 		console.log("Tutorial3 create is ready");
     },
 
-    //update: function (time, delta)
+    //update: function(time, delta)
     //{
 	//	// keyboard input
     //},
 	
-    //render: function ()
+    //render: function()
     //{
 	//	// test debug text
     //},
 	
-	doNext1: function ()
+	doNext1: function()
     {
         console.log("tutorial 3 doNext1 was called!");
 		// move screens
@@ -91,7 +91,7 @@ var Tutorial3 = new Phaser.Class({
 		this.moveScene(this._cntTutor2, MENU_ENTER_RIGHT);
     },
 
-    doStart: function ()
+    doStart: function()
     {
         console.log("tutorial 3 doStart was called!");
 		

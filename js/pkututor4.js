@@ -8,17 +8,17 @@ var Tutorial4 = new Phaser.Class({
 
     initialize:
 
-    function Tutorial4 ()
+    function Tutorial4()
     {
         Phaser.Scene.call(this, { key: "tutorial4" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
@@ -29,7 +29,7 @@ var Tutorial4 = new Phaser.Class({
 		//globalvar.game_part = 1; // game_part is updated in GameEnd scene
     },
 
-    create: function ()
+    create: function()
     {
 		// which dominant hand
 		var hander = (globalvar.dominant == CONST_RIGHT ? "LINKER" : "RECHTER");
@@ -112,17 +112,17 @@ var Tutorial4 = new Phaser.Class({
 		console.log("Tutorial4 create is ready");
     },
 
-    //update: function (time, delta)
+    //update: function(time, delta)
     //{
 	//	// keyboard input
     //},
 	
-    //render: function ()
+    //render: function()
     //{
 	//	// test debug text
     //},
 	
-    doKeyDown: function (evt) {
+    doKeyDown: function(evt) {
 		console.log('doKeyDown -- evt.keyCode=' + evt.keyCode);
 		if ( (evt.keyCode == 38) || (evt.keyCode == 87) ) this._inputstack.push(DIR_UP);	// 38 = cursor up,    87 = W
 		if ( (evt.keyCode == 40) || (evt.keyCode == 83) ) this._inputstack.push(DIR_DOWN);	// 40 = cursor down,  83 = S
@@ -130,7 +130,7 @@ var Tutorial4 = new Phaser.Class({
 		if ( (evt.keyCode == 39) || (evt.keyCode == 68) ) this._inputstack.push(DIR_RIGHT);	// 39 = cursor right, 68 = D
 	},
 	
-	doNext1: function ()
+	doNext1: function()
     {
         console.log("tutorial 4 doext1 was called!");
 		// move screens
@@ -138,7 +138,7 @@ var Tutorial4 = new Phaser.Class({
 		this.moveScene(this._cntTutor2, MENU_ENTER_RIGHT);
     },
 
-	doNext2: function ()
+	doNext2: function()
     {
         console.log("tutorial 4 doext1 was called!");
 		// move screens
@@ -147,7 +147,7 @@ var Tutorial4 = new Phaser.Class({
     },
 
 
-    doStart: function ()
+    doStart: function()
     {
         console.log("tutorial 4 doStart was called!");
 		

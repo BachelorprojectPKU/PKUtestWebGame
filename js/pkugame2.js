@@ -13,12 +13,12 @@ var PKUgame2 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "pkugame2" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
@@ -29,7 +29,7 @@ var PKUgame2 = new Phaser.Class({
 		//globalvar.practise = false;
     },
 
-    create: function ()
+    create: function()
     {
 		// background color
 		var clr  = (globalvar.practise ? BACKGROUND_BLUE : BACKGROUND_BLACK);
@@ -81,16 +81,16 @@ var PKUgame2 = new Phaser.Class({
 		this.doStartSquare();
     },
 	
-    update: function (time, delta)
+    update: function(time, delta)
     {
 		// test
     },
 	
-    render: function ()
+    render: function()
     {
     },
 	
-    doStartSquare: function () {
+    doStartSquare: function() {
 		// determine next color
 		if (globalvar.game_part < 3) {
 			this.square_col = globalvar.game_part - 1; // part1=green, part2=red
@@ -107,7 +107,7 @@ var PKUgame2 = new Phaser.Class({
 		this.waitevent = this.time.addEvent({ delay: msec, callback: this.onMoveSquare, callbackScope: this});
 	},
 	
-    onMoveSquare: function () {
+    onMoveSquare: function() {
 		// make current square white
 		this.squares[this.square_pos].setFrame("block2_0");
 
@@ -141,7 +141,7 @@ var PKUgame2 = new Phaser.Class({
 		this.debugTextGame2();
 	},
 	
-    doGame2Input: function (key, correct) {
+    doGame2Input: function(key, correct) {
 		
 		// check state -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 		if (this.gamestate == -1) {
@@ -172,7 +172,7 @@ var PKUgame2 = new Phaser.Class({
 		};
 	},
 
-    doGame2KeyDown: function (evt) {
+    doGame2KeyDown: function(evt) {
 		// variables
 		var spr;
 		var ok = false;
@@ -201,7 +201,7 @@ var PKUgame2 = new Phaser.Class({
 		};
 	},
 	
-    doGame2KeyUp: function (evt, a, b, c) {
+    doGame2KeyUp: function(evt, a, b, c) {
 		// key Z
 		if (evt.keyCode == 90) {
 			this.key_left.setAlpha(0.5);
@@ -212,7 +212,7 @@ var PKUgame2 = new Phaser.Class({
 		};
 	},
 	
-    debugTextGame2: function (ms, cr)
+    debugTextGame2: function(ms, cr)
     {
 		var txt = "debug: part " + globalvar.game_part + " moved ";
 
@@ -233,7 +233,7 @@ var PKUgame2 = new Phaser.Class({
 		this.debugtxt.text = txt;
 	},
 
-    doGameResult: function (msec, cor)
+    doGameResult: function(msec, cor)
     {
         console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
 
@@ -247,7 +247,7 @@ var PKUgame2 = new Phaser.Class({
 		this._times[this.game_repeat]  = msec;
 	},
 
-    doGameEnd: function ()
+    doGameEnd: function()
     {
         console.log("gamescene doBack was called!");
 		if (globalvar.practise) {

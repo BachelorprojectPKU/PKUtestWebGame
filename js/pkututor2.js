@@ -8,17 +8,17 @@ var Tutorial2 = new Phaser.Class({
 
     initialize:
 
-    function Tutorial2 ()
+    function Tutorial2()
     {
         Phaser.Scene.call(this, { key: "tutorial2" });
     },
 
-    preload: function ()
+    preload: function()
     {
 
     },
 	
-    init: function (data)
+    init: function(data)
     {
 		// which level
 		this._levelindex = (typeof data.levelindex !== "undefined" ? data.levelindex : 0);
@@ -29,7 +29,7 @@ var Tutorial2 = new Phaser.Class({
 		//globalvar.game_part = 1; // game_part is updated in GameEnd scene
     },
 
-    create: function ()
+    create: function()
     {
 		// banner at top of screen
 		var recttile = createRectangle(this, 0, 30, 960, 60, 0x0000ff, 1.0);
@@ -120,17 +120,17 @@ var Tutorial2 = new Phaser.Class({
 		console.log("Tutorial2 create is ready");
     },
 
-    //update: function (time, delta)
+    //update: function(time, delta)
     //{
 	//	// keyboard input
     //},
 	
-    //render: function ()
+    //render: function()
     //{
 	//	// test debug text
     //},
 	
-    doStartSquare: function () {
+    doStartSquare: function() {
 		// determine next color
 		if (globalvar.game_part < 3) {
 			this.square_col = globalvar.game_part - 1; // part1=green, part2=red
@@ -147,7 +147,7 @@ var Tutorial2 = new Phaser.Class({
 		this.waitevent = this.time.addEvent({ delay: msec, callback: this.onMoveSquare, callbackScope: this});
 	},
 	
-    onMoveSquare: function () {
+    onMoveSquare: function() {
 		// make current square white
 		this.squares[this.square_pos].setFrame("block2_0");
 
@@ -192,7 +192,7 @@ var Tutorial2 = new Phaser.Class({
 	},
 
 
-	doNext1: function ()
+	doNext1: function()
     {
         console.log("tutorial 2 doNext1 was called!");
 		// move screens
@@ -200,7 +200,7 @@ var Tutorial2 = new Phaser.Class({
 		this.moveScene(this._cntTutor2, MENU_ENTER_RIGHT);
     },
 
-	doNext2: function ()
+	doNext2: function()
     {
         console.log("tutorial 2 doNext2 was called!");
 
@@ -212,7 +212,7 @@ var Tutorial2 = new Phaser.Class({
 		this.moveScene(this._cntTutor3, MENU_ENTER_RIGHT);
     },
 	
-	doNext3: function ()
+	doNext3: function()
     {
         console.log("tutorial 2 doNext3 was called!");
 
@@ -222,7 +222,7 @@ var Tutorial2 = new Phaser.Class({
     },
 
 
-    doStart: function ()
+    doStart: function()
     {
         console.log("tutorial 2 doStart was called!");
 		
