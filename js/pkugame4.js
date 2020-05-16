@@ -141,7 +141,7 @@ var PKUgame4 = new Phaser.Class({
 
 		// make new face visible
 		this._face.setTexture("faces" + (this._face_idx+1));
-		var frm = Phaser.Math.RND.between(0, 1);
+		var frm = Phaser.Math.RND.between(0, 2); // 0..2, max 3 photos at the moment
 		this._face.setFrame(frm);
 
 		this._face.visible = true;
