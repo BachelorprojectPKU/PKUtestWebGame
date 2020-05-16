@@ -8,7 +8,7 @@ var GameSave = new Phaser.Class({
 
 	initialize:
 
-	function GameSave ()
+	function GameSave()
 	{
 		Phaser.Scene.call(this, { key: "gamesave" });
 	},

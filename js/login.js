@@ -8,7 +8,7 @@ var LoginScreen = new Phaser.Class({
 
     initialize:
 
-    function LoginScreen ()
+    function LoginScreen()
     {
         Phaser.Scene.call(this, { key: "loginscreen" });
     },

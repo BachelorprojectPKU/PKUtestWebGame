@@ -20,7 +20,7 @@ var MultiLang = function(url, lang, onload)
 		// NOTE: will load asynchronously!
 		req.open("GET", url, true);
 		//req.setRequestHeader("User-Agent", navigator.userAgent);
-		req.onreadystatechange = function (evt) {
+		req.onreadystatechange = function(evt) {
 			if (evt.target.readyState == 4 && evt.target.status == 200) // status == 200, do not allow "Cross origin requests"
 			//if (evt.target.readyState == 4)// TESTING allow "Cross origin requests" to load from local harddisk
 			{
