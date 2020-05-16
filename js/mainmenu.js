@@ -23,7 +23,6 @@ var MainMenu = new Phaser.Class({
 
     create: function()
     {
-
 		// add logo
 		//this.sys.config.backgroundColor = "#f3cca3";
         //var logo = this.add.sprite(GAME_WIDTH_CENTER, 128, "sprites", "logo");
@@ -41,7 +40,7 @@ var MainMenu = new Phaser.Class({
 
 		// --- dominante hand ---
 		this._cntDominant = this.add.container();
-		// see online encoding tool -> https://encoder.internetwache.org/
+
 		var txtdom1 = this.add.bitmapText(GAME_WIDTH_CENTER, 120, "fontwhite", "Ben je links of rechtshandig?", 24);
 		var txtdom2 = this.add.bitmapText(GAME_WIDTH_CENTER, 120+40, "fontwhite", "De hand waarmee jij schrijf is je DOMINANTE hand", 24);
 
@@ -87,9 +86,8 @@ var MainMenu = new Phaser.Class({
 
 		// --- keyboard uitleg ---
 		this._cntKeyboard = this.add.container();
-		// see online encoding tool -> https://encoder.internetwache.org/
+
 		var txtkey1 = this.add.bitmapText(GAME_WIDTH_CENTER, 140, "fontwhite", "Voor de verschillende tests zul je je linker- en rechterhand gebruiken.\nGebruik voor je linkerhand altijd de Z toets, links op het keyboard,\nen voor je rechterhand altijd de M toets, rechts op het keyboard.", 24);
-		
 		var sprkey   = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "sprites", "keyboard");
 		var keyhand1 = this.add.sprite(GAME_WIDTH_CENTER+112, GAME_HEIGHT_CENTER+96, "sprites", "hand_point");
 		var keyhand2 = this.add.sprite(GAME_WIDTH_CENTER-112, GAME_HEIGHT_CENTER+96, "sprites", "hand_point");

@@ -85,11 +85,12 @@ var PKUgame4 = new Phaser.Class({
 		// reset repeat counter
 		this.game_repeat = 0;
 		this.repeat_max = (globalvar.practise ? GAME4_REPEAT_PRACTISE : GAME4_REPEAT);
-		this.waitevent = null;
-		
+
 		// game results and times
 		this._results = [];
 		this._times  = [];
+
+		this.waitevent = null;
 
 		// !! TESTING !!
 		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "test123", 24);
@@ -149,6 +150,7 @@ var PKUgame4 = new Phaser.Class({
 		// now wait for user input
 		this.gamestate = 0; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 		this.starttime = new Date();
+		this._timeout = this.time.delayedCall(TIMEOUT_DELAY, this.doTimeout, null, this);
 	},
 	
     doGame4Input: function(key, correct) {
@@ -161,6 +163,9 @@ var PKUgame4 = new Phaser.Class({
 			this.debugTextGame4("TOO EARLY!!", msec);
 			//this.doGameResult(msec, false);
 		} else if (this.gamestate == 0) {
+			// cancel timeout
+			this._timeout.remove();
+
 			// measure time
 			var endtime = new Date();
 			var msec = endtime - this.starttime;
@@ -218,6 +223,16 @@ var PKUgame4 = new Phaser.Class({
 		// key M
 		if (evt.keyCode == 77) {
 			this.key_right.setAlpha(0.5);
+		};
+	},
+
+    doTimeout: function()
+    {
+		console.log("doTimeout game4 -- called, cancel current game");
+
+		if (globalvar.practise == false) {
+			// timout go to bumper to retry this game
+			this.scene.start("bumper", {timeout: true});
 		};
 	},
 

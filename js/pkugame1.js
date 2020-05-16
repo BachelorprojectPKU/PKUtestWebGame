@@ -102,7 +102,9 @@ var PKUgame1 = new Phaser.Class({
 		// show square
 		this.square.setFrame("game1_square") ;
 		this.gamestate = 0; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
+
 		this.starttime = new Date();
+		this._timeout = this.time.delayedCall(TIMEOUT_DELAY, this.doTimeout, null, this);
 		
 		this.debugTextGame1("");
 	},
@@ -119,6 +121,9 @@ var PKUgame1 = new Phaser.Class({
 				// log result
 				this.doGameResult(msec);
 			} else if (this.gamestate == 0) {
+				// cancel timeout
+				this._timeout.remove();
+
 				// measure time
 				var endtime = new Date();
 				var msec = endtime - this.starttime;
@@ -130,7 +135,7 @@ var PKUgame1 = new Phaser.Class({
 
 				// repeat 10 times for each hand or end game
 				this.game_repeat++;
-				if (this.game_repeat < GAME1_REPEAT) {
+				if (this.game_repeat < this.repeat_max) {
 					this.doStartPlus();
 				} else {
 					this.doGameEnd();
@@ -193,6 +198,16 @@ var PKUgame1 = new Phaser.Class({
 		};
 	},
 	
+    doTimeout: function()
+    {
+		console.log("doTimeout -- called, cancel current game");
+
+		if (globalvar.practise == false) {
+			// timout go to bumper to retry this game
+			this.scene.start("bumper", {timeout: true});
+		};
+	},
+
     debugTextGame1: function(str)
     {
 		var txt = "debug: part " + globalvar.game_part + " keer " + (this.game_repeat+1) + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
