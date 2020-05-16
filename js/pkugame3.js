@@ -101,6 +101,9 @@ var PKUgame3 = new Phaser.Class({
 		this.game_repeat = 0;
 		this.repeat_max = (globalvar.practise ? GAME3_REPEAT_PRACTISE : GAME3_REPEAT);
 
+		// keep track of how many practice times
+		if (globalvar.practise) globalvar.practisecount++;
+		
 		// game results and times
 		this._results = [];
 		this._times  = [];

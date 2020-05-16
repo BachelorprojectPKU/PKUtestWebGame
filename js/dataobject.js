@@ -7,6 +7,7 @@ var PKU_URL = "http://bdrgames.nl/geneeskunde/php/";
 var CONST_LEFT = 0;
 var CONST_RIGHT = 1;
 
+var MAX_PRACTISE = 3; // limit times person can practise
 var MAX_TIMEOUTS = 1; // max. allowed timeouts before quiting
 var TIMEOUT_DELAY = 3000; // when no input game-timeout after 10 seconds
 
@@ -38,6 +39,7 @@ var globalvar = {
 	studynr: "998877", // participant code
 	dominant: 1, // 0=left hand, 1=right hand
 	practise: true,
+	practisecount: 0,
 	timeoutcount: 0,
 	game: 1,
 	game_part: 1

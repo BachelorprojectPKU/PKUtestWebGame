@@ -27,6 +27,9 @@ var GameEnd = new Phaser.Class({
 
     create: function()
     {
+		// reset max practice counter for next game
+		globalvar.practisecount = 0;
+
 		// end of game message
 		var str;
 		var btn;

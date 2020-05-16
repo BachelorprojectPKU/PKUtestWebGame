@@ -65,6 +65,9 @@ var PKUgame1 = new Phaser.Class({
 		// reset repeat counter
 		this.game_repeat = 0;
 		this.repeat_max = (globalvar.practise ? GAME1_REPEAT_PRACTISE : GAME1_REPEAT);
+
+		// keep track of how many practice times
+		if (globalvar.practise) globalvar.practisecount++;
 		
 		// game results and times
 		this._results = [];

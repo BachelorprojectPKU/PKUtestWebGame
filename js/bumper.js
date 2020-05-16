@@ -52,9 +52,15 @@ var Bumper = new Phaser.Class({
 
 		// not quitting because of timeout
 		if (!timeoutquit) {
-			// practise or real game
-			this.btnoefen = this.addButtonText(GAME_WIDTH_CENTER-240, GAME_HEIGHT_CENTER, "sprites", this.doPractise,  this, "button2",     "button1",     "button2",     "button1", "NOG 1 KEER\nOEFENEN");
-			this.btnecht  = this.addButtonText(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER, "sprites", this.doRealGame,  this, "button2",     "button1",     "button2",     "button1", "ECHTE TEST");
+			// buttons for real game and/or practise
+			if (globalvar.practisecount < MAX_PRACTISE) {
+				// allow practise
+				this.btnoefen = this.addButtonText(GAME_WIDTH_CENTER-240, GAME_HEIGHT_CENTER, "sprites", this.doPractise,  this, "button2",     "button1",     "button2",     "button1", "NOG 1 KEER\nOEFENEN");
+				this.btnecht  = this.addButtonText(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER, "sprites", this.doRealGame,  this, "button2",     "button1",     "button2",     "button1", "ECHTE TEST");
+			} else {
+				// no more practise for you!
+				this.btnecht  = this.addButtonText(GAME_WIDTH_CENTER    , GAME_HEIGHT_CENTER, "sprites", this.doRealGame,  this, "button2",     "button1",     "button2",     "button1", "ECHTE TEST");
+			};
 		};
 
 		console.log("create is ready");
