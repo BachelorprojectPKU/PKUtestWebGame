@@ -108,6 +108,10 @@ var PKUgame2 = new Phaser.Class({
 		
 		// set random timer
 		var msec = Phaser.Math.RND.between(500, 2500); // 0,5 and 2,5 seconds
+
+		// exception, first time always wait 2 sec so player can adjust to new game screen
+		if (this.game_repeat == 0) msec = 2000;
+
 		this.waitevent = this.time.addEvent({ delay: msec, callback: this.onMoveSquare, callbackScope: this});
 	},
 	

@@ -156,7 +156,9 @@ var Tutorial4 = new Phaser.Class({
 		var dogoal = ([0,2,4,5].indexOf(this._repeatdemo) >= 0);
 
 		// choose random emotion
-		this._face_idx = Phaser.Math.RND.between(0, 5); // random emotion
+		//this._face_idx = Phaser.Math.RND.between(0, 5); // random emotion
+		// always choose the same emotion for tutor
+		this._face_idx = globalvar.game_part - 1;
 
 		// if should now show goal emotion
 		if (dogoal) {
@@ -165,7 +167,9 @@ var Tutorial4 = new Phaser.Class({
 			// should not show goal emotion
 			if (this._face_idx == globalvar.game_part - 1) {
 				// random choose one of the 5 different emotions			
-				this._face_idx = (this._face_idx + Phaser.Math.RND.between(1, 5) ) % 6; // modulo 6 -> values 0..5
+				//this._face_idx = (this._face_idx + Phaser.Math.RND.between(1, 5) ) % 6; // modulo 6 -> values 0..5
+				// always choose the same emotion for tutor
+				this._face_idx = (this._face_idx + 1 ) % 6; // modulo 6 -> values 0..5
 			};
 		};
 
@@ -174,7 +178,8 @@ var Tutorial4 = new Phaser.Class({
 		
 		// make new face visible
 		this._face_demo.setTexture("faces" + (this._face_idx+1));
-		var frm = Phaser.Math.RND.between(0, 2); // 0..2, max 3 photos at the moment
+		//var frm = Phaser.Math.RND.between(0, 2); // 0..2, max 3 photos at the moment
+		var frm = 0; // always choose the same face for tutor
 		this._face_demo.setFrame(frm);
 
 		this._face_demo.visible = true;
@@ -187,7 +192,7 @@ var Tutorial4 = new Phaser.Class({
 			{
 				targets: spr,
 				tweens: [
-					{ y: GAME_HEIGHT_CENTER+170, ease: 'Sine.easeInOut', duration: 100,  delay: 900 },
+					{ y: GAME_HEIGHT_CENTER+170, ease: 'Sine.easeInOut', duration: 100,  delay: 1400 },
 					{ y: GAME_HEIGHT_CENTER+200, ease: 'Sine.easeInOut', duration: 200,  delay: 300 }
 				],
 				onComplete: this.doStartNext,
