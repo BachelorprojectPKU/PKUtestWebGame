@@ -31,11 +31,6 @@ var Tutorial4 = new Phaser.Class({
 
     create: function()
     {
-		// !! TESTING !!
-		globalvar.dominant = CONST_RIGHT;
-		globalvar.game_part = 4;
-		// !! TESTING !!
-		
 		// banner at top of screen
 		var recttile = createRectangle(this, 0, 30, 960, 60, 0x0000ff, 1.0);
 		var txttitle1 = this.add.bitmapText(60, 40, "fontwhite", "TEST 4: HERKENNEN VAN EMOTIES", 24);
@@ -87,15 +82,15 @@ var Tutorial4 = new Phaser.Class({
 
 		this._face_demo = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "faces" + globalvar.game_part, 1);
 		
-		this._key_1 = this.add.sprite(GAME_WIDTH_CENTER-260, GAME_HEIGHT_CENTER+120, "sprites", "key_z");
-		this._key_2 = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+120, "sprites", "key_m");
-		this._hand1 = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // dominant
-		this._hand2 = this.add.sprite(GAME_WIDTH_CENTER-260, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // niet-dominant
+		this._key_1 = this.add.sprite(GAME_WIDTH_CENTER-260,    GAME_HEIGHT_CENTER+120, "sprites", "key_z");
+		this._key_2 = this.add.sprite(GAME_WIDTH_CENTER+260,    GAME_HEIGHT_CENTER+120, "sprites", "key_m");
+		this._hand1 = this.add.sprite(GAME_WIDTH_CENTER+260+14, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // dominant
+		this._hand2 = this.add.sprite(GAME_WIDTH_CENTER-260-14, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // niet-dominant
 
 		// linker hand is dominant
 		if (globalvar.dominant == CONST_LEFT) {
-			this._hand1.x = GAME_WIDTH_CENTER-260;
-			this._hand2.x = GAME_WIDTH_CENTER+260;
+			this._hand1.x = GAME_WIDTH_CENTER-260-14;
+			this._hand2.x = GAME_WIDTH_CENTER+260+14;
 			this._hand1.setScale(-1.0, 1.0); // left hand
 		} else {
 			this._hand2.setScale(-1.0, 1.0); // left hand
@@ -169,7 +164,7 @@ var Tutorial4 = new Phaser.Class({
 		} else {
 			// should not show goal emotion
 			if (this._face_idx == globalvar.game_part - 1) {
-				// choose one of the 5 different emotions			
+				// random choose one of the 5 different emotions			
 				this._face_idx = (this._face_idx + Phaser.Math.RND.between(1, 5) ) % 6; // modulo 6 -> values 0..5
 			};
 		};
@@ -187,7 +182,7 @@ var Tutorial4 = new Phaser.Class({
 		// animate hand to correct key
 		var spr = (dogoal ? this._hand1 : this._hand2);
 		
-		// animate hand pressing button
+		// tutor animation, move hand finger press button
 		var timeline1 = this.tweens.timeline(
 			{
 				targets: spr,

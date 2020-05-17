@@ -84,10 +84,10 @@ var Tutorial2 = new Phaser.Class({
 		this.square_col = 0; // 0=green, 1=red
 		this.square_dir = 0;
 		
-		this._key_1 = this.add.sprite(GAME_WIDTH_CENTER-260, GAME_HEIGHT_CENTER+120, "sprites", "key_z");
-		this._key_2 = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+120, "sprites", "key_m");
-		this._hand1 = this.add.sprite(GAME_WIDTH_CENTER-260, GAME_HEIGHT_CENTER+200, "sprites", "hand_point");
-		this._hand2 = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+200, "sprites", "hand_point");
+		this._key_1 = this.add.sprite(GAME_WIDTH_CENTER-260,    GAME_HEIGHT_CENTER+120, "sprites", "key_z");
+		this._key_2 = this.add.sprite(GAME_WIDTH_CENTER+260,    GAME_HEIGHT_CENTER+120, "sprites", "key_m");
+		this._hand1 = this.add.sprite(GAME_WIDTH_CENTER-260-14, GAME_HEIGHT_CENTER+200, "sprites", "hand_point");
+		this._hand2 = this.add.sprite(GAME_WIDTH_CENTER+260+14, GAME_HEIGHT_CENTER+200, "sprites", "hand_point");
 		
 		this._hand1.setScale(-1.0, 1.0); // left hand
 
@@ -177,7 +177,7 @@ var Tutorial2 = new Phaser.Class({
 		// animate hand to correct key
 		var spr = (this.expect_btn == CONST_RIGHT ? this._hand2 : this._hand1)
 		
-		// animate hand
+		// tutor animation, move hand finger press button
 		var timeline1 = this.tweens.timeline(
 			{
 				targets: spr,

@@ -1,11 +1,6 @@
 // Phaser3 PKU test webgame
 // mein menu scene
 
-var MENU_ENTER_LEFT  = 1;
-var MENU_ENTER_RIGHT = 2;
-var MENU_EXIT_LEFT   = 3;
-var MENU_EXIT_RIGHT  = 4;
-
 var MainMenu = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -24,9 +19,7 @@ var MainMenu = new Phaser.Class({
     create: function()
     {
 		// add logo
-		//this.sys.config.backgroundColor = "#f3cca3";
-        //var logo = this.add.sprite(GAME_WIDTH_CENTER, 128, "sprites", "logo");
-        var logo_send = this.add.sprite(GAME_WIDTH_CENTER, 60, "sprites", "pkulogo");
+        var logo = this.add.sprite(GAME_WIDTH_CENTER, 60, "sprites", "pkulogo");
 
 		// --- start message ---
 		this._cntWelcome  = this.add.container();
@@ -191,7 +184,6 @@ var MainMenu = new Phaser.Class({
         console.log("doHand2 RECHTS geselecteerd!");
 		if (this.sprhandsel.visible == true) {
 			this.updateDeelnemer();
-			this.doKeyboard();
 		};
     },
 
@@ -313,17 +305,15 @@ var MainMenu = new Phaser.Class({
 	
 	successSaving: function()
 	{
-		this._msg.text = "ok, saved";
 		// happy flow, just continue
-		this.doContinue();
+		this.doKeyboard();
 	},
 	
 	errorSaving: function(sta, txt)
 	{
-		this._msg.text = "Resultaat " + this._gametxt + " opslaan mislukt:\n" + sta + ": " + txt + "\n\nneem contact op met de onderzoekers";
+		// error do something?
 	},
 	
-
 	doBack: function(btn, ptr, b) {
 
 		// play sound effect, except when called by doResetYes

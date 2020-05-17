@@ -58,73 +58,73 @@ var Tutorial1 = new Phaser.Class({
 		
 		str2 = str2 + "\n\nDruk met je " + hander + " wijsvinger op de " + btn + "\nals je het kruisje in een blokje ziet veranderen.\nDaarna verandert het blokje weer terug in een kruisje.";
 
-			// --- tutorial message 1 ---
-			this._cntTutor1 = this.add.container();
+		// --- tutorial message 1 ---
+		this._cntTutor1 = this.add.container();
 
-			var txt1 = this.add.bitmapText(60, 120,     "fontwhite", str1, 24);
-			
-			var sprkey   = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "sprites", "keyboard");
-			var keyhand1 = this.add.sprite(GAME_WIDTH_CENTER+112, GAME_HEIGHT_CENTER+96, "sprites", "hand_point");
-
-			// flip as left hand
-			if (lr == CONST_LEFT) {
-				keyhand1.x = GAME_WIDTH_CENTER-112;
-				keyhand1.setScale(-1.0, 1.0);
-			};
+		var txt1 = this.add.bitmapText(60, 120,     "fontwhite", str1, 24);
 		
-			this.btnnext = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext1,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
+		var sprkey   = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "sprites", "keyboard");
+		var keyhand1 = this.add.sprite(GAME_WIDTH_CENTER+112, GAME_HEIGHT_CENTER+96, "sprites", "hand_point");
 
-			// add all to container
-			this._cntTutor1.add(txt1);
-			this._cntTutor1.add(sprkey);
-			this._cntTutor1.add(keyhand1);
-			this._cntTutor1.add(this.btnnext);
+		// flip as left hand
+		if (lr == CONST_LEFT) {
+			keyhand1.x = GAME_WIDTH_CENTER-112;
+			keyhand1.setScale(-1.0, 1.0);
+		};
+	
+		this.btnnext = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext1,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
 
-			// --- tutorial message 2 ---
-			this._cntTutor2 = this.add.container();
+		// add all to container
+		this._cntTutor1.add(txt1);
+		this._cntTutor1.add(sprkey);
+		this._cntTutor1.add(keyhand1);
+		this._cntTutor1.add(this.btnnext);
 
-			var txt2 = this.add.bitmapText(60, 120, "fontwhite", str2, 24);
+		// --- tutorial message 2 ---
+		this._cntTutor2 = this.add.container();
 
-			this._square = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_square");
-			var _plus    = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_plus");
-			var spr1     = this.add.sprite(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER+40,  "sprites", "key_"+btnlow);
-			this._hand1  = this.add.sprite(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER+120, "sprites", "hand_point");
-			
-			this._square.setAlpha(0.0);
-			
-			// flip when left hand
-			if (lr == CONST_LEFT) {
-				this._hand1.setScale(-1.0, 1.0);
-				spr1.x        = GAME_WIDTH_CENTER-240;
-				this._hand1.x = GAME_WIDTH_CENTER-240;
-			};
+		var txt2 = this.add.bitmapText(60, 120, "fontwhite", str2, 24);
 
-			this.btncont1 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext2,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
+		this._square = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_square");
+		var _plus    = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_plus");
+		var spr1     = this.add.sprite(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER+40,  "sprites", "key_"+btnlow);
+		this._hand1  = this.add.sprite(GAME_WIDTH_CENTER+240+14, GAME_HEIGHT_CENTER+120, "sprites", "hand_point");
+		
+		this._square.setAlpha(0.0);
+		
+		// flip when left hand
+		if (lr == CONST_LEFT) {
+			this._hand1.setScale(-1.0, 1.0);
+			spr1.x        = GAME_WIDTH_CENTER-240;
+			this._hand1.x = GAME_WIDTH_CENTER-240-14;
+		};
 
-			this._cntTutor2.add(txt2);
-			this._cntTutor2.add(this._square);
-			this._cntTutor2.add(_plus);
-			this._cntTutor2.add(spr1);
-			this._cntTutor2.add(this._hand1);
-			this._cntTutor2.add(this.btncont1);
-			
-			// --- tutorial message 3 ---
-			this._cntTutor3 = this.add.container();
+		this.btncont1 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext2,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
 
-			var str = "Klik alleen als het kruisje ook echt verandert\nen niet als je denkt dat hij gaat veranderen.\n\nDit gaan we eerst even oefenen."
-			var txt3 = this.add.bitmapText(GAME_WIDTH_CENTER, 240, "fontwhite", str, 24);
-			//txt3.setOrigin(0.5).setCenterAlign();
-			txt3.setOrigin(0.5);
+		this._cntTutor2.add(txt2);
+		this._cntTutor2.add(this._square);
+		this._cntTutor2.add(_plus);
+		this._cntTutor2.add(spr1);
+		this._cntTutor2.add(this._hand1);
+		this._cntTutor2.add(this.btncont1);
+		
+		// --- tutorial message 3 ---
+		this._cntTutor3 = this.add.container();
 
-			this.btncont3 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1", "Oefenen");
+		var str = "Klik alleen als het kruisje ook echt verandert\nen niet als je denkt dat hij gaat veranderen.\n\nDit gaan we eerst even oefenen."
+		var txt3 = this.add.bitmapText(GAME_WIDTH_CENTER, 240, "fontwhite", str, 24);
+		//txt3.setOrigin(0.5).setCenterAlign();
+		txt3.setOrigin(0.5);
 
-			this._cntTutor3.add(txt3);
-			this._cntTutor3.add(this.btncont3);
+		this.btncont3 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1", "Oefenen");
 
-			// only main menu visible
-			//this._cntTutor1.visible = false;
-			this._cntTutor2.visible = false;
-			this._cntTutor3.visible = false;
+		this._cntTutor3.add(txt3);
+		this._cntTutor3.add(this.btncont3);
+
+		// only main menu visible
+		//this._cntTutor1.visible = false;
+		this._cntTutor2.visible = false;
+		this._cntTutor3.visible = false;
 
 
 		console.log("Tutorial1 create is ready");
@@ -147,6 +147,7 @@ var Tutorial1 = new Phaser.Class({
 		this.moveScene(this._cntTutor1, MENU_EXIT_LEFT);
 		this.moveScene(this._cntTutor2, MENU_ENTER_RIGHT);
 		
+		// tutor animation, move hand finger press button
 		var timeline1 = this.tweens.timeline(
 			{
 				targets: this._hand1,
@@ -158,6 +159,7 @@ var Tutorial1 = new Phaser.Class({
 			}
 		);
 			
+		// tutor animation, show square (alpha=1.0) or plus (alpha = 0.0 = transparent = invisible)
 		var timeline2 = this.tweens.timeline(
 			{
 				targets: this._square,

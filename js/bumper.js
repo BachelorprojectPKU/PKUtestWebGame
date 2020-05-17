@@ -48,8 +48,6 @@ var Bumper = new Phaser.Class({
 		};
 		var txt = this.add.bitmapText(60, 60, "fontwhite", str, 24);
 
-		debugger;
-
 		// not quitting because of timeout
 		if (!timeoutquit) {
 			// buttons for real game and/or practise
@@ -87,6 +85,10 @@ var Bumper = new Phaser.Class({
 	doRealGame: function()
     {
         console.log("Bumper, real game -> start pkugame" + globalvar.game);
+
+		// reset max practice counter for next part
+		globalvar.practisecount = 0;
+
 		// game 1, 2, 3 game, for real
 		globalvar.practise = false;
 		this.scene.start("pkugame" + globalvar.game);

@@ -76,16 +76,16 @@ var Tutorial3 = new Phaser.Class({
 			this.squares[i] = sq2;
 		};
 		
-		this._key_1 = this.add.sprite(GAME_WIDTH_CENTER-260, GAME_HEIGHT_CENTER+120, "sprites", "key_z");
-		this._key_2 = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+120, "sprites", "key_m");
-		this._hand1 = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // dominant
-		this._hand2 = this.add.sprite(GAME_WIDTH_CENTER-260, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // niet-dominant
-		this._arrow = this.add.sprite(GAME_WIDTH_CENTER+260, GAME_HEIGHT_CENTER+200, "sprites", "arrow_tut3");
+		this._key_1 = this.add.sprite(GAME_WIDTH_CENTER-260,    GAME_HEIGHT_CENTER+120, "sprites", "key_z");
+		this._key_2 = this.add.sprite(GAME_WIDTH_CENTER+260,    GAME_HEIGHT_CENTER+120, "sprites", "key_m");
+		this._hand1 = this.add.sprite(GAME_WIDTH_CENTER+260+14, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // dominant
+		this._hand2 = this.add.sprite(GAME_WIDTH_CENTER-260-14, GAME_HEIGHT_CENTER+200, "sprites", "hand_point"); // niet-dominant
+		this._arrow = this.add.sprite(GAME_WIDTH_CENTER+260,    GAME_HEIGHT_CENTER+200, "sprites", "arrow_tut3");
 		
 		// linker hand is dominant
 		if (globalvar.dominant == CONST_LEFT) {
-			this._hand1.x = GAME_WIDTH_CENTER-260;
-			this._hand2.x = GAME_WIDTH_CENTER+260;
+			this._hand1.x = GAME_WIDTH_CENTER-260-14;
+			this._hand2.x = GAME_WIDTH_CENTER+260+14;
 			this._hand1.setScale(-1.0, 1.0); // left hand
 		} else {
 			this._hand2.setScale(-1.0, 1.0); // left hand
@@ -253,7 +253,7 @@ var Tutorial3 = new Phaser.Class({
 		// animate hand to correct key
 		var spr = (dogoal >= 0 ? this._hand1 : this._hand2);
 		
-		// animate hand pressing button
+		// tutor animation, move hand finger press button
 		var timeline1 = this.tweens.timeline(
 			{
 				targets: spr,
