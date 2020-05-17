@@ -26,18 +26,29 @@ var LoginScreen = new Phaser.Class({
 
     create: function()
     {
-		// --- static message ---
-		var txttitle1 = this.add.bitmapText(60, 60, "fontwhite", "Login screen", 24);
-		var txt1 = this.add.bitmapText(60, 120, "fontwhite", "Geef hieronder je studienummer op om te beginnen.", 24);
+		this._loginpart = 1; // 1=studynr, 2=date of birth
+		this._strstudynr = "";
+		this._strgebdat = "";
+		this._dtgebdat = new Date(2010, 12-1, 31);
+
+		// add logo
+        var logo = this.add.sprite(GAME_WIDTH_CENTER, 60, "sprites", "pkulogo");
 		
-		createRectangle(this, 360, 192, 224, 64, 0x000040, 1.0);
+		// --- static message and logo ---
+		//var txttitle1 = this.add.bitmapText(60, 60, "fontwhite", "Login screen", 24);
+
+		// --- tutorial message 1 ---
+		this._cntLogin1 = this.add.container();
+
+		var txt1 = this.add.bitmapText(GAME_WIDTH_CENTER, 120, "fontwhite", "Geef hieronder je studienummer op om te beginnen.", 24);
+		txt1.setOrigin(0.5).setCenterAlign();
+		
+		var rec1 = createRectangle(this, 360, 192, 224, 64, 0x000040, 1.0);
 	
 		//this._txtstudynr = this.add.bitmapText(320, 160, "fontwhite", "", 24);
 		this._txtstudynr = this.add.text(360+64, 192+16, "", { font: "32px Arial Black", fill: "#ffffff" });
-		this._strstudynr = "";
 		
 		// key buttons
-		this._cntButtons = this.add.container();
 		for (var i=0; i < 12; i++) {
 			// grid buttons
 			var r = Math.floor(i / 3);
@@ -53,13 +64,58 @@ var LoginScreen = new Phaser.Class({
 
 			// add button sprite
 			var btn = this.addButtonText(xpos, ypos, "sprites", this.doDigit, this, "btn_round1", "btn_round0", "btn_round1", "btn_round0", str);
-			this._cntButtons.add(btn);
+			this._cntLogin1.add(btn);
 		};
 
+		// add all to container
+		this._cntLogin1.add(txt1);
+		this._cntLogin1.add(rec1);
+		this._cntLogin1.add(this._txtstudynr);
 		
+		// --- tutorial message 2 ---
+		this._cntLogin2 = this.add.container();
+
+		var txt2 = this.add.bitmapText(GAME_WIDTH_CENTER, 180, "fontwhite", "Geef je geboortedatum ter controle.", 24);
+		txt2.setOrigin(0.5).setCenterAlign();
+
+		var ypos = 320;
+		var rec2 = createRectangle(this, GAME_WIDTH_CENTER-112, ypos-32, 224, 64, 0x000040, 1.0);
+		this._txtgebdat = this.add.text(GAME_WIDTH_CENTER-112+16, ypos-16, "", { font: "32px Arial Black", fill: "#ffffff" });
+		
+		// key buttons
+		var btnday1  = this.addButtonText(GAME_WIDTH_CENTER-80, ypos-60, "sprites", this.doDateDay1, this, "btn_triangle1", "btn_triangle0", "btn_triangle1", "btn_triangle0", "");
+		var btnday2  = this.addButtonText(GAME_WIDTH_CENTER-80, ypos+60, "sprites", this.doDateDay2, this, "btn_triangle3", "btn_triangle2", "btn_triangle3", "btn_triangle2", "");
+
+		var btnmon1  = this.addButtonText(GAME_WIDTH_CENTER,    ypos-60, "sprites", this.doDateMonth1, this, "btn_triangle1", "btn_triangle0", "btn_triangle1", "btn_triangle0", "");
+		var btnmon2  = this.addButtonText(GAME_WIDTH_CENTER,    ypos+60, "sprites", this.doDateMonth2, this, "btn_triangle3", "btn_triangle2", "btn_triangle3", "btn_triangle2", "");
+	
+		var btnyear1 = this.addButtonText(GAME_WIDTH_CENTER+80, ypos-60, "sprites", this.doDateYear1, this, "btn_triangle1", "btn_triangle0", "btn_triangle1", "btn_triangle0", "");
+		var btnyear2 = this.addButtonText(GAME_WIDTH_CENTER+80, ypos+60, "sprites", this.doDateYear2, this, "btn_triangle3", "btn_triangle2", "btn_triangle3", "btn_triangle2", "");
+
+		var btnlogin = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doLoginInput, this, "button_s2",   "button_s1",   "button_s2",   "button_s1",   "Login");
+
+		// add all to container
+		this._cntLogin2.add(txt2);
+		this._cntLogin2.add(rec2);
+		this._cntLogin2.add(this._txtgebdat);
+		this._cntLogin2.add(btnday1);
+		this._cntLogin2.add(btnday2);
+		this._cntLogin2.add(btnmon1);
+		this._cntLogin2.add(btnmon2);
+		this._cntLogin2.add(btnyear1);
+		this._cntLogin2.add(btnyear2);
+		this._cntLogin2.add(btnlogin);
+
 		// key input handler
 		this.input.keyboard.on('keydown', this.doLoginKeyDown, this);
 		//this.input.keyboard.on('keyup',   this.doLoginKeyUp, this);
+		
+		this.refreshDate();
+		this._strgebdat = ""; // make string empty, so that when start typing it will overwrite from beginning
+		
+		// only login panel visible
+		//this._cntLogin1.visible = false;
+		this._cntLogin2.visible = false;
 
 		console.log("LoginScreen create is ready");
     },
@@ -73,7 +129,23 @@ var LoginScreen = new Phaser.Class({
     //{
 	//	// test debug text
     //},
-	
+
+	doStudyNr: function()
+    {
+        console.log("goto doStudyNr was called!");
+		// move screens
+		this.moveScene(this._cntLogin1, MENU_ENTER_LEFT);
+		this.moveScene(this._cntLogin2, MENU_EXIT_RIGHT);
+    },
+
+	doDoB: function()
+    {
+        console.log("goto doDoB was called!");
+		// move screens
+		this.moveScene(this._cntLogin1, MENU_EXIT_LEFT);
+		this.moveScene(this._cntLogin2, MENU_ENTER_RIGHT);
+    },
+
     doDigit: function(cnt)
     {
 		// get button label text
@@ -82,6 +154,63 @@ var LoginScreen = new Phaser.Class({
 		this.doLoginInput(cod);
     },
 	
+    doDateDay1: function(cnt)
+    {
+		this.doDateButtonEdit("day", +1)
+    },
+    doDateDay2: function(cnt)
+    {
+		this.doDateButtonEdit("day", -1)
+    },
+    doDateMonth1: function(cnt)
+    {
+		this.doDateButtonEdit("month", +1)
+    },
+    doDateMonth2: function(cnt)
+    {
+		this.doDateButtonEdit("month", -1)
+    },
+    doDateYear1: function(cnt)
+    {
+		this.doDateButtonEdit("year", +1)
+    },
+    doDateYear2: function(cnt)
+    {
+		this.doDateButtonEdit("year", -1)
+    },
+    doDateButtonEdit: function(part, num)
+    {
+		// adjust day
+		if (part == "day") {
+			var dat = this._dtgebdat.getDate() + num;
+			this._dtgebdat = new Date(this._dtgebdat.setDate(dat));
+		};
+
+		// adjust month
+		if (part == "month") {
+			var mon = this._dtgebdat.getMonth() + num;
+			this._dtgebdat = new Date(this._dtgebdat.setMonth(mon));
+		};
+
+		// adjust year
+		if (part == "year") {
+			var year = this._dtgebdat.getFullYear() + num;
+			if (year < 1900) year = 2050;
+			if (year > 2050) year = 1900;
+			this._dtgebdat = new Date(this._dtgebdat.setFullYear(year));
+		};
+
+		// refresh on screen
+		this.refreshDate();
+    },
+
+    refreshDate: function()
+    {
+		this._strgebdat = ("0" + (this._dtgebdat.getDate())).slice(-2) + "-" + ("0" + (this._dtgebdat.getMonth()+1)).slice(-2) + "-" + this._dtgebdat.getFullYear().toString();
+		
+		this._txtgebdat.text = this._strgebdat;
+	},
+
     doLoginKeyDown: function(evt) {
 		console.log('doKeyDown -- evt.keyCode=' + evt.keyCode);
 		
@@ -103,7 +232,23 @@ var LoginScreen = new Phaser.Class({
 
 		// update inlog code
 		if (i >= -1) {
-			this.doLoginInput(i);
+			// 1=studynr, 2=date of birth
+			if (this._loginpart == 1) {
+				this.doLoginInput(i);
+			} else {
+				this.doDateInput(i);
+			};
+		};
+
+		// update inlog code
+		if (this._loginpart == 2) {
+			if ([189, 109, 190, 110, 191, 220].indexOf(evt.keyCode) >= 0) { // 189, 109 = -minus, 190, 110 = .dot, 191, 220=/\slash
+				this.doDateInput("-");
+			};
+			// tab to complete date
+			if (evt.keyCode == 9) {
+				this.refreshDate();
+			};
 		};
 
 		// enter/return
@@ -117,6 +262,9 @@ var LoginScreen = new Phaser.Class({
 	
     doLoginInput: function(dig) {
 		console.log("doLoginInput dig=" + dig);
+		
+		// date login button
+		if (isNaN(dig)) dig = 99;
 
 		// update input string
 		if ( (dig >= 0) && (dig <= 9) ) {
@@ -129,6 +277,9 @@ var LoginScreen = new Phaser.Class({
 			this._strstudynr = this._strstudynr.substring(0, this._strstudynr.length - 1);
 		} else {
 			if (this._strstudynr.length == 5) {
+				// if typed incomplete date exampl "1-1-10", then show it complete now
+				if (this._loginpart == 2) this.refreshDate();
+				// check deelnemer
 				this.getDeelnemer();
 			};
 		};
@@ -137,10 +288,93 @@ var LoginScreen = new Phaser.Class({
 		this._txtstudynr.text = this._strstudynr;
 	},
 	
+    doDateInput: function(ch) {
+		console.log("doDateInput ch=" + ch);
+
+		if (ch == -1) {
+			// backspace, remove last
+			this._strgebdat = this._strgebdat.substring(0, this._strgebdat.length - 1);
+		} else {
+			// add character
+			this._strgebdat += ch;
+		};
+		// fix any input error
+		this.fixDateTextInput();
+
+		this._txtgebdat.text = this._strgebdat;
+	},
+	
+    fixDateTextInput: function() {
+		// fix text input
+		//if (this._strgebdat.length == 2) {
+		//	if (this._strgebdat > 31) {
+		//		this._strgebdat = this._strgebdat.substring(0, 1) + "-" + this._strgebdat.substring(1, 2);
+		//	};
+		//};
+
+		// split to date month year
+		var tmp = this._strgebdat.split(/[-/\\.]+/);
+
+		// day cannot be larger than 31
+		if (tmp.length == 1) {
+			if ( (tmp[0] > 31) || (tmp[0].length > 2) ) {
+				tmp[1] = tmp[0].substring(tmp[0].length-1, tmp[0].length);
+				tmp[0] = tmp[0].substring(0, tmp[0].length-1);
+				this._strgebdat = tmp[0] + "-" + tmp[1];
+			};
+		};
+		
+		// month cannot be larger than 12
+		if (tmp.length == 2) {
+			if ( (tmp[1] > 12) || (tmp[1].length > 2) ) {
+				tmp[2] = tmp[1].substring(tmp[1].length-1, tmp[1].length);
+				tmp[1] = tmp[1].substring(0, tmp[1].length-1);
+				this._strgebdat = tmp[0] + "-" + tmp[1] + "-" + tmp[2];
+			};
+		};
+
+		// user entered a date month year
+		if (tmp.length >= 3) {
+			// cut off any typing after 4 characters in year
+			if (tmp[2].length > 4) tmp[2] = tmp[2].substring(0, 4);
+		};
+
+		// get date month year parts
+		var d = parseInt(tmp[0]);
+		var m = parseInt(tmp[1]);
+		var y = parseInt(tmp[2]);
+		d = (!isNaN(d) ? d : 31);
+		m = (!isNaN(m) ? m : 12);
+		y = (!isNaN(y) ? y : 2010);
+		// check year
+		if (y < 100) y = y + 2000;
+		while (y > 2020) y = y - 100;
+		while (y < 1900) y = y + 100;
+
+		this._dtgebdat = new Date(y, m-1, d);
+
+			// typing the year is complete
+		if (tmp.length >= 3) {
+			if (tmp[2].length == 4) {
+				console.log("ok");
+				this.refreshDate();
+			};
+		} else {
+			this._txtgebdat.text = this._strgebdat;
+		};
+	},
+	
 	getDeelnemer: function() {
 
 		// build url
 		var url = PKU_URL + "get_dn.php?studynr=" + this._strstudynr;
+		
+		// also date
+		if (this._loginpart == 2) {
+			// date format yyyy-mm-dd
+			var dob = this._dtgebdat.getFullYear().toString() + "-" + ("0" + (this._dtgebdat.getMonth()+1)).slice(-2) + "-" + ("0" + (this._dtgebdat.getDate())).slice(-2);
+			url = url + "&dob=" + dob;
+		};
 
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.open('GET', url, true);
@@ -164,21 +398,33 @@ var LoginScreen = new Phaser.Class({
 	
     errorDeelnemer: function(sta, txt)
     {
-		// clear code
-		this._strstudynr = "";
-		this._txtstudynr.text = "";
+		// update inlog code
+		if (this._loginpart == 1) {
+			// clear code
+			this._strstudynr = "";
+			this._txtstudynr.text = "";
 
+			// shake if error
+			this.shakeContainer(this._cntLogin1);
+		} else {
+			// shake if error
+			this.shakeContainer(this._cntLogin2);
+		};
+	},
+
+    shakeContainer: function(cnt)
+    {
 		// shake if error
 		var timeline = this.tweens.createTimeline();
-		timeline.add({targets: this._cntButtons, x: 0+8,  ease: 'Power1', duration: 40});
-		timeline.add({targets: this._cntButtons, x: 0-8,  ease: 'Power1', duration: 40});
-		timeline.add({targets: this._cntButtons, x: 0+6,  ease: 'Power1', duration: 40});
-		timeline.add({targets: this._cntButtons, x: 0-6,  ease: 'Power1', duration: 40});
-		timeline.add({targets: this._cntButtons, x: 0+4,  ease: 'Power1', duration: 40});
-		timeline.add({targets: this._cntButtons, x: 0-4,  ease: 'Power1', duration: 40});
-		timeline.add({targets: this._cntButtons, x: 0+2,  ease: 'Power1', duration: 40});
-		timeline.add({targets: this._cntButtons, x: 0-2,  ease: 'Power1', duration: 40});
-		timeline.add({targets: this._cntButtons, x: 0,    ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0+8,  ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0-8,  ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0+6,  ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0-6,  ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0+4,  ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0-4,  ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0+2,  ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0-2,  ease: 'Power1', duration: 40});
+		timeline.add({targets: cnt, x: 0,    ease: 'Power1', duration: 40});
 		timeline.play();
 	},
 
@@ -198,13 +444,32 @@ var LoginScreen = new Phaser.Class({
 		} else {
 			// valid new deelnemer
 			globalvar.studynr = this._strstudynr;
+			globalvar.game = gameparts[0].game;
+			globalvar.game_part = gameparts[0].part;
 
-			if (gameparts[0].game == 0) {
-				// new deelnemer
-				this.scene.start("mainmenu");
+			// reset max practice counter for next game
+			globalvar.practisecount = 0;
+
+			// update inlog code
+			if (this._loginpart == 1) {
+				// move to date part
+				this._loginpart = 2;
+				// move screens
+				this.moveScene(this._cntLogin1, MENU_EXIT_LEFT);
+				this.moveScene(this._cntLogin2, MENU_ENTER_RIGHT);
 			} else {
-				// continue game at last part
-				this.scene.start("gamesave");
+				// both studynr and gebdat corrent
+				if ( (gameparts[0].game >= 4) && (gameparts[0].game_part >= 4) ) {
+					// alles al afgerond
+					this.scene.start("gameend");
+				} else {
+					// continue game at start
+					this.scene.start("mainmenu");
+				};
+				//} else {
+				//	// continue game at last part
+				//	this.scene.start("gamesave");
+				//};
 			};
 		}
     }
