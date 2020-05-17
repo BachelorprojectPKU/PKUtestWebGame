@@ -23,7 +23,7 @@ var MainMenu = new Phaser.Class({
 
 		// --- start message ---
 		this._cntWelcome  = this.add.container();
-		var txttut1 = this.add.bitmapText(60, 120, "fontwhite", "Welkom,\nWe vragen jou 4 korte computer testen in te vullen, zodat de dokter kan zien\nhoe het met je gaat als je straks naar de poli komt.\n\nHet is belangrijk dat je op dit moment in een rustige kamer zit\nwaar je niet gestoord kunt worden.\nJe kunt namelijk alleen tussen de testjes door even stoppen.\n\nHet maken van de testjes duurt ongeveer 30 minuten.\n\nProbeer de testjes zo snel maar vooral ook zo goed mogelijk te doen.\n\nAls je er klaar voor bent om te beginnen, mag je op de rode startknop drukken. ", 24);
+		var txttut1 = this.add.bitmapText(60, 120, "fontwhite", "Welkom,\nWe vragen jou 4 korte computer testen in te vullen, zodat de dokter kan zien\nhoe het met je gaat als je straks naar de poli komt.\n\nHet is belangrijk dat je op dit moment in een rustige kamer zit\nwaar je niet gestoord kunt worden.\nJe kunt namelijk alleen tussen de testjes door even stoppen.\n\nHet maken van de testjes duurt ongeveer 30 minuten.\n\nProbeer de testjes zo snel maar vooral ook zo goed mogelijk te doen.\n\nAls je er klaar voor bent om te beginnen, mag je op de startknop drukken. ", 24);
 		
 		this.btnstart = this.addButtonText(GAME_WIDTH_CENTER,     GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1",  "START");
 
@@ -34,7 +34,7 @@ var MainMenu = new Phaser.Class({
 		// --- dominante hand ---
 		this._cntDominant = this.add.container();
 
-		var txtdom1 = this.add.bitmapText(GAME_WIDTH_CENTER, 120, "fontwhite", "Ben je links of rechtshandig?", 24);
+		var txtdom1 = this.add.bitmapText(GAME_WIDTH_CENTER, 120, "fontwhite", "Ben je links- of rechtshandig?", 24);
 		var txtdom2 = this.add.bitmapText(GAME_WIDTH_CENTER, 120+40, "fontwhite", "De hand waarmee jij schrijf is je DOMINANTE hand", 24);
 
 		txtdom1.setOrigin(0.5).setCenterAlign();

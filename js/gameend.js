@@ -39,7 +39,7 @@ var GameEnd = new Phaser.Class({
 			btn = "Volgende";
 		} else {
 			// game 4
-			str = "Dat was alweer de laatste van de 4 testen. \n\nJe kan nu de browser of dit tabblad afsluiten.\n\nBedankt voor het meedoen :)";
+			str = "Je hebt alle onderdelen van de test afgerond.\n\nJe kan nu de browser of dit tabblad afsluiten.\n\nBedankt voor het meedoen :)";
 			btn = "Afsluiten";
 		};
 
