@@ -484,6 +484,7 @@ var LoginScreen = new Phaser.Class({
 		} catch (e) {
 			gameparts = [{"game": -1, "part": -1}]; //error in the above string(in this case,yes)!
 		};
+		debugger;
         console.log("startDeelnemer was called!");
 
 		// save participant code
@@ -509,7 +510,7 @@ var LoginScreen = new Phaser.Class({
 				this.moveScene(this._cntLogin2, MENU_ENTER_RIGHT);
 			} else {
 				// both studynr and gebdat corrent
-				if ( (gameparts[0].game >= 4) && (gameparts[0].game_part >= 4) ) {
+				if ( (gameparts[0].game >= 4) && (gameparts[0].part >= 4) ) {
 					// alles al afgerond
 					this.scene.start("gameend");
 				} else {
