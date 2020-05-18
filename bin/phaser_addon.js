@@ -46,19 +46,22 @@ Phaser.Scene.prototype.addButtonText = function(x, y, key, callback, callbackCon
 		btn.on('pointerdown', function (ptr)       { this.setScale(0.96, 0.96) } );
 		//btn.on('pointerup', callback.bind(callbackContext));
 		btn.on('pointerup',   function (ptr, x, y) {
-			debugger;
 			this.ondowncallback.call(this.ctx, this);
 			} );
 		
 		return btn;
 };
 
+
+var MENU_ENTER_LEFT  = 1;
+var MENU_ENTER_RIGHT = 2;
+var MENU_EXIT_LEFT   = 3;
+var MENU_EXIT_RIGHT  = 4;
+
 // move container in a scene
 // navigate between different GUI parts
 Phaser.Scene.prototype.moveScene = function(cntScene, iMoveCode, xOffset)
 {
-	debugger;
-
 	// xOffset is optional
 	if (typeof xOffset === "undefined") xOffset = 0;
 	// set move values

@@ -26,10 +26,13 @@ var LoginScreen = new Phaser.Class({
 
     create: function()
     {
+		this._sysyear = new Date().getFullYear();
+		this._loginfail = 0;
+
 		this._loginpart = 1; // 1=studynr, 2=date of birth
 		this._strstudynr = "";
 		this._strgebdat = "";
-		this._dtgebdat = new Date(2010, 12-1, 31);
+		this._dtgebdat = new Date(this._sysyear-10, 12-1, 31);
 
 		// add logo
         var logo = this.add.sprite(GAME_WIDTH_CENTER, 60, "sprites", "pkulogo");
@@ -67,9 +70,12 @@ var LoginScreen = new Phaser.Class({
 			this._cntLogin1.add(btn);
 		};
 
+		var btncredits = this.addButtonText(60, GAME_HEIGHT-60, "sprites", this.doCredits, this, "info_icon", "info_icon2", "info_icon", "info_icon2", "");
+
 		// add all to container
 		this._cntLogin1.add(txt1);
 		this._cntLogin1.add(rec1);
+		this._cntLogin1.add(btncredits);
 		this._cntLogin1.add(this._txtstudynr);
 		
 		// --- tutorial message 2 ---
@@ -106,6 +112,23 @@ var LoginScreen = new Phaser.Class({
 		this._cntLogin2.add(btnyear2);
 		this._cntLogin2.add(btnlogin);
 
+		// --- credits colofon ---
+		this._cntCredits = this.add.container();
+		
+		var rec3 = createRectangle(this, 240, 120, 480, 400, 0xffffff, 1.0);
+        var ruglogo = this.add.sprite(240+140, 120+40, "sprites", "ruglogo");
+
+		//var txt3 = this.add.bitmapText(210+40, 120+80, "fontwhite", "Bachelorstudenten\nLuna Beute\nAllysa Dijkstra\nIris Stroot\n\nTechnische ondersteuning\nBas de Reuver", 24);
+		var txt3 = this.add.text(240+60, 120+90, "Contact informatie onderzoekers\n  pkuonderzoek@rug.nl\n  050-1234567\n\nBachelorstudenten\n  Luna Beute\n  Allysa Dijkstra\n  Iris Stroot\n\nTechnische ondersteuning\n  Bas de Reuver", { font: "24px Arial", fill: "#000000" });
+
+		//txt3.setOrigin(0.5).setCenterAlign();
+		var btncreditok = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doExitCredits, this, "button_s2",   "button_s1",   "button_s2",   "button_s1",   "Ok");
+
+		this._cntCredits.add(rec3);
+		this._cntCredits.add(ruglogo);
+		this._cntCredits.add(txt3);
+		this._cntCredits.add(btncreditok);
+
 		// key input handler
 		this.input.keyboard.on('keydown', this.doLoginKeyDown, this);
 		//this.input.keyboard.on('keyup',   this.doLoginKeyUp, this);
@@ -116,6 +139,7 @@ var LoginScreen = new Phaser.Class({
 		// only login panel visible
 		//this._cntLogin1.visible = false;
 		this._cntLogin2.visible = false;
+		this._cntCredits.visible = false;
 
 		console.log("LoginScreen create is ready");
     },
@@ -144,6 +168,24 @@ var LoginScreen = new Phaser.Class({
 		// move screens
 		this.moveScene(this._cntLogin1, MENU_EXIT_LEFT);
 		this.moveScene(this._cntLogin2, MENU_ENTER_RIGHT);
+    },
+	
+	doCredits: function()
+    {
+        console.log("doCredits was called!");
+		this._loginpart = 0; // block keyboard input
+		// move screens
+		this.moveScene(this._cntCredits, MENU_ENTER_LEFT);
+		this.moveScene(this._cntLogin1,  MENU_EXIT_RIGHT);
+    },
+
+	doExitCredits: function()
+    {
+        console.log("doExitCredits was called!");
+		this._loginpart = 1; // 0=credits, 1=studynr, 2=date of birth
+		// move screens
+		this.moveScene(this._cntLogin1, MENU_ENTER_RIGHT);
+		this.moveScene(this._cntCredits, MENU_EXIT_LEFT);
     },
 
     doDigit: function(cnt)
@@ -195,8 +237,8 @@ var LoginScreen = new Phaser.Class({
 		// adjust year
 		if (part == "year") {
 			var year = this._dtgebdat.getFullYear() + num;
-			if (year < 1900) year = 2050;
-			if (year > 2050) year = 1900;
+			if (year < this._sysyear-100) year = this._sysyear;
+			if (year > this._sysyear)     year = this._sysyear-100;
 			this._dtgebdat = new Date(this._dtgebdat.setFullYear(year));
 		};
 
@@ -235,7 +277,7 @@ var LoginScreen = new Phaser.Class({
 			// 1=studynr, 2=date of birth
 			if (this._loginpart == 1) {
 				this.doLoginInput(i);
-			} else {
+			} else if (this._loginpart == 2) {
 				this.doDateInput(i);
 			};
 		};
@@ -252,11 +294,13 @@ var LoginScreen = new Phaser.Class({
 		};
 
 		// enter/return
-		if (evt.keyCode == 13) {
-			this.doLoginInput(99);
-			//if (this._strstudynr.length == 5) {
-			//	this.doStart();
-			//};
+		if (this._loginpart != 0) {
+			if (evt.keyCode == 13) {
+				this.doLoginInput(99);
+				//if (this._strstudynr.length == 5) {
+				//	this.doStart();
+				//};
+			};
 		};
 	},
 	
@@ -345,11 +389,11 @@ var LoginScreen = new Phaser.Class({
 		var y = parseInt(tmp[2]);
 		d = (!isNaN(d) ? d : 31);
 		m = (!isNaN(m) ? m : 12);
-		y = (!isNaN(y) ? y : 2010);
+		y = (!isNaN(y) ? y : this._sysyear-10);
 		// check year
 		if (y < 100) y = y + 2000;
-		while (y > 2020) y = y - 100;
-		while (y < 1900) y = y + 100;
+		while (y > this._sysyear)     y = y - 100;
+		while (y < this._sysyear-100) y = y + 100;
 
 		this._dtgebdat = new Date(y, m-1, d);
 
@@ -398,6 +442,8 @@ var LoginScreen = new Phaser.Class({
 	
     errorDeelnemer: function(sta, txt)
     {
+		this._loginfail++;
+		
 		// update inlog code
 		if (this._loginpart == 1) {
 			// clear code
@@ -410,6 +456,9 @@ var LoginScreen = new Phaser.Class({
 			// shake if error
 			this.shakeContainer(this._cntLogin2);
 		};
+
+		//if (this._loginfail > 5) {
+		//};
 	},
 
     shakeContainer: function(cnt)
@@ -454,6 +503,7 @@ var LoginScreen = new Phaser.Class({
 			if (this._loginpart == 1) {
 				// move to date part
 				this._loginpart = 2;
+				this._loginfail = 0;
 				// move screens
 				this.moveScene(this._cntLogin1, MENU_EXIT_LEFT);
 				this.moveScene(this._cntLogin2, MENU_ENTER_RIGHT);

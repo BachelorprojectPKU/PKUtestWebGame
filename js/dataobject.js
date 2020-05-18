@@ -9,7 +9,7 @@ var CONST_RIGHT = 1;
 
 var MAX_PRACTISE = 3; // limit times person can practise
 var MAX_TIMEOUTS = 1; // max. allowed timeouts before quiting
-var TIMEOUT_DELAY = 3000; // when no input game-timeout after 10 seconds
+var TIMEOUT_DELAY = 10000; // when no input game-timeout after 10 seconds
 
 var BACKGROUND_BLUE = '#4a86e8';
 var BACKGROUND_BLACK = '#000000';
