@@ -258,13 +258,16 @@ var PKUgame4 = new Phaser.Class({
     {
         console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
 
-		// coded result, example HAPok, ANGok, SADer etc.
-		var cod = (this._emotions[this._face_idx]).toUpperCase().substring(0, 3)
-				+ (cor ? "ok" : "er");
+		// when pressed too early, keep that result and don't overwrite
+		if (typeof this._times[this.game_repeat] === "undefined") {
+			// coded result, example HAPok, ANGok, SADer etc.
+			var cod = (this._emotions[this._face_idx]).toUpperCase().substring(0, 3)
+					+ (cor ? "ok" : "er");
 
-		// game results and times
-		this._results[this.game_repeat] = cod;
-		this._times[this.game_repeat]  = msec;
+			// game results and times
+			this._results[this.game_repeat] = cod;
+			this._times[this.game_repeat]  = msec;
+		};
 	},
 
     doGameEnd: function()
@@ -275,16 +278,17 @@ var PKUgame4 = new Phaser.Class({
 			this.scene.start("bumper");
 		} else {
 			// save results
-			PkuData.saveResults(globalvar.game, globalvar.game_part, this._times, this._results);
+			var data  = {"times": this._times, "results": this._results};
+			this.scene.start("gamesave", data);
 
 			// next emotion
-			globalvar.game_part++;
-			if (globalvar.game_part <= 4) {
-				this.scene.start("tutorial4");
-			} else {
-				// alle emotions afgerond, eind scherm test 4
-				this.scene.start("gameend");
-			};
+			//globalvar.game_part++;
+			//if (globalvar.game_part <= 4) {
+			//	this.scene.start("tutorial4");
+			//} else {
+			//	// alle emotions afgerond, eind scherm test 4
+			//	this.scene.start("gameend");
+			//};
 		};
     }
 

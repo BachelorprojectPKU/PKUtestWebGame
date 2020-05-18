@@ -221,9 +221,11 @@ var PKUgame1 = new Phaser.Class({
     {
         console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
 		
-		// game results and times
-		//this._results[this.game_repeat] = ??;
-		this._times[this.game_repeat]  = msec;
+		// when pressed too early, keep that result and don't overwrite
+		if (typeof this._times[this.game_repeat] === "undefined") {
+			// store game results and times
+			this._times[this.game_repeat]  = msec;
+		};
 	},
 
     doGameEnd: function()

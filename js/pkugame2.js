@@ -259,14 +259,17 @@ var PKUgame2 = new Phaser.Class({
     {
         console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
 
-		// coded result, example LE1ok, LE2ok, RI1er, RI2ni etc.
-		var cod = (this.expect_btn == CONST_LEFT ? "LE" : "RI")
-				+ (this.square_col+1)
-				+ (cor ? "ok" : "er");
+		// when pressed too early, keep that result and don't overwrite
+		if (typeof this._times[this.game_repeat] === "undefined") {
+			// coded result, example LE1ok, LE2ok, RI1er, RI2ni etc.
+			var cod = (this.expect_btn == CONST_LEFT ? "LE" : "RI")
+					+ (this.square_col+1)
+					+ (cor ? "ok" : "er");
 
-		// game results and times
-		this._results[this.game_repeat] = cod;
-		this._times[this.game_repeat]  = msec;
+			// game results and times
+			this._results[this.game_repeat] = cod;
+			this._times[this.game_repeat]  = msec;
+		};
 	},
 
     doGameEnd: function()
@@ -277,16 +280,17 @@ var PKUgame2 = new Phaser.Class({
 			this.scene.start("bumper");
 		} else {
 			// save results
-			PkuData.saveResults(globalvar.game, globalvar.game_part, this._times, this._results);
+			var data  = {"times": this._times, "results": this._results};
+			this.scene.start("gamesave", data);
 
 			// next part: groen, rood, groen+rood
-			globalvar.game_part++;
-			if (globalvar.game_part <= 3) {
-				this.scene.start("tutorial2");
-			} else {
-				// dominant hand afgerond, eind scherm test 2
-				this.scene.start("gameend");
-			};
+			//globalvar.game_part++;
+			//if (globalvar.game_part <= 3) {
+			//	this.scene.start("tutorial2");
+			//} else {
+			//	// dominant hand afgerond, eind scherm test 2
+			//	this.scene.start("gameend");
+			//};
 		};
     }
 

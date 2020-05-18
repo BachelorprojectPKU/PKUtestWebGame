@@ -289,13 +289,16 @@ var PKUgame3 = new Phaser.Class({
     {
         console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
 		
-		// coded result, example SIMok, DISok, SIMer, DISni etc.
-		var cod = (this.game_similar == 1 ? "SIM" : "DIS")
-				+ (cor ? "ok" : "er");
+		// when pressed too early, keep that result and don't overwrite
+		if (typeof this._times[this.game_repeat] === "undefined") {
+			// coded result, example SIMok, DISok, SIMer, DISni etc.
+			var cod = (this.game_similar == 1 ? "SIM" : "DIS")
+					+ (cor ? "ok" : "er");
 
-		// game results and times
-		this._results[this.game_repeat] = cod;
-		this._times[this.game_repeat]  = msec;
+			// game results and times
+			this._results[this.game_repeat] = cod;
+			this._times[this.game_repeat]  = msec;
+		};
 	},
 
     doGameEnd: function()
@@ -306,16 +309,17 @@ var PKUgame3 = new Phaser.Class({
 			this.scene.start("bumper");
 		} else {
 			// save results
-			PkuData.saveResults(globalvar.game, globalvar.game_part, this._times, this._results);
+			var data  = {"times": this._times, "results": this._results};
+			this.scene.start("gamesave", data);
 
 			// next part: geen next part voor deze game3
-			globalvar.game_part++;
-			if (globalvar.game_part <= 1) {
-				this.scene.start("tutorial3");
-			} else {
-				// test afgerond, eind scherm test 3
-				this.scene.start("gameend");
-			};
+			//globalvar.game_part++;
+			//if (globalvar.game_part <= 1) {
+			//	this.scene.start("tutorial3");
+			//} else {
+			//	// test afgerond, eind scherm test 3
+			//	this.scene.start("gameend");
+			//};
 		};
     }
 
