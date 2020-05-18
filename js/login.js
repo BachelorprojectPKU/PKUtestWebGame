@@ -484,7 +484,7 @@ var LoginScreen = new Phaser.Class({
 		} catch (e) {
 			gameparts = [{"game": -1, "part": -1}]; //error in the above string(in this case,yes)!
 		};
-		debugger;
+
         console.log("startDeelnemer was called!");
 
 		// save participant code
