@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+	<head>
+		<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+		
+		<title>Geneeskunde data files</title>
+		<style type='text/css'>
+			body {font-family: calibri, optima, arial, 'lucida grande', helvetica, sans-serif;}
+		</style>
+	</head>
+	<script>
+		var PKU_URL = "../";
+
+		var globalvar = {
+			studynr: "12099", // participant code
+			dominant: 1, // 0=left hand, 1=right hand
+			practise: true,
+			game: 1,
+			game_part: 1
+		};
+
+		function randomInteger(min, max) {
+			max = max - min + 1;
+			var r = Math.floor(Math.random() * max) + min;
+			return r;
+		}
+		
+		function validateTextStudynr() {
+			// max 10 characters
+			var studynr = document.getElementById("txtstudynr").value;
+			document.getElementById("txtstudynr").value = studynr.substring(0, 10);
+			
+			document.getElementById("txtfeedback").innerHTML = "...";
+		}
+
+		function validateTextDOB() {
+
+			var dt = MyStringToDate(document.getElementById("txtdob").value);
+			document.getElementById("txtdob").value = ("0" + (dt.getDate())).slice(-2) + "-" + ("0" + (dt.getMonth()+1)).slice(-2) + "-" + dt.getFullYear().toString();
+			
+			document.getElementById("txtfeedback").innerHTML = "...";
+		}
+
+		
+		function MyStringToDate(str) {
+			
+			// split to date month year
+			var tmp = str.split(/[-/\\.]+/);
+
+			// day cannot be larger than 31
+			if (tmp.length == 1) {
+				if ( (tmp[0] > 31) || (tmp[0].length > 2) ) {
+					tmp[1] = tmp[0].substring(tmp[0].length-1, tmp[0].length);
+					tmp[0] = tmp[0].substring(0, tmp[0].length-1);
+					str = tmp[0] + "-" + tmp[1];
+				};
+			};
+			
+			// month cannot be larger than 12
+			if (tmp.length == 2) {
+				if ( (tmp[1] > 12) || (tmp[1].length > 2) ) {
+					tmp[2] = tmp[1].substring(tmp[1].length-1, tmp[1].length);
+					tmp[1] = tmp[1].substring(0, tmp[1].length-1);
+					str = tmp[0] + "-" + tmp[1] + "-" + tmp[2];
+				};
+			};
+
+			// user entered a date month year
+			if (tmp.length >= 3) {
+				// cut off any typing after 4 characters in year
+				if (tmp[2].length > 4) tmp[2] = tmp[2].substring(0, 4);
+			};
+
+			// get date month year parts
+			var d = parseInt(tmp[0]);
+			var m = parseInt(tmp[1]);
+			var y = parseInt(tmp[2]);
+			d = (!isNaN(d) ? d : 31);
+			m = (!isNaN(m) ? m : 12);
+			y = (!isNaN(y) ? y : 2010);
+			// check year
+			if (y < 100) y = y + 2000;
+			while (y > 2020) y = y - 100;
+			while (y < 1900) y = y + 100;
+
+			var dt = new Date(y, m-1, d);
+			
+			return dt;
+		}
+
+		function addUpdateDeelnemer() {
+		
+			// get parameters
+			var studynr = document.getElementById("txtstudynr").value;
+			var strdob = document.getElementById("txtdob").value;
+			var dt = MyStringToDate(strdob);
+			
+			document.getElementById("txtfeedback").innerHTML = "...";
+
+			var msg = "Deelnemer " + studynr + " (gebdat " + strdob + ") toevoegen of bijwerken, zeker weten?";
+			if (confirm(msg)) {
+				var dob = dt.getFullYear().toString() + "-" + ("0" + (dt.getMonth()+1)).slice(-2) + "-" + ("0" + (dt.getDate())).slice(-2);
+				updateDeelnemer(studynr, dob);
+			};
+		}
+
+		function updateDeelnemer(dn, dob) {
+			// build url
+			var url = PKU_URL + "new_dn.php";
+			
+			// parameters
+			var paramsdata = 
+				"studynr=" + dn +
+				"&dob=" + dob;
+
+			var request = new XMLHttpRequest();
+			request.open('POST', url, true);
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			//request.setRequestHeader("Content-length", paramsdata.length);
+			//request.setRequestHeader("Connection", "close");
+
+			// handle success or error
+			request.onreadystatechange = function(receiveddata) {
+				if (request.status >= 200 && request.status < 400) {
+					if (request.readyState == 4 && request.status == 200) {
+						// Success!
+						// here you could go to the leaderboard or restart your game
+						console.log('SUCCESS!!\nrequest.status='+ request.status + '\nrequest.response=' + request.response);
+						var getjson = JSON.parse(request.response);
+						if (getjson.result == 'OK') {
+							console.log('results sent succesfully');
+							// show success
+							document.getElementById("txtfeedback").innerHTML = "ok, update successful";
+						} else {
+							// show error
+							console.log('game results sent failed');
+							document.getElementById("txtfeedback").innerHTML = "error, update failed";
+						};
+					};
+				} else {
+					// We reached our target server, but it returned an error
+					console.log('game score sent failed with error ' + request.status + ': ' + request.statusText);
+				}
+			}.bind(this); // <- only change
+
+			//paramsdata = getUserAgentParams();
+			request.send(paramsdata);
+		}
+	</script>
+	<body>
+		<p><b>Geneeskunde data files</b><br>
+		Downloaden en openen in SPSS.<br>
+		</p>
+		
+		<p>
+		<a href="../csv_deelnemer.php">deelnemer.csv</a><br>
+		<a href="../csv_game1.php">game1bs.csv</a><br>
+		<a href="../csv_game2.php">game2ssv.csv</a><br>
+		<a href="../csv_game3.php">game3fi.csv</a><br>
+		<a href="../csv_game4.php">game4ife.csv</a><br>
+		</p>
+		
+		<p><b>Deelnemer toevoegen/bijwerken</b><br>
+		Deelnemer <input id="txtstudynr" value="12345" onfocusout="validateTextStudynr()"> (max 10 cijfers)<br />
+		Geboortedatum <input id="txtdob" value="07-08-2009" onfocusout="validateTextDOB()"> (dd-mm-yyyy)<br />
+		<button onclick="addUpdateDeelnemer(); return false;" >add/update</button>
+		<div id="txtfeedback">...</div>
+		<br />
+		</p>
+		
+		
+	</body>
+</html>
