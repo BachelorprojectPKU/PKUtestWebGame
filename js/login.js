@@ -45,7 +45,10 @@ var LoginScreen = new Phaser.Class({
 
 		var txt1 = this.add.bitmapText(GAME_WIDTH_CENTER, 120, "fontwhite", "Geef hieronder je studienummer op om te beginnen.", 24);
 		txt1.setOrigin(0.5).setCenterAlign();
-		
+
+		this._txterror = this.add.bitmapText(GAME_WIDTH_CENTER, GAME_HEIGHT-32, "fontwhite", "", 24);
+		this._txterror.setOrigin(0.5).setCenterAlign();
+
 		var rec1 = createRectangle(this, 360, 192, 224, 64, 0x000040, 1.0);
 	
 		//this._txtstudynr = this.add.bitmapText(320, 160, "fontwhite", "", 24);
@@ -75,6 +78,7 @@ var LoginScreen = new Phaser.Class({
 		// add all to container
 		this._cntLogin1.add(txt1);
 		this._cntLogin1.add(rec1);
+		this._cntLogin1.add(this._txterror);
 		this._cntLogin1.add(btncredits);
 		this._cntLogin1.add(this._txtstudynr);
 		
@@ -255,7 +259,7 @@ var LoginScreen = new Phaser.Class({
 
     doLoginKeyDown: function(evt) {
 		console.log('doKeyDown -- evt.keyCode=' + evt.keyCode);
-		
+
 		var i = -99;
 		// press number 0..9 (asc 48..57)
 		if ( (evt.keyCode >= 48) &&  (evt.keyCode <= 57) ) {
@@ -307,6 +311,9 @@ var LoginScreen = new Phaser.Class({
     doLoginInput: function(dig) {
 		console.log("doLoginInput dig=" + dig);
 		
+		// clear any previous error messages
+		this._txterror.text = "";
+
 		// date login button
 		if (isNaN(dig)) dig = 99;
 
@@ -450,6 +457,12 @@ var LoginScreen = new Phaser.Class({
 			this._strstudynr = "";
 			this._txtstudynr.text = "";
 
+			// display any xmlHttp.status other than -1 (=deelnemer not found in database) to troubleshoot server/connection problems
+			if (sta > -1) {
+				if (txt == "") txt = "unknown server error";
+				this._txterror.text = sta + ": " + txt;
+			};
+
 			// shake if error
 			this.shakeContainer(this._cntLogin1);
 		} else {
@@ -484,7 +497,6 @@ var LoginScreen = new Phaser.Class({
 		} catch (e) {
 			gameparts = [{"game": -1, "part": -1}]; //error in the above string(in this case,yes)!
 		};
-
         console.log("startDeelnemer was called!");
 
 		// save participant code
