@@ -79,7 +79,7 @@ var PKUgame2 = new Phaser.Class({
 		this.waitevent = null;
 
 		// !! TESTING !!
-		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "debug:", 24);
+		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "", 24);
  
 		// start game
 		this.doStartSquare();
@@ -236,23 +236,23 @@ var PKUgame2 = new Phaser.Class({
 	
     debugTextGame2: function(ms, cr)
     {
-		var txt = "debug: part " + globalvar.game_part + " moved ";
-
-		if (this.gamestate == -1) {
-			txt = txt + "?? TOO EARLY!!"
-		} else {
-			txt = txt + (this.square_dir == CONST_LEFT ? "left" : "right") + " press " + (this.expect_btn == CONST_LEFT ? "left" : "right");
-		};
-		
-		if (typeof cr !== "undefined") {
-			txt = txt + " " + (cr ? "OK" : "INCORRECT");
-		};
-
-		if (typeof ms !== "undefined") {
-			txt = txt + " msec=" + ms;
-		};
-
-		this.debugtxt.text = txt;
+		//var txt = "debug: part " + globalvar.game_part + " moved ";
+		//
+		//if (this.gamestate == -1) {
+		//	txt = txt + "?? TOO EARLY!!"
+		//} else {
+		//	txt = txt + (this.square_dir == CONST_LEFT ? "left" : "right") + " press " + (this.expect_btn == CONST_LEFT ? "left" : "right");
+		//};
+		//
+		//if (typeof cr !== "undefined") {
+		//	txt = txt + " " + (cr ? "OK" : "INCORRECT");
+		//};
+		//
+		//if (typeof ms !== "undefined") {
+		//	txt = txt + " msec=" + ms;
+		//};
+		//
+		//this.debugtxt.text = txt;
 	},
 
     doGameResult: function(msec, cor)

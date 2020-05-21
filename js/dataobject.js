@@ -2,41 +2,42 @@
 // JavaScript object to handle all data
 // use global variable for use in all scenes
 
-var PKU_URL = "http://bdrgames.nl/geneeskunde/php/";
+//var PKU_URL = "http://bdrgames.nl/geneeskunde/php/";
+var PKU_URL = "php/";
 
 var CONST_LEFT = 0;
 var CONST_RIGHT = 1;
 
-var MAX_PRACTISE = 3; // limit times person can practise
+var MAX_PRACTISE = 2; // limit times person can practise
 var MAX_TIMEOUTS = 1; // max. allowed timeouts before quiting
-var TIMEOUT_DELAY = 10000; // when no input game-timeout after 10 seconds
+var TIMEOUT_DELAY = 30000; // when no input game-timeout after 10 seconds
 
 var BACKGROUND_BLUE = '#4a86e8';
 var BACKGROUND_BLACK = '#000000';
 
-//var GAME1_REPEAT = 32;
-//var GAME2_REPEAT = 32;
-//var GAME3_REPEAT = 80;
-//var GAME4_REPEAT = 40;
-//var GAME1_REPEAT_PRACTISE = 10;
-//var GAME2_REPEAT_PRACTISE = 10;
-//var GAME3_REPEAT_PRACTISE = 12;
-//var GAME4_REPEAT_PRACTISE = 10;
+var GAME1_REPEAT = 32;
+var GAME2_REPEAT = 32;
+var GAME3_REPEAT = 80;
+var GAME4_REPEAT = 40;
+var GAME1_REPEAT_PRACTISE = 10;
+var GAME2_REPEAT_PRACTISE = 10;
+var GAME3_REPEAT_PRACTISE = 10;
+var GAME4_REPEAT_PRACTISE = 10;
 
 // !! TESTING !!
-var GAME1_REPEAT = 10;
-var GAME2_REPEAT = 10;
-var GAME3_REPEAT = 10;
-var GAME4_REPEAT = 10;
-var GAME1_REPEAT_PRACTISE = 5;
-var GAME2_REPEAT_PRACTISE = 5;
-var GAME3_REPEAT_PRACTISE = 5;
-var GAME4_REPEAT_PRACTISE = 5;
+//var GAME1_REPEAT = 10;
+//var GAME2_REPEAT = 10;
+//var GAME3_REPEAT = 10;
+//var GAME4_REPEAT = 10;
+//var GAME1_REPEAT_PRACTISE = 5;
+//var GAME2_REPEAT_PRACTISE = 5;
+//var GAME3_REPEAT_PRACTISE = 5;
+//var GAME4_REPEAT_PRACTISE = 5;
 // !! TESTING !!
 
 
 var globalvar = {
-	studynr: "998877", // participant code
+	studynr: "0", // participant code
 	dominant: 1, // 0=left hand, 1=right hand
 	practise: true,
 	practisecount: 0,

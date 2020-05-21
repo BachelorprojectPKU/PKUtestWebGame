@@ -26,7 +26,10 @@ var Tutorial2 = new Phaser.Class({
 		// set global variables
 		globalvar.practise = true;
 		globalvar.game = 2;
+
 		//globalvar.game_part = 1; // game_part is updated in GameEnd scene
+		// !! TESTING !!
+		//globalvar.game_part = 3;
     },
 
     create: function()
@@ -37,36 +40,65 @@ var Tutorial2 = new Phaser.Class({
 
 		// --- tutorial message 1 ---
 		this._cntTutor1 = this.add.container();
-		var txt1 = this.add.bitmapText(60, 120,     "fontwhite", "Nu gaan we beginnen met test 2. Deze test bestaat uit 3 delen.\nHier gaan we kijken hoe goed jij je aandacht bij een spel kan houden.", 24);
-		var txt2 = this.add.bitmapText(60, 120+60,  "fontwhite", "In deze test zie je een balk die bestaat uit 10 blokjes.\n1 van deze blokjes is gekleurd en springt willekeurig naar links of rechts.", 24);
-		var txt3 = this.add.bitmapText(60, 120+120, "fontwhite", "We maken hierbij gebruik van de LINKS (Z) en de RECHTS (M) knop.", 24);
-		var btn1 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext1,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "Verder");
+		
+		var msg1 = "Nu gaan we beginnen met test 2. Deze test bestaat uit 3 delen.\n";
+		msg1 += "Hier gaan we kijken hoe goed jij je aandacht bij een spel kan houden.\n\n";
+		msg1 += "In deze test zie je een balk die bestaat uit 10 blokjes.\n";
+		msg1 += "1 van deze blokjes is gekleurd en springt willekeurig naar links of rechts.\n\n";
+		msg1 += "We maken hierbij gebruik van de LINKS (Z) en de RECHTS (M) knop.";
+
+		var txt1 = this.add.bitmapText(60, 120, "fontwhite", msg1, 24);
+		var btn1 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext1, this, "button_s2", "button_s1", "button_s2", "button_s1", "Verder");
 
 		// add all to container
 		this._cntTutor1.add(txt1);
-		this._cntTutor1.add(txt2);
-		this._cntTutor1.add(txt3);
 		this._cntTutor1.add(btn1);
 
 		// --- tutorial message 2 ---
 		this._cntTutor2 = this.add.container();
-		var txt4 = this.add.bitmapText(60, 120,     "fontwhite", ("Deel" + globalvar.game_part + ":"), 24);
-		var txt5 = this.add.bitmapText(60, 120+60,  "fontwhite", "In deze test zie je een balk die bestaat uit 10 blokjes. 1 van deze blokjes\nis GROEN gekleurd en springt willekeurig naar links of rechts.", 24);
-		var txt6 = this.add.bitmapText(60, 120+120, "fontwhite", "Het is de bedoeling dat je het blokje volgt: Springt het blokje naar links,\ndan druk jij op de LINKS knop (Z).", 24);
-		var txt7 = this.add.bitmapText(60, 120+180, "fontwhite", "Springt het blokje naar rechts, dan druk je op de RECHTS knop (M).", 24);
+		
+		var msg2 = "Deel " + globalvar.game_part + ":\n\n";
+		if (globalvar.game_part == 1) {
+			msg2 += "In deze test zie je een balk die bestaat uit 10 blokjes. 1 van deze blokjes\nis GROEN gekleurd en springt willekeurig naar links of rechts.\n\n";
+			msg2 += "Het is de bedoeling dat je het blokje volgt:\n\n";
+			msg2 += "Springt het blokje naar links, dan druk jij op de LINKS knop (Z).\n";
+			msg2 += "Springt het blokje naar rechts, dan druk je op de RECHTS knop (M).";
+		} else if (globalvar.game_part == 2) {
+			msg2 += "In deze test zie je een balk die bestaat uit 10 blokjes. 1 van deze blokjes\n";
+			msg2 += "is ROOD gekleurd en springt willekeurig naar links of rechts.\n\n";
+			msg2 += "Het is de bedoeling dat je het tegenovergestelde doet van het blokje:\n\n";
+			msg2 += "Springt het blokje naar links, dan druk jij op de RECHTS knop (M).\n";
+			msg2 += "Springt het blokje naar rechts, dan druk je op de LINKS knop (Z).";
+		} else {
+			msg2 += "In deze test zie je een balk die bestaat uit 10 blokjes. 1 van deze blokjes\nis GROEN of ROOD gekleurd en springt willekeurig naar links of rechts.\n\n";
+			msg2 += "De kleur bepaalt wat je moet doen: Is het blokje GROEN, dan volg je het.\nIs het blokje ROOD, dan doe je het tegenovergestelde.\n\n";
+		};
+
+		var txt2 = this.add.bitmapText(60, 120, "fontwhite", msg2, 24);
+
 		var btn2 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext2,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "Verder");
 
-		this._cntTutor2.add(txt4);
-		this._cntTutor2.add(txt5);
-		this._cntTutor2.add(txt6);
-		this._cntTutor2.add(txt7);
+		this._cntTutor2.add(txt2);
 		this._cntTutor2.add(btn2);
 		
 		// --- tutorial message 3 ---
 		this._cntTutor3 = this.add.container();
+		var str = "";
+		if (globalvar.game_part == 1) {
+			str = "Het is de bedoeling dat je het blokje volgt:\n";
+			str += "Springt het blokje naar links, dan druk jij op de LINKS knop (Z).\n";
+			str += "Springt het blokje naar rechts, dan druk je op de RECHTS knop (M).";
+		} else if (globalvar.game_part == 2) {
+			str = "Het is de bedoeling dat je het tegenovergestelde doet van het blokje:\n";
+			str += "Springt het blokje naar links, dan druk jij op de RECHTS knop (M).\n";
+			str += "Springt het blokje naar rechts, dan druk je op de LINKS knop (Z).";
+		} else {
+			str = "De kleur bepaalt wat je moet doen:\n";
+			str += "Is het blokje GROEN, dan volg je het.\n";
+			str += "Is het blokje ROOD, dan doe je het tegenovergestelde.";
+		};
 		
-		var str = "Het is de bedoeling dat je het blokje volgt:\nSpringt het blokje naar links, dan druk jij op de LINKS knop (Z).\nSpringt het blokje naar rechts, dan druk je op de RECHTS knop (M).";
-		var txt8 = this.add.bitmapText(60, 120,     "fontwhite", str, 24);
+		var txt8 = this.add.bitmapText(60, 120, "fontwhite", str, 24);
 		var btn3 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext3,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "Verder");
 		
 		this._cntTutor3.add(txt8);
@@ -98,16 +130,27 @@ var Tutorial2 = new Phaser.Class({
 		
 		// --- tutorial message 4 ---
 		this._cntTutor4 = this.add.container();
-		var txt9 = this.add.bitmapText(60, 120,      "fontwhite", "Nu gaan we beginnen met deel 1 van de test. Hier gaan we kijken hoe goed\njij je aandacht bij een spel kan houden.", 24);
-		var txt10 = this.add.bitmapText(60, 120+60,  "fontwhite", "In deze test zie je een balk die bestaat uit 10 blokjes. 1 van deze blokjes\nis GROEN gekleurd en springt willekeurig naar links of rechts. ", 24);
-		var txt11 = this.add.bitmapText(60, 120+120, "fontwhite", "Het is de bedoeling dat je het blokje volgt.\nKlik alleen als het blokje ook echt verspringt\nen niet als je denkt dat hij gaat verplaatsen. ", 24);
-		var txt12 = this.add.bitmapText(60, 120+240, "fontwhite", "Probeer het zo snel en goed mogelijk te doen.\nDit gaan we eerst even oefenen.", 24);
+		var str = "Nu gaan we beginnen met deel " + globalvar.game_part + " van de test.\nHier gaan we kijken hoe goed jij je aandacht bij een spel kan houden.\n\n";
+
+		if (globalvar.game_part == 1) {
+			str += "In deze test zie je een balk die bestaat uit 10 blokjes. 1 van deze blokjes\nis GROEN gekleurd en springt willekeurig naar links of rechts.\n";
+			str += "Het is de bedoeling dat je het blokje volgt.\n\n";
+		} else if (globalvar.game_part == 2) {
+			str += "In deze test zie je een balk die bestaat uit 10 blokjes. 1 van deze blokjes\nis ROOD gekleurd en springt willekeurig naar links of rechts.\n";
+			str += "Het is de bedoeling dat je het tegenovergestelde doet van het blokje.\n\n";
+		} else {
+			str += "In deze test zie je een balk die bestaat uit 10 blokjes. 1 van deze blokjes\nis GROEN of ROOD gekleurd en springt willekeurig naar links of rechts.\n";
+			str += "De kleur bepaalt wat je moet doen: GROEN is volgen,\nROOD is het tegenovergestelde doen.\n\n";
+		};
+	
+		str += "Klik alleen als het blokje ook echt verspringt\nen niet als je denkt dat hij gaat verplaatsen.\n";
+		str += "Probeer het zo snel en goed mogelijk te doen.\n\n";
+		str += "Dit gaan we eerst even oefenen.";
+
+		var txt9 = this.add.bitmapText(60, 120,      "fontwhite", str, 24);
 		var btn4 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-120, "sprites", this.doStart,  this, "button2",     "button1",     "button2",     "button1", "Oefenen");
 
 		this._cntTutor4.add(txt9);
-		this._cntTutor4.add(txt10);
-		this._cntTutor4.add(txt11);
-		this._cntTutor4.add(txt12);
 		this._cntTutor4.add(btn4);
 
 		// only main menu visible

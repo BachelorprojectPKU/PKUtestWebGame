@@ -96,7 +96,7 @@ var PKUgame4 = new Phaser.Class({
 		this.waitevent = null;
 
 		// !! TESTING !!
-		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "test123", 24);
+		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "", 24);
 		
 		// start game
 		this.doStartNext();
@@ -241,20 +241,19 @@ var PKUgame4 = new Phaser.Class({
 
     debugTextGame4: function(str, ms)
     {
-		var txt = "debug: part " + globalvar.game_part + " " + this._emotions[0].toUpperCase() + " keer " + (this.game_repeat+1) + " " + (this._face_goal ? " DOEL" : " niet-doel");
-
-		txt = txt + " " + str;
-		
-		if (typeof ms !== "undefined") {
-			txt = txt + " msec=" + ms;
-		};
-
-		txt = txt + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
-
-		this.debugtxt.text = txt;
+		//var txt = "debug: part " + globalvar.game_part + " " + this._emotions[0].toUpperCase() + " keer " + (this.game_repeat+1) + " " + (this._face_goal ? " DOEL" : " niet-doel");
+		//txt = txt + " " + str;
+		//
+		//if (typeof ms !== "undefined") {
+		//	txt = txt + " msec=" + ms;
+		//};
+		//
+		//txt = txt + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
+		//
+		//this.debugtxt.text = txt;
 	},
 
-    doGameResult: function(msec, cor)
+	doGameResult: function(msec, cor)
     {
         console.log("doGameResult -- idx=" + this.game_repeat + " msec=" + msec);
 

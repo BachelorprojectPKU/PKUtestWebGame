@@ -85,7 +85,7 @@ var MainMenu = new Phaser.Class({
 		var keyhand1 = this.add.sprite(GAME_WIDTH_CENTER+112, GAME_HEIGHT_CENTER+96, "sprites", "hand_point");
 		var keyhand2 = this.add.sprite(GAME_WIDTH_CENTER-112, GAME_HEIGHT_CENTER+96, "sprites", "hand_point");
 		
-		var btnkeynext = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doGames,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
+		var btnkeynext = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doGame1,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
 		
 		keyhand2.setScale(-1.0, 1.0); // flip left hand
 		txtkey1.setOrigin(0.5).setCenterAlign();

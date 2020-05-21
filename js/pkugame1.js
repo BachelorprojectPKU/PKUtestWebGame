@@ -39,7 +39,7 @@ var PKUgame1 = new Phaser.Class({
 		var clr  = (globalvar.practise ? BACKGROUND_BLUE : BACKGROUND_BLACK);
 		this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor(clr);
 		
-		this.square = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "sprites", "game1_plus");
+		this.triangle = this.add.sprite(GAME_WIDTH_CENTER, GAME_HEIGHT_CENTER, "sprites", "game1_plus");
 		this.gamestate = -1; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 
 		this.key_left  = this.add.sprite(           60, GAME_HEIGHT-60, "sprites", "key_z");
@@ -93,17 +93,17 @@ var PKUgame1 = new Phaser.Class({
 	
     doStartPlus: function() {
 		// reset to plus
-		this.square.setFrame("game1_plus") ;
+		this.triangle.setFrame("game1_plus") ;
 		this.gamestate = -1; // -1=wait
 		
 		// set random timer
 		var msec = Phaser.Math.RND.between(GAME1_MIN_WAIT, GAME1_MAX_WAIT);
-		this.waitevent = this.time.addEvent({ delay: msec, callback: this.onDisplaySquare, callbackScope: this});
+		this.waitevent = this.time.addEvent({ delay: msec, callback: this.onDisplayTriangle, callbackScope: this});
 	},
 	
-    onDisplaySquare: function() {
-		// show square
-		this.square.setFrame("game1_square") ;
+    onDisplayTriangle: function() {
+		// show triangle
+		this.triangle.setFrame("game1_triangle") ;
 		this.gamestate = 0; // -1=wait, 0=ready for input, 1=after input (correct/incorrect)
 
 		this.starttime = new Date();
@@ -213,8 +213,8 @@ var PKUgame1 = new Phaser.Class({
 
     debugTextGame1: function(str)
     {
-		var txt = "debug: part " + globalvar.game_part + " keer " + (this.game_repeat+1) + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
-		this.debugtxt.text = txt;
+		//var txt = "debug: part " + globalvar.game_part + " keer " + (this.game_repeat+1) + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
+		//this.debugtxt.text = txt;
 	},
 	
     doGameResult: function(msec)

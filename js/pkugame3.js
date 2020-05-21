@@ -111,7 +111,7 @@ var PKUgame3 = new Phaser.Class({
 		this.waitevent = null;
 
 		// !! TESTING !!
-		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "test123", 24);
+		this.debugtxt = this.add.bitmapText(60, 10, "fontwhite", "", 24);
 		
 		// start game
 		this.doStartNext();
@@ -278,11 +278,11 @@ var PKUgame3 = new Phaser.Class({
 
     debugTextGame3: function(str, ms)
     {
-		if (typeof ms !== "undefined") {
-			str = str + " msec=" + ms;
-		};
-
-		this.debugtxt.text = "debug: goal " + this.game_similar_txt + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
+		//if (typeof ms !== "undefined") {
+		//	str = str + " msec=" + ms;
+		//};
+		//
+		//this.debugtxt.text = "debug: goal " + this.game_similar_txt + " " + str + "\nDominant = " + (globalvar.dominant == CONST_LEFT ? "LEFT" : "RIGHT");
 	},
 
     doGameResult: function(msec, cor)

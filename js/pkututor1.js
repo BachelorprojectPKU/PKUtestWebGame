@@ -47,16 +47,16 @@ var Tutorial1 = new Phaser.Class({
 
 		// tekst uitleg voor deel 1
 		var str1 = "Nu gaan we beginnen met test 1.\nHier gaan we kijken hoe snel jij kunt reageren.\nWe beginnen met " + hand + ", leg straks je " + hander + " wijsvinger op de " + btn + "\n";
-		var str2 = "Er verschijnt steeds een kruisje in het midden van het scherm,\ndeze verandert na korte tijd in een blokje."
+		var str2 = "Er verschijnt steeds een kruisje in het midden van het scherm,\ndeze verandert na korte tijd in een driehoekje."
 
 		// DEEL 2: dominante hand
 		if (globalvar.game_part == 2) {
 			// tekst uitleg voor deel 2
 			str1 = "Nu gaan we verder met " + hand + ", leg straks je " + hander + " wijsvinger op de " + btn + "\n";
-			str2 = "Er verschijnt opnieuw een kruisje in het midden van het scherm,\ndeze verandert na korte tijd in een blokje.";
+			str2 = "Er verschijnt opnieuw een kruisje in het midden van het scherm,\ndeze verandert na korte tijd in een driehoekje.";
 		};
 		
-		str2 = str2 + "\n\nDruk met je " + hander + " wijsvinger op de " + btn + "\nals je het kruisje in een blokje ziet veranderen.\nDaarna verandert het blokje weer terug in een kruisje.";
+		str2 = str2 + "\n\nDruk met je " + hander + " wijsvinger op de " + btn + "\nals je het kruisje in een driehoekje ziet veranderen.\nDaarna verandert het driehoekje weer terug in een kruisje.";
 
 		// --- tutorial message 1 ---
 		this._cntTutor1 = this.add.container();
@@ -85,12 +85,12 @@ var Tutorial1 = new Phaser.Class({
 
 		var txt2 = this.add.bitmapText(60, 120, "fontwhite", str2, 24);
 
-		this._square = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_square");
-		var _plus    = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_plus");
+		this._triangle = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_triangle");
+		this._plus   = this.add.sprite(GAME_WIDTH_CENTER,     GAME_HEIGHT_CENTER+40,  "sprites", "game1_plus");
 		var spr1     = this.add.sprite(GAME_WIDTH_CENTER+240, GAME_HEIGHT_CENTER+40,  "sprites", "key_"+btnlow);
 		this._hand1  = this.add.sprite(GAME_WIDTH_CENTER+240+14, GAME_HEIGHT_CENTER+120, "sprites", "hand_point");
 		
-		this._square.setAlpha(0.0);
+		this._triangle.setAlpha(0.0);
 		
 		// flip when left hand
 		if (lr == CONST_LEFT) {
@@ -102,8 +102,8 @@ var Tutorial1 = new Phaser.Class({
 		this.btncont1 = this.addButtonText(GAME_WIDTH_CENTER, GAME_HEIGHT-60, "sprites", this.doNext2,  this, "button_s2",     "button_s1",     "button_s2",     "button_s1", "verder");
 
 		this._cntTutor2.add(txt2);
-		this._cntTutor2.add(this._square);
-		this._cntTutor2.add(_plus);
+		this._cntTutor2.add(this._triangle);
+		this._cntTutor2.add(this._plus);
 		this._cntTutor2.add(spr1);
 		this._cntTutor2.add(this._hand1);
 		this._cntTutor2.add(this.btncont1);
@@ -159,10 +159,22 @@ var Tutorial1 = new Phaser.Class({
 			}
 		);
 			
-		// tutor animation, show square (alpha=1.0) or plus (alpha = 0.0 = transparent = invisible)
+		// tutor animation, show plus (alpha=1.0) or hide plus (alpha = 0.0 = transparent = invisible)
 		var timeline2 = this.tweens.timeline(
 			{
-				targets: this._square,
+				targets: this._plus,
+				loop: -1,
+				tweens: [
+					{ alpha: 0.0, ease: 'Linear', duration: 2, delay: (2000-6)},
+					{ alpha: 1.0, ease: 'Linear', duration: 2, delay: 500},
+					{ alpha: 1.0, ease: 'Linear', duration: 2, delay: 500}
+				]
+			}
+		);
+		// tutor animation, show triangle (alpha=1.0) or hide triangle (alpha = 0.0 = transparent = invisible)
+		var timeline3 = this.tweens.timeline(
+			{
+				targets: this._triangle,
 				loop: -1,
 				tweens: [
 					{ alpha: 1.0, ease: 'Linear', duration: 2, delay: (2000-6)},
